@@ -4,17 +4,58 @@ using TMPro;
 
 public class AbrirTiendaMensaje : MonoBehaviour
 {
-    public string tagJugador = "Player";
-    public string mensaje = "Presiona E para abrir la tienda";
-    public TextMeshProUGUI textoMensaje; // Asigna este campo desde el inspector
+    // Asigna tu GestorCompradores aquí desde el Inspector
+    public GestorCompradores gestorCompradores;
 
-    private Coroutine mensajeCoroutine;
+    [Header("Configuraci\u00f3n")]
+    public string tagJugador = "Player";
+    public string mensajeAbrir = "Presiona E para abrir la tienda";
+    public string mensajeCerrar = "Presiona E para cerrar la tienda";
+
+    [Header("UI")]
+    public TextMeshProUGUI textoMensaje;
+
+    private bool jugadorEnArea = false;
+
+    void Awake()
+    {
+        if (gestorCompradores == null)
+        {
+            gestorCompradores = FindObjectOfType<GestorCompradores>();
+        }
+    }
+
+    private void Update()
+    {
+        if (jugadorEnArea && Input.GetKeyDown(KeyCode.E))
+        {
+            if (gestorCompradores == null)
+            {
+                Debug.LogError("El GestorCompradores no est\u00e1 asignado ni se pudo encontrar.");
+                return;
+            }
+
+            // Si la tienda est\u00e1 abierta, la cerramos. Si no, la abrimos.
+            if (gestorCompradores.tiendaAbierta)
+            {
+                gestorCompradores.CerrarTienda();
+            }
+            else
+            {
+                gestorCompradores.AbrirTienda();
+            }
+
+            // Actualizamos el mensaje inmediatamente
+            ActualizarMensajeUI();
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(tagJugador) && textoMensaje != null)
         {
-            textoMensaje.text = mensaje;
+            jugadorEnArea = true;
+            ActualizarMensajeUI();
             textoMensaje.gameObject.SetActive(true);
         }
     }
@@ -23,19 +64,23 @@ public class AbrirTiendaMensaje : MonoBehaviour
     {
         if (other.CompareTag(tagJugador) && textoMensaje != null)
         {
+            jugadorEnArea = false;
             textoMensaje.gameObject.SetActive(false);
-
-            // Si usaste la corrutina, detenla aquí:
-            // if (mensajeCoroutine != null)
-            //     StopCoroutine(mensajeCoroutine);
         }
     }
 
-    // Si quieres que desaparezca automáticamente después de un tiempo:
-    // private IEnumerator DesaparecerMensajeDespuesDeTiempo(float segundos)
-    // {
-    //     yield return new WaitForSeconds(segundos);
-    //     if (textoMensaje != null)
-    //         textoMensaje.gameObject.SetActive(false);
-    // }
+    private void ActualizarMensajeUI()
+    {
+        if (gestorCompradores == null || textoMensaje == null) return;
+
+        // Comprobamos el estado de la tienda y cambiamos el mensaje
+        if (gestorCompradores.tiendaAbierta)
+        {
+            textoMensaje.text = mensajeCerrar;
+        }
+        else
+        {
+            textoMensaje.text = mensajeAbrir;
+        }
+    }
 }

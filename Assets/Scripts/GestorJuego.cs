@@ -1,22 +1,22 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine.SceneManagement; 
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Linq;
 
 public enum HoraDelDia { Manana, Tarde, Noche }
 
-[System.Serializable] 
+[System.Serializable]
 public class StockInicialIngrediente
 {
     public DatosIngrediente ingrediente;
-    public int stockInicial = 5; 
+    public int stockInicial = 5;
 }
 
-[System.Serializable] // Necesario para que JsonUtility funcione
+[System.Serializable]
 public class StockEntry
 {
-    public string ingredienteAssetName; // Guardamos el NOMBRE del asset ScriptableObject
+    public string ingredienteAssetName;
     public int cantidad;
 }
 
@@ -25,30 +25,31 @@ public class StockDataWrapper
 {
     public List<StockEntry> stockList = new List<StockEntry>();
 }
+
 public class GestorJuego : MonoBehaviour
 {
     public bool interactuoConCueva = false;
 
-    [Header("L�mites Diarios")] // Nuevo Header
-    public int limiteNPCsPorDia = 5; // L�mite de NPCs a generar por d�a
-    private int npcsGeneradosHoy = 0; // Contador interno
+    [Header("Límites Diarios")]
+    public int limiteNPCsPorDia = 5;
+    private int npcsGeneradosHoy = 0;
 
-    [Header("Configuraci�n Guardado y Spawn")]
-    [Tooltip("Punto donde aparece el jugador al INICIO DEL D�A (Empty GO cerca de la cama)")]
-    private string nombrePuntoSpawnSiguiente = "SpawnInicialCama"; // Nombre por DEFECTO o al cargar
+    [Header("Configuración Guardado y Spawn")]
+    [Tooltip("Punto donde aparece el jugador al INICIO DEL DÍA (Empty GO cerca de la cama)")]
+    private string nombrePuntoSpawnSiguiente = "SpawnInicialCama";
 
     [Header("Inventario/Stock Ingredientes")]
-    public List<StockInicialIngrediente> configuracionStockInicial; // Configurable en Inspector
+    public List<StockInicialIngrediente> configuracionStockInicial;
     public Dictionary<DatosIngrediente, int> stockIngredientesTienda = new Dictionary<DatosIngrediente, int>();
 
-    private bool durmiendo = false; // <<--- NUEVA VARIABLE FLAG
+    private bool durmiendo = false;
     public static GestorJuego Instance { get; private set; }
 
     public static void CargarEscenaConPantallaDeCarga(string nombreEscenaACargar)
     {
         if (string.IsNullOrEmpty(nombreEscenaACargar))
         {
-            Debug.LogError("Se intent� cargar una escena con nombre vac�o.");
+            Debug.LogError("Se intentó cargar una escena con nombre vacío.");
             return;
         }
         ControladorPantallaCarga.escenaACargar = nombreEscenaACargar;
@@ -59,67 +60,82 @@ public class GestorJuego : MonoBehaviour
 
     void Awake()
     {
-                Cursor.visible = false;
-                        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            CargarDatos(); // Carga datos existentes o inicializa por defecto
+            CargarDatos();
         }
         else { Destroy(gameObject); }
     }
 
     void OnEnable()
     {
-        Debug.Log(">>> GESTOR JUEGO ON ENABLE - Suscribiendo a sceneLoaded <<<");
+        Debug.Log(">>> GESTOR JUEGO ON ENABLE - Suscribiendo a sceneLoaded y eventos de tiempo <<<");
         SceneManager.sceneLoaded += EscenaCargada;
-        Debug.Log("GestorJuego suscrito a sceneLoaded."); // Log para confirmar
+        if (TimeManager.Instance != null)
+        {
+            TimeManager.Instance.OnDayStart += OnNewDayStarted;
+            TimeManager.Instance.OnNightEnd += OnNightEnded;
+        }
+        else
+        {
+            Debug.LogError("No se encontró TimeManager.Instance. Los eventos de ciclo de tiempo no se activarán.");
+        }
+        Debug.Log("GestorJuego suscrito a sceneLoaded.");
     }
 
     void OnDisable()
     {
         SceneManager.sceneLoaded -= EscenaCargada;
-        Debug.Log("GestorJuego desuscrito de sceneLoaded."); // Log para confirmar
+        if (TimeManager.Instance != null)
+        {
+            TimeManager.Instance.OnDayStart -= OnNewDayStarted;
+            TimeManager.Instance.OnNightEnd -= OnNightEnded;
+        }
+        Debug.Log("GestorJuego desuscrito de sceneLoaded.");
     }
 
     [Header("Estado del Juego")]
     public int diaActual = 1;
     public int dineroActual = 50;
 
-    [Header("Ciclo D�a/Noche")]
-    public HoraDelDia horaActual = HoraDelDia.Manana; // El d�a empieza por la ma�ana
-    [Tooltip("Material Skybox para la ma�ana")]
-    public Material skyboxManana; // <<--- Asigna tu Skybox de Ma�ana aqu�
+    [Header("Ciclo Día/Noche")]
+    public HoraDelDia horaActual = HoraDelDia.Manana;
+    [Tooltip("Material Skybox para la mañana")]
+    public Material skyboxManana;
     [Tooltip("Material Skybox para la tarde")]
-    public Material skyboxTarde;   // <<--- Asigna tu Skybox de Tarde aqu�
+    public Material skyboxTarde;
     [Tooltip("Material Skybox para la noche")]
-    public Material skyboxNoche;  // <<--- Asigna tu Skybox de Noche aqu�
+    public Material skyboxNoche;
 
-    [Header("Econom�a")]
+    [Header("Economía")]
     public int valorPocionCorrecta = 5;
     public int costoRentaDiaria = 10;
 
     [Header("Referencias UI y Efectos")]
-    public GestorUI gestorUI; // <<--- Usa el nombre de clase traducido
+    public GestorUI gestorUI;
     public AudioClip sonidoGanarDinero;
     public AudioClip sonidoPerderDinero;
-    public GestorCompradores gestorNPCs; // <<--- NUEVA REFERENCIA: Asigna el GestorNPCs aqu�
-    public TMPro.TextMeshProUGUI textoMielesRecolectadas; 
+    public GestorCompradores gestorNPCs;
+    public TMPro.TextMeshProUGUI textoMielesRecolectadas;
 
-    [Header("Audio Ambiente")] // Puedes a�adir este encabezado para organizar
-    [Tooltip("M�sica o sonido para el MenuPrincipal")]
-    public AudioClip musicaMenu; // <<--- NUEVO
-    [Tooltip("M�sica o sonido ambiente para el d�a (Ma�ana/Tarde)")]
-    public AudioClip audioDia;      // <<--- A�ADE ESTA L�NEA
-    [Tooltip("M�sica o sonido ambiente para la noche (grillos?)")]
-    public AudioClip audioNoche;     // <<--- A�ADE ESTA L�NEA
+    [Header("Audio Ambiente")]
+    [Tooltip("Música o sonido para el MenuPrincipal")]
+    public AudioClip musicaMenu;
+    [Tooltip("Música o sonido ambiente para el día (Mañana/Tarde)")]
+    public AudioClip audioDia;
+    [Tooltip("Música o sonido ambiente para la noche (grillos?)")]
+    public AudioClip audioNoche;
 
     [Header("Progreso Cueva")]
     public int abejasMatadasCueva = 0;
     public bool misionCompleta = false;
 
-    private Light luzDireccionalPrincipal = null; // <<--- A�ADE ESTA L�NEA
+    private Light luzDireccionalPrincipal = null;
 
     void Start()
     {
@@ -132,7 +148,7 @@ public class GestorJuego : MonoBehaviour
         if (escena.name == "Arranque" || escena.name == "LoadingScreen" || escena.name == "PantallaCarga")
         {
             Debug.Log($"EscenaCargada: Ignorando escena de utilidad '{escena.name}'.");
-            return; // Salir si es una de estas escenas
+            return;
         }
 
         Debug.Log($"---[EscenaCargada] Escena: '{escena.name}', Hora al entrar: {horaActual} ---");
@@ -149,60 +165,54 @@ public class GestorJuego : MonoBehaviour
                 break;
             }
         }
-        if (luzDireccionalPrincipal == null) Debug.LogWarning("No se encontr� luz direccional principal.");
+        if (luzDireccionalPrincipal == null) Debug.LogWarning("No se encontró luz direccional principal.");
 
-        gestorUI = FindObjectOfType<GestorUI>(); // Busca el GestorUI en la escena reci�n cargada
-        gestorNPCs = FindObjectOfType<GestorCompradores>(); // Busca el GestorNPCs
+        gestorUI = FindObjectOfType<GestorUI>();
+        gestorNPCs = FindObjectOfType<GestorCompradores>();
 
         ControladorJugador jugador = FindObjectOfType<ControladorJugador>();
         if (jugador != null)
         {
             PuntoSpawn[] puntos = FindObjectsOfType<PuntoSpawn>();
-
             Debug.Log($"EscenaCargada: Encontrados {puntos.Length} PuntoSpawn.");
             Debug.Log($"EscenaCargada: Buscando punto con nombre: '{nombrePuntoSpawnSiguiente}'");
 
-            PuntoSpawn puntoDestino = puntos.FirstOrDefault(p => p != null && p.nombreIdentificador == nombrePuntoSpawnSiguiente); // A�adido p != null
-
+            PuntoSpawn puntoDestino = puntos.FirstOrDefault(p => p != null && p.nombreIdentificador == nombrePuntoSpawnSiguiente);
             if (puntoDestino == null && nombrePuntoSpawnSiguiente != "SpawnInicialCama")
             {
-                Debug.LogWarning($"No se encontr� '{nombrePuntoSpawnSiguiente}'. Buscando fallback 'SpawnInicialCama'...");
+                Debug.LogWarning($"No se encontró '{nombrePuntoSpawnSiguiente}'. Buscando fallback 'SpawnInicialCama'...");
                 puntoDestino = puntos.FirstOrDefault(p => p != null && p.nombreIdentificador == "SpawnInicialCama");
             }
-
             if (puntoDestino != null)
             {
                 Debug.Log($"Punto destino encontrado: '{puntoDestino.name}' en {puntoDestino.transform.position}. Intentando mover jugador...");
                 CharacterController cc = jugador.GetComponent<CharacterController>();
-                Vector3 posAntes = jugador.transform.position; // <<--- A�ADE ESTA L�NEA AQU�
-                if (cc != null) cc.enabled = false; // Desactivar para teletransportar
+                Vector3 posAntes = jugador.transform.position;
+                if (cc != null) cc.enabled = false;
                 jugador.transform.position = puntoDestino.transform.position;
-                jugador.transform.rotation = puntoDestino.transform.rotation; // Usar rotaci�n del punto
-                if (cc != null) cc.enabled = true; // Reactivar
-
-                Debug.Log($"Posici�n JUGADOR ANTES: {posAntes}, DESPU�S: {jugador.transform.position}"); // Verificar cambio
-
+                jugador.transform.rotation = puntoDestino.transform.rotation;
+                if (cc != null) cc.enabled = true;
+                Debug.Log($"Posición JUGADOR ANTES: {posAntes}, DESPUÉS: {jugador.transform.position}");
                 jugador.ResetearVistaVertical();
             }
             else
             {
-                Debug.LogError("�No se encontr� NING�N PuntoSpawn ('" + nombrePuntoSpawnSiguiente + "' o 'SpawnInicialCama') para posicionar al jugador!");
+                Debug.LogError("¡No se encontró NINGÚN PuntoSpawn ('" + nombrePuntoSpawnSiguiente + "' o 'SpawnInicialCama') para posicionar al jugador!");
             }
         }
-        else if (escena.name != "MenuPrincipal" && escena.name != "MainMenu") 
+        else if (escena.name != "MenuPrincipal" && escena.name != "MainMenu")
         {
-            Debug.LogWarning("No se encontr� jugador en EscenaCargada.");
-        } // No advertir en Men�
+            Debug.LogWarning("No se encontró jugador en EscenaCargada.");
+        }
 
-        AudioClip clipPoner = null; // Clip a reproducir por defecto (silencio)
-
+        AudioClip clipPoner = null;
         if (escena.name == "MenuPrincipal")
-        { 
+        {
             clipPoner = musicaMenu;
-            Debug.Log("EscenaCargada: Seleccionando m�sica del men�.");
+            Debug.Log("EscenaCargada: Seleccionando música del menú.");
         }
         else if (escena.name == "TiendaDeMagia" || escena.name == "Bosque")
-        { 
+        {
             switch (horaActual)
             {
                 case HoraDelDia.Manana:
@@ -215,55 +225,89 @@ public class GestorJuego : MonoBehaviour
             }
             Debug.Log($"EscenaCargada: Seleccionando audio para {horaActual}: {(clipPoner != null ? clipPoner.name : "Ninguno")}");
         }
-
         if (GestorAudio.Instancia != null)
         {
             GestorAudio.Instancia.CambiarMusicaFondo(clipPoner);
         }
-        else { Debug.LogWarning("GestorAudio no encontrado para cambiar m�sica."); }
+        else { Debug.LogWarning("GestorAudio no encontrado para cambiar música."); }
 
         if (gestorUI != null)
         {
-            if (interactuoConCueva) 
+            if (interactuoConCueva)
             {
-                            if (misionCompleta)
-            {
-                gestorUI.ActualizarTextoMieles("¡Ya podés ir a la cueva!");
+                if (misionCompleta)
+                {
+                    gestorUI.ActualizarTextoMieles("¡Ya podés ir a la cueva!");
+                }
+                else
+                {
+                    gestorUI.ActualizarTextoMieles($"{abejasMatadasCueva}/3 mieles recolectadas");
+                }
             }
             else
-            {
-                gestorUI.ActualizarTextoMieles($"{abejasMatadasCueva}/3 mieles recolectadas");
-            }
-
-            } else 
             {
                 gestorUI.ActualizarTextoMieles("Mision");
             }
             Debug.Log("GestorUI encontrado en EscenaCargada. Actualizando UI.");
             gestorUI.ActualizarUIDinero(dineroActual);
-
             if (horaActual != HoraDelDia.Noche)
             {
-                Debug.Log($"Mostrando UI del D�a {diaActual} porque es {horaActual}"); // Log opcional
+                Debug.Log($"Mostrando UI del Día {diaActual} porque es {horaActual}");
                 gestorUI.MostrarInicioDia(diaActual);
             }
             else
             {
-                Debug.Log($"No se muestra UI del D�a porque es {horaActual}"); // Log opcional
+                Debug.Log($"No se muestra UI del Día porque es {horaActual}");
             }
-            // ------------------------------------------
         }
         else if (escena.name == "TiendaDeMagia" || escena.name == "Bosque" || escena.name == "MainMenu")
         {
-            Debug.LogWarning($"GestorUI no encontrado en la escena {escena.name}. �Falta el objeto UIManager o el script?");
+            Debug.LogWarning($"GestorUI no encontrado en la escena {escena.name}. ¿Falta el objeto UIManager o el script?");
         }
-
         if (gestorNPCs == null && escena.name == "TiendaDeMagia")
         {
             Debug.LogWarning($"GestorNPCs no encontrado en la escena {escena.name}.");
         }
     }
 
+    // --- NUEVOS MÉTODOS para manejar los eventos del TimeManager ---
+    private void OnNewDayStarted()
+    {
+        Debug.Log("GestorJuego: ¡El TimeManager ha iniciado un nuevo día!");
+        // Aquí pon la lógica que quieres que ocurra al inicio de cada día.
+        diaActual = TimeManager.Instance.currentDay;
+        horaActual = HoraDelDia.Manana;
+        GuardarDatos();
+        DeducirRenta();
+        npcsGeneradosHoy = 0;
+        if (gestorNPCs != null) gestorNPCs.ReiniciarParaNuevoDia();
+        ActualizarAparienciaCiclo(true);
+        if (GestorAudio.Instancia != null) GestorAudio.Instancia.CambiarMusicaFondo(audioDia);
+        if (gestorUI != null) gestorUI.MostrarInicioDia(diaActual);
+        GameObject cartel = GameObject.Find("cartel");
+        if (cartel != null) cartel.SetActive(true);
+    }
+
+    private void OnNewNightStarted()
+    {
+        Debug.Log("GestorJuego: ¡El TimeManager ha iniciado la noche!");
+        // Aquí pon la lógica que quieres que ocurra al inicio de la noche.
+        horaActual = HoraDelDia.Noche;
+        ActualizarAparienciaCiclo(true);
+        if (GestorAudio.Instancia != null) GestorAudio.Instancia.CambiarMusicaFondo(audioNoche);
+        gestorNPCs?.DespawnTodosNPCsPorNoche();
+        GameObject cartel = GameObject.Find("cartel");
+        if (cartel != null) cartel.SetActive(false);
+    }
+
+    private void OnNightEnded()
+    {
+        Debug.Log("GestorJuego: La noche ha terminado, ¡es hora de dormir!");
+        // Aquí puedes llamar a tu método de desmayo, si el jugador no ha dormido.
+        StartCoroutine(SecuenciaDormir());
+    }
+
+    // --- MÉTODOS EXISTENTES CON MODIFICACIONES ---
     public void SumarAbejaMatada()
     {
         abejasMatadasCueva++;
@@ -284,10 +328,9 @@ public class GestorJuego : MonoBehaviour
     public void AnadirDinero(int cantidad)
     {
         dineroActual += cantidad;
-        Debug.Log($"Dinero a�adido: +{cantidad}. Total: {dineroActual}");
+        Debug.Log($"Dinero añadido: +{cantidad}. Total: {dineroActual}");
         if (gestorUI != null)
         {
-            // Llamadas traducidas
             gestorUI.ActualizarUIDinero(dineroActual);
             gestorUI.MostrarCambioDinero(cantidad);
         }
@@ -295,7 +338,6 @@ public class GestorJuego : MonoBehaviour
         {
             GestorAudio.Instancia.ReproducirSonido(sonidoGanarDinero);
         }
-        //GuardarDatos();
     }
 
     private void DeducirRenta()
@@ -315,17 +357,16 @@ public class GestorJuego : MonoBehaviour
 
     public void IrADormir()
     {
-
         if (durmiendo)
         {
-            Debug.Log("Ya est� en proceso de dormir, ignorando petici�n.");
-            return; // Salir si ya estamos durmiendo
+            Debug.Log("Ya está en proceso de dormir, ignorando petición.");
+            return;
         }
-        
-        Debug.Log("Intentando ir a dormir (llamado desde interacci�n)..."); // Mensaje actualizado
+
+        Debug.Log("Intentando ir a dormir (llamado desde interacción)...");
         if (gestorUI != null)
         {
-            StartCoroutine(SecuenciaDormir()); // Llama a la corutina directamente
+            StartCoroutine(SecuenciaDormir());
         }
         else
         {
@@ -335,37 +376,23 @@ public class GestorJuego : MonoBehaviour
 
     private IEnumerator SecuenciaDormir()
     {
-        if (durmiendo) yield break; // Salir si ya est� corriendo
-        durmiendo = true; // Marcar que empezamos a dormir
+        if (durmiendo) yield break;
+        durmiendo = true;
 
         try
         {
-            Debug.Log("Iniciando secuencia de sue�o...");
-
+            Debug.Log("Iniciando secuencia de sueño...");
             ControladorJugador jugador = FindObjectOfType<ControladorJugador>();
             if (jugador != null) { jugador.HabilitarMovimiento(false); }
-            else { Debug.LogWarning("SecuenciaDormir: No se encontr� ControladorJugador para deshabilitar."); }
+            else { Debug.LogWarning("SecuenciaDormir: No se encontró ControladorJugador para deshabilitar."); }
 
             if (gestorUI != null) yield return StartCoroutine(gestorUI.FundidoANegro());
-            else { Debug.LogWarning("SecuenciaDormir: GestorUI null, no se har� fundido a negro."); }
+            else { Debug.LogWarning("SecuenciaDormir: GestorUI null, no se hará fundido a negro."); }
 
-            diaActual++;
-            horaActual = HoraDelDia.Manana;
-            GuardarDatos();
-            npcsGeneradosHoy = 0;
+            // Lógica de avance de día, renta, NPCs, etc. MOVIDA a OnNewDayStarted()
 
-            // REINICIAR la variable de salida al bosque
-            PuertaCambioEscena.ReiniciarRegistroSalidaBosque();
-
-            Debug.Log($"Comenzando D�A {diaActual} - Ma�ana");
-            DeducirRenta();
-            if (gestorNPCs != null) { gestorNPCs.ReiniciarParaNuevoDia(); }
-            else { Debug.LogWarning("GestorNPCs no encontrado para reiniciar d�a."); } // Cambiado a Warning
-            ActualizarAparienciaCiclo(true);
-            if (GestorAudio.Instancia != null) { GestorAudio.Instancia.CambiarMusicaFondo(audioDia); } // Poner m�sica d�a
-
-            Debug.Log("Forzando posici�n del jugador junto a la cama...");
-            jugador = FindObjectOfType<ControladorJugador>(); // Buscar de nuevo por si acaso
+            Debug.Log("Forzando posición del jugador junto a la cama...");
+            jugador = FindObjectOfType<ControladorJugador>();
             if (jugador != null)
             {
                 PuntoSpawn puntoCama = FindObjectsOfType<PuntoSpawn>().FirstOrDefault(p => p != null && p.nombreIdentificador == "SpawnInicialCama");
@@ -378,16 +405,16 @@ public class GestorJuego : MonoBehaviour
                     if (cc != null) cc.enabled = true;
                     jugador.GetComponent<ControladorJugador>()?.ResetearVistaVertical();
                 }
-                else { Debug.LogError("�No se encontr� 'SpawnInicialCama'!"); }
+                else { Debug.LogError("¡No se encontró 'SpawnInicialCama'!"); }
             }
-            else { Debug.LogError("No se encontr� jugador para reposicionar."); }
+            else { Debug.LogError("No se encontró jugador para reposicionar."); }
 
             if (gestorUI != null) yield return StartCoroutine(gestorUI.FundidoDesdeNegro());
-            else { Debug.LogWarning("SecuenciaDormir: GestorUI null, no se har� fundido desde negro."); }
+            else { Debug.LogWarning("SecuenciaDormir: GestorUI null, no se hará fundido desde negro."); }
 
-            jugador = FindObjectOfType<ControladorJugador>(); // Buscar de nuevo
+            jugador = FindObjectOfType<ControladorJugador>();
             if (jugador != null) { jugador.HabilitarMovimiento(true); }
-            else { Debug.LogWarning("SecuenciaDormir: No se encontr� ControladorJugador para habilitar."); }
+            else { Debug.LogWarning("SecuenciaDormir: No se encontró ControladorJugador para habilitar."); }
 
             if (gestorUI != null) gestorUI.MostrarInicioDia(diaActual);
             if (interactuoConCueva)
@@ -396,33 +423,30 @@ public class GestorJuego : MonoBehaviour
                 if (gestorUI != null)
                     gestorUI.ActualizarTextoMieles("0/3 mieles recolectadas");
                 interactuoConCueva = false;
-            } else 
+            }
+            else
             {
                 Debug.Log("Días siguientes");
             }
-
-            // --- REACTIVAR EL CARTEL ---
             GameObject cartel = GameObject.Find("cartel");
             if (cartel != null)
                 cartel.SetActive(true);
-
             Debug.Log("Secuencia de sueño completada.");
-
-        } // Fin del try
+        }
         finally
         {
-            durmiendo = false; // Permitir dormir de nuevo
+            durmiendo = false;
             Debug.Log("Flag 'durmiendo' puesto a false.");
         }
-    } // Fin de SecuenciaDormir 
+    }
 
     public void GuardarDatos()
     {
-        Debug.LogWarning($"--- GUARDANDO DATOS --- D�a: {diaActual}, Hora: {horaActual}, Dinero: {dineroActual}");
+        Debug.LogWarning($"--- GUARDANDO DATOS --- Día: {diaActual}, Hora: {horaActual}, Dinero: {dineroActual}");
         PlayerPrefs.SetInt("ExisteGuardado", 1);
         PlayerPrefs.SetInt("DiaActual", diaActual);
         PlayerPrefs.SetInt("DineroActual", dineroActual);
-        PlayerPrefs.SetInt("HoraActual", (int)horaActual); // Debe ser Manana (0) aqu�
+        PlayerPrefs.SetInt("HoraActual", (int)horaActual);
 
         Debug.LogError($"GUARDANDO HoraActual como INT: {(int)horaActual} (Enum: {horaActual})");
 
@@ -433,7 +457,7 @@ public class GestorJuego : MonoBehaviour
         }
         string stockJson = JsonUtility.ToJson(stockWrapper);
         PlayerPrefs.SetString("StockIngredientes", stockJson);
-        Debug.Log($"Stock Guardado JSON: {stockJson.Substring(0, Mathf.Min(stockJson.Length, 100))}..."); // Mostrar solo inicio
+        Debug.Log($"Stock Guardado JSON: {stockJson.Substring(0, Mathf.Min(stockJson.Length, 100))}...");
 
         PlayerPrefs.Save();
         Debug.LogWarning("--- DATOS GUARDADOS ---");
@@ -450,8 +474,8 @@ public class GestorJuego : MonoBehaviour
 
         diaActual = PlayerPrefs.GetInt("DiaActual", 1);
         dineroActual = PlayerPrefs.GetInt("DineroActual", 50);
-        horaActual = (HoraDelDia)PlayerPrefs.GetInt("HoraActual", (int)HoraDelDia.Manana); // Carga la hora guardada (deber�a ser Manana)
-        Debug.LogError($"CARGANDO HoraActual como INT: {PlayerPrefs.GetInt("HoraActual", -1)}, Convertido a Enum: {horaActual}"); // -1 si no existe
+        horaActual = (HoraDelDia)PlayerPrefs.GetInt("HoraActual", (int)HoraDelDia.Manana);
+        Debug.LogError($"CARGANDO HoraActual como INT: {PlayerPrefs.GetInt("HoraActual", -1)}, Convertido a Enum: {horaActual}");
         Debug.LogError($"--- HORA CARGADA DE PLAYERPREFS: {horaActual} ---");
 
         stockIngredientesTienda = new Dictionary<DatosIngrediente, int>();
@@ -461,18 +485,18 @@ public class GestorJuego : MonoBehaviour
         {
             foreach (var entry in stockWrapper.stockList)
             {
-                string resourcePath = $"Data/Ingredientes/{entry.ingredienteAssetName}"; // AJUSTA SI TU RUTA DENTRO DE RESOURCES ES DIFERENTE
+                string resourcePath = $"Data/Ingredientes/{entry.ingredienteAssetName}";
                 DatosIngrediente ingredienteAsset = Resources.Load<DatosIngrediente>(resourcePath);
                 if (ingredienteAsset != null) stockIngredientesTienda[ingredienteAsset] = entry.cantidad;
-                else Debug.LogWarning($"No se encontr� DatosIngrediente '{entry.ingredienteAssetName}' en 'Resources/{resourcePath}'.");
+                else Debug.LogWarning($"No se encontró DatosIngrediente '{entry.ingredienteAssetName}' en 'Resources/{resourcePath}'.");
             }
             Debug.Log($"Stock cargado con {stockIngredientesTienda.Count} tipos.");
         }
         else { Debug.LogWarning("No se pudo deserializar stock."); }
 
-        Debug.Log($"Datos Cargados - D�a: {diaActual}, Dinero: {dineroActual}, Hora: {horaActual}"); // Verifica la hora cargada
+        Debug.Log($"Datos Cargados - Día: {diaActual}, Dinero: {dineroActual}, Hora: {horaActual}");
 
-        nombrePuntoSpawnSiguiente = "SpawnInicialCama"; // Usa el nombre de tu punto de spawn inicial
+        nombrePuntoSpawnSiguiente = "SpawnInicialCama";
         Debug.LogWarning("--- DATOS CARGADOS ---");
     }
 
@@ -482,7 +506,7 @@ public class GestorJuego : MonoBehaviour
         diaActual = 1;
         dineroActual = 50;
         horaActual = HoraDelDia.Manana;
-        nombrePuntoSpawnSiguiente = "SpawnInicialCama"; // <<--- A�ADE ESTA L�NEA
+        nombrePuntoSpawnSiguiente = "SpawnInicialCama";
         npcsGeneradosHoy = 0;
 
         stockIngredientesTienda = new Dictionary<DatosIngrediente, int>();
@@ -498,7 +522,7 @@ public class GestorJuego : MonoBehaviour
         }
         Debug.Log($"Stock inicializado por defecto con {stockIngredientesTienda.Count} tipos.");
         PlayerPrefs.DeleteKey("ExisteGuardado");
-        PlayerPrefs.Save(); // Guardar el borrado del flag
+        PlayerPrefs.Save();
     }
 
     public int ObtenerNPCsGeneradosHoy()
@@ -508,14 +532,14 @@ public class GestorJuego : MonoBehaviour
 
     public void RegistrarNPCGeneradoHoy()
     {
-        if (npcsGeneradosHoy < limiteNPCsPorDia) // Seguridad extra
+        if (npcsGeneradosHoy < limiteNPCsPorDia)
         {
             npcsGeneradosHoy++;
             Debug.Log($"NPC Registrado hoy. Total: {npcsGeneradosHoy}/{limiteNPCsPorDia}");
         }
         else
         {
-            Debug.LogWarning("Se intent� registrar NPC pero ya se alcanz� el l�mite diario.");
+            Debug.LogWarning("Se intentó registrar NPC pero ya se alcanzó el límite diario.");
         }
     }
 
@@ -529,31 +553,31 @@ public class GestorJuego : MonoBehaviour
         Debug.Log($"[ActualizarAparienciaCiclo] Ejecutando para Hora: {horaActual}");
 
         Material skyboxAplicar = null;
-        Color luzAmbiente = new Color(0.5f, 0.5f, 0.5f, 1f); // Gris por defecto
-        float intensidadSol = 1.0f; // Intensidad por defecto
-        Quaternion rotacionSol = Quaternion.Euler(50f, -30f, 0f); // Ma�ana por defecto
+        Color luzAmbiente = new Color(0.5f, 0.5f, 0.5f, 1f);
+        float intensidadSol = 1.0f;
+        Quaternion rotacionSol = Quaternion.Euler(50f, -30f, 0f);
 
         switch (horaActual)
         {
             case HoraDelDia.Manana:
                 skyboxAplicar = skyboxManana;
-                luzAmbiente = new Color(0.8f, 0.8f, 0.8f); // Claro
-                rotacionSol = Quaternion.Euler(50f, -30f, 0f); // Sol alto
+                luzAmbiente = new Color(0.8f, 0.8f, 0.8f);
+                rotacionSol = Quaternion.Euler(50f, -30f, 0f);
                 intensidadSol = 1.0f;
-                Debug.Log("[ActualizarAparienciaCiclo] Config Ma�ana.");
+                Debug.Log("[ActualizarAparienciaCiclo] Config Mañana.");
                 break;
             case HoraDelDia.Tarde:
                 skyboxAplicar = skyboxTarde;
-                luzAmbiente = new Color(0.7f, 0.6f, 0.55f); // C�lido
-                rotacionSol = Quaternion.Euler(20f, -150f, 0f); // Sol bajo
-                intensidadSol = 0.75f; // Menos intenso
+                luzAmbiente = new Color(0.7f, 0.6f, 0.55f);
+                rotacionSol = Quaternion.Euler(20f, -150f, 0f);
+                intensidadSol = 0.75f;
                 Debug.Log("[ActualizarAparienciaCiclo] Config Tarde.");
                 break;
             case HoraDelDia.Noche:
                 skyboxAplicar = skyboxNoche;
-                luzAmbiente = new Color(0.1f, 0.1f, 0.18f); // Oscuro azulado
-                rotacionSol = Quaternion.Euler(-30f, -90f, 0f); // Posici�n de luna/bajo horizonte
-                intensidadSol = 0.08f; // Muy tenue
+                luzAmbiente = new Color(0.1f, 0.1f, 0.18f);
+                rotacionSol = Quaternion.Euler(-30f, -90f, 0f);
+                intensidadSol = 0.08f;
                 Debug.Log("[ActualizarAparienciaCiclo] Config Noche.");
                 break;
         }
@@ -565,7 +589,6 @@ public class GestorJuego : MonoBehaviour
         RenderSettings.ambientLight = luzAmbiente;
         Debug.Log($"[ActualizarAparienciaCiclo] Luz Ambiental aplicada: {luzAmbiente}");
 
-        // Aplicar Luz Direccional
         if (luzDireccionalPrincipal != null)
         {
             luzDireccionalPrincipal.intensity = intensidadSol;
@@ -576,36 +599,7 @@ public class GestorJuego : MonoBehaviour
 
     public void RegistrarViaje(string escenaDestino)
     {
-        HoraDelDia horaPrevia = horaActual;
-        HoraDelDia nuevaHora = horaActual; // Por defecto no cambia
-
-        Debug.Log($"[RegistrarViaje] Hora ANTES: {horaPrevia}, Viajando a: {escenaDestino}");
-
-        if (horaActual == HoraDelDia.Manana && escenaDestino == "Bosque")
-        {
-            nuevaHora = HoraDelDia.Tarde;
-        }
-        else if (horaActual == HoraDelDia.Tarde && escenaDestino == "TiendaDeMagia")
-        { // <-- Aseg�rate que este sea el nombre correcto
-            nuevaHora = HoraDelDia.Noche;
-        }
-
-        if (nuevaHora != horaPrevia)
-        {
-            horaActual = nuevaHora;
-            Debug.Log($"[RegistrarViaje] Hora CAMBIADA a: {horaActual}");
-            if (horaActual == HoraDelDia.Noche)
-            {
-                Debug.Log("[RegistrarViaje] Se hizo de noche, despawneando NPCs...");
-                gestorNPCs?.DespawnTodosNPCsPorNoche();
-            }
-
-            Debug.Log($"Viaje cambi� la hora de {horaPrevia} a {horaActual}");
-        }
-        else
-        {
-            Debug.Log($"Viaje a {escenaDestino} no cambi� la hora ({horaActual})");
-        }
+        Debug.Log($"Viaje a {escenaDestino} no cambia la hora. La hora actual es {horaActual}");
     }
     public int ObtenerStockTienda(DatosIngrediente tipo)
     {
@@ -622,14 +616,12 @@ public class GestorJuego : MonoBehaviour
             Debug.LogWarning("Intento de consumir ingrediente NULL.");
             return false;
         }
-
         if (stockIngredientesTienda.TryGetValue(tipo, out int cantidadActual) && cantidadActual > 0)
         {
             stockIngredientesTienda[tipo]--;
             Debug.Log($"Consumido 1 de {tipo.nombreIngrediente} del stock. Quedan: {stockIngredientesTienda[tipo]}");
             return true;
         }
-
         Debug.LogWarning($"No se pudo consumir '{tipo?.nombreIngrediente ?? "NULL"}'. Stock insuficiente o no encontrado.");
         return false;
     }
@@ -665,8 +657,7 @@ public class GestorJuego : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Se intent� fijar un nombre de punto de spawn vac�o. Se usar� el anterior o por defecto.");
+            Debug.LogWarning("Se intentó fijar un nombre de punto de spawn vacío. Se usará el anterior o por defecto.");
         }
     }
-
-} // Fin de la clase GestorJuego
+}

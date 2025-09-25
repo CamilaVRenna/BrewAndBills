@@ -556,6 +556,7 @@ GameObject:
   - component: {fileID: 4070076590613808791}
   - component: {fileID: 7269910002124194948}
   - component: {fileID: 1089937641858612367}
+  - component: {fileID: -3114054249328823973}
   m_Layer: 7
   m_Name: PlantillaNPCRojo
   m_TagString: Untagged
@@ -573,7 +574,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.38, y: 1.07, z: 3.33}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 817941917437572260}
@@ -636,45 +637,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64520c120d3e7ec47aa86a3051c6333b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gestor: {fileID: 0}
-  velocidadMovimiento: 2
-  velocidadRotacion: 360
-  pedidosPosibles:
-  - {fileID: 11400000, guid: 9552513e5f0d50b43afc3b91fdff7a32, type: 2}
-  - {fileID: 11400000, guid: d236212c116765a478961ffc2780b65d, type: 2}
+  gestor: {fileID: 5882631450780549520, guid: 9681662fb507b0d499ca9bd0f1b0ee03, type: 3}
+  pedidosPosibles: []
   listaPedidosEspecificos: []
   usarListaEspecifica: 0
-  dialogosEspecificos:
-  - receta: {fileID: 11400000, guid: 9552513e5f0d50b43afc3b91fdff7a32, type: 2}
-    dialogoUnico: "Una poci\xF3n que, al rozar sus labios, le haga so\xF1ar conmigo
-      aunque no me haya visto nunca."
-  - receta: {fileID: 11400000, guid: 697ce57497cbae341b5a00165177cc6e, type: 2}
-    dialogoUnico: Una que me borre de los ojos del mundo, pero no del recuerdo de
-      quienes me aman.
-  - receta: {fileID: 11400000, guid: 8cdab2b05f433ce43b74fe57603d6fe7, type: 2}
-    dialogoUnico: "Quiero una que me permita sostener una puerta cerrada\u2026 hasta
-      que todos est\xE9n a salvo."
-  - receta: {fileID: 11400000, guid: f2aeebf3d5f251e43b798ece2d9e06a5, type: 2}
-    dialogoUnico: Quiero una que devuelva el calor a una mano que ya empieza a enfriarse.
-  - receta: {fileID: 11400000, guid: 7e27fb3d3842c224695758dfc0c8c979, type: 2}
-    dialogoUnico: "Dame una que no duela\u2026 hasta que ya sea demasiado tarde para
-      resistirla."
-  - receta: {fileID: 11400000, guid: d236212c116765a478961ffc2780b65d, type: 2}
-    dialogoUnico: "Prepara una que haga que cada salto sea una negaci\xF3n de la
-      gravedad\u2026 y del miedo."
+  dialogosEspecificos: []
   mensajeFeedbackCorrecto: "\xA1Muchas gracias!"
   mensajeFeedbackIncorrecto: "\xA1No sirves para nada!"
   mensajeSegundoFallo: "\xA1Nah! \xA1Me voy de aqu\xED!"
-  sonidoPocionCorrecta: {fileID: 8300000, guid: 4d84db29c7205384aa149cb80e15e32d, type: 3}
-  sonidoPocionIncorrecta: {fileID: 8300000, guid: f300162968ca0164a8f90c57e3a57fc1, type: 3}
+  sonidoPocionCorrecta: {fileID: 0}
+  sonidoPocionIncorrecta: {fileID: 0}
   prefabBocadilloUI: {fileID: 777226578507610065, guid: 5ef76a26305b14142b72f59d1cab5cbc, type: 3}
   puntoAnclajeBocadillo: {fileID: 817941917437572260}
   duracionFeedback: 3
-  tiempoMaximoEsperaAtencion: 15
+  tiempoMaximoEsperaAtencion: 10
   mensajeTiempoEsperaAgotado: "\xA1Por lo que veo no tienen empleados, adi\xF3s!"
-  tiempoMaximoEspera: 35
+  tiempoMaximoEspera: 30
   mensajeTiempoAgotado: "\xA1Eres demasiado lento, adi\xF3s!"
-  sonidoTiempoAgotado: {fileID: 8300000, guid: 9148d7987c7ce864bbbc44f1785c17a6, type: 3}
+  sonidoTiempoAgotado: {fileID: 0}
   textoTemporizadorCanvas: {fileID: 0}
   recetaInvisibilidad: {fileID: 0}
   mostrarBocadilloAlIniciar: 1
@@ -718,8 +698,30 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.5383599, y: 1.9708012, z: 1}
-  m_Center: {x: 0.23082007, y: 0.13238245, z: 0}
+  m_Size: {x: 0.64986104, y: 1.7, z: 1}
+  m_Center: {x: 0.17506948, y: 0.079063416, z: 0}
+--- !u!195 &-3114054249328823973
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045434142441624802}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1.8
+  m_BaseOffset: 0.8
+  m_WalkableMask: 5
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &1054179248697061524
 GameObject:
   m_ObjectHideFlags: 0

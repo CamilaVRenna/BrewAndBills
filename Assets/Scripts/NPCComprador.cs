@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using UnityEngine.AI; // ¡Importante! Necesario para NavMeshAgent
 
 [System.Serializable]
 public class DialogoEspecificoNPC
@@ -19,9 +20,16 @@ public class NPCComprador : MonoBehaviour
     private EstadoNPC estadoActual = EstadoNPC.Inactivo;
 
     [HideInInspector] public GestorCompradores gestor;
-    [Header("Movimiento Simple")]
-    public float velocidadMovimiento = 4.0f;
-    public float velocidadRotacion = 360f;
+
+    // ELIMINADAS las variables de velocidadMovimiento y velocidadRotacion del movimiento simple.
+    // El NavMeshAgent tiene su propia velocidad y velocidad angular en el Inspector.
+    // [Header("Movimiento Simple")]
+    // public float velocidadMovimiento = 4.0f;
+    // public float velocidadRotacion = 360f;
+
+    // --- AÑADIDO: Referencia al NavMeshAgent ---
+    private NavMeshAgent navMeshAgent;
+
     [Header("Pedidos Posibles")]
     public List<PedidoPocionData> pedidosPosibles;
     public List<PedidoPocionData> listaPedidosEspecificos;
@@ -40,12 +48,23 @@ public class NPCComprador : MonoBehaviour
     public float duracionFeedback = 3.0f;
     private PedidoPocionData pedidoActual = null;
     private int intentosFallidos = 0;
-    private Vector3 destinoActual;
+    private Vector3 destinoActual; // Se mantiene para debug o referencia, pero el NavMeshAgent usa su propio destino.
+    private float tiempoRestanteEspera;
+    private float tiempoRestanteEsperaAtencion;
     private bool mirandoVentana = false;
     private GameObject instanciaBocadilloActual = null;
     private TextMeshProUGUI textoBocadilloActual = null;
+    private TextMeshProUGUI textoTemporizadorActual = null;
     private Coroutine coroutineOcultarBocadillo = null;
     private Coroutine coroutineRetrasarSalida = null;
+    [Header("Temporizador Espera")]
+    public float tiempoMaximoEsperaAtencion = 10.0f;
+    public string mensajeTiempoEsperaAgotado = "¡Por lo que veo no tienen empleados, adiós!";
+    public float tiempoMaximoEspera = 30.0f;
+    public string mensajeTiempoAgotado = "¡Eres demasiado lento, adiós!";
+    public AudioClip sonidoTiempoAgotado;
+    [Header("UI General")]
+    public TextMeshProUGUI textoTemporizadorCanvas;
     [Header("Animación")]
     private Animator animator;
 
@@ -60,32 +79,71 @@ public class NPCComprador : MonoBehaviour
     void Awake()
     {
         animator = GetComponent<Animator>();
+        // --- AÑADIDO: Obtener referencia al NavMeshAgent y deshabilitarlo al inicio ---
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        if (navMeshAgent == null)
+        {
+            Debug.LogError("¡NavMeshAgent no encontrado en el NPC! Asegúrate de que el GameObject tenga un componente NavMeshAgent.");
+        }
+        else
+        {
+            navMeshAgent.enabled = false; // Deshabilitar al inicio para que no interfiera.
+            // Opcional: configurar si quieres que el agente rote el transform o el animator.
+            // navMeshAgent.updateRotation = false; // Si tu Animator maneja la rotación con Root Motion
+            // navMeshAgent.updatePosition = false; // Si tu Animator maneja la posición con Root Motion
+        }
+
         estadoActual = EstadoNPC.Inactivo;
+        tiempoRestanteEspera = tiempoMaximoEspera;
+        tiempoRestanteEsperaAtencion = tiempoMaximoEsperaAtencion;
+        if (textoTemporizadorCanvas == null)
+            textoTemporizadorCanvas = GameObject.Find("Temporizador")?.GetComponent<TextMeshProUGUI>();
+        Debug.Log($"[{gameObject.name}] Awake: Inicializado. Estado: {estadoActual}");
     }
 
     void Update()
     {
-        if (estadoActual == EstadoNPC.MoviendoAVentana || estadoActual == EstadoNPC.MoviendoASalida)
-        {
-            animator?.SetBool("Caminata", true);
-            animator?.SetBool("Idle", false);
-            MoverHaciaDestino();
-            return;
-        }
+        // Debug.Log($"[{gameObject.name}] Update: Estado actual: {estadoActual}"); // <--- LOG OPCIONAL
+
+        // --- MODIFICADO: La lógica de movimiento ahora se gestiona en MoverHaciaDestino(),
+        // que a su vez interactúa con el NavMeshAgent. ---
+        MoverHaciaDestino();
 
         if (estadoActual == EstadoNPC.EsperandoAtencion)
         {
+            // --- Reincorporada la lógica de reducción de tiempo para EsperandoAtencion ---
+            tiempoRestanteEsperaAtencion -= Time.deltaTime;
+            if (tiempoRestanteEsperaAtencion <= 0)
+            {
+                TiempoAgotadoEsperandoAtencion();
+                return;
+            }
+
+            Debug.Log($"[{gameObject.name}] Update: Estado EsperandoAtencion.");
             animator?.SetBool("Idle", true);
             animator?.SetBool("Caminata", false);
             if (instanciaBocadilloActual == null || !instanciaBocadilloActual.activeSelf)
                 MostrarBocadillo("[E]", false);
 
             GirarHaciaVentana();
+            // Actualiza el texto del temporizador si es visible y aplica al bocadillo de "esperando atención"
+            if (textoTemporizadorActual != null && textoTemporizadorActual.gameObject.activeSelf)
+            {
+                textoTemporizadorActual.text = "Atención: " + Mathf.CeilToInt(tiempoRestanteEsperaAtencion).ToString();
+            }
             return;
         }
 
         if (estadoActual == EstadoNPC.EnVentanaEsperando)
         {
+            // --- Reincorporada la lógica de reducción de tiempo para EnVentanaEsperando ---
+            tiempoRestanteEspera -= Time.deltaTime;
+            if (tiempoRestanteEspera <= 0)
+            {
+                TiempoAgotado();
+                return;
+            }
+
             if (instanciaBocadilloActual == null)
             {
                 Debug.LogError($"NPC {gameObject.name} en EnVentanaEsperando sin bocadillo. Forzando SolicitarPocion.");
@@ -97,70 +155,160 @@ public class NPCComprador : MonoBehaviour
                 MostrarBocadillo(ObtenerTextoOriginalPedido(), false);
                 Debug.LogWarning($"Reactivado bocadillo para {gameObject.name} (estaba inactivo).");
             }
+            if (textoTemporizadorActual != null && !textoTemporizadorActual.gameObject.activeSelf)
+            {
+                textoTemporizadorActual.gameObject.SetActive(true);
+                Debug.LogWarning($"Reactivado TextoTemporizador para {gameObject.name}.");
+            }
 
             GirarHaciaVentana();
+            // Actualiza el texto del temporizador si es visible y aplica al bocadillo de "esperando entrega"
+            if (textoTemporizadorActual != null && textoTemporizadorActual.gameObject.activeSelf)
+            {
+                textoTemporizadorActual.text = "Entrega: " + Mathf.CeilToInt(tiempoRestanteEspera).ToString();
+            }
         }
+    }
+
+    // Método para cuando se agota el tiempo de espera de atención inicial
+    void TiempoAgotadoEsperandoAtencion()
+    {
+        Debug.Log($"{gameObject.name} se cansó de esperar atención.");
+        GiveFeedback(mensajeTiempoEsperaAgotado, sonidoTiempoAgotado);
+        Irse();
+    }
+
+    // Método para cuando se agota el tiempo de espera de la poción
+    void TiempoAgotado()
+    {
+        Debug.Log($"{gameObject.name} se cansó de esperar la poción.");
+        GiveFeedback(mensajeTiempoAgotado, sonidoTiempoAgotado);
+        Irse();
     }
 
     void GirarHaciaVentana()
     {
         if (mirandoVentana || gestor == null || gestor.puntoMiradaVentana == null) return;
-        Vector3 dir = gestor.puntoMiradaVentana.position - transform.position;
-        Vector3 dirHoriz = new Vector3(dir.x, 0, dir.z);
-        if (dirHoriz.sqrMagnitude > 0.001f)
+
+        // Si el NavMeshAgent está activo y gestiona la rotación, no hacemos nada aquí.
+        // Se asume que navMeshAgent.updateRotation = true (por defecto) o que el Animator lo maneja
+        // si navMeshAgent.updateRotation = false.
+        // Aquí forzamos la rotación si el NavMeshAgent no está activo o lo hemos configurado para no rotar.
+        if (navMeshAgent == null || !navMeshAgent.enabled || !navMeshAgent.updateRotation)
         {
-            Quaternion rotObj = Quaternion.LookRotation(dirHoriz);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, rotObj, velocidadRotacion * Time.deltaTime);
-            if (Quaternion.Angle(transform.rotation, rotObj) < 1.0f)
+            Vector3 dir = gestor.puntoMiradaVentana.position - transform.position;
+            Vector3 dirHoriz = new Vector3(dir.x, 0, dir.z);
+            if (dirHoriz.sqrMagnitude > 0.001f)
             {
-                transform.rotation = rotObj;
-                mirandoVentana = true;
-                Debug.Log($"{gameObject.name} terminó de girar hacia la ventana.");
+                Quaternion rotObj = Quaternion.LookRotation(dirHoriz);
+                // Usamos la velocidad angular del NavMeshAgent si existe, sino una fija.
+                float rotSpeed = (navMeshAgent != null && navMeshAgent.enabled) ? navMeshAgent.angularSpeed : 360f; // Usar una velocidad por defecto si el agente no está activo.
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, rotObj, rotSpeed * Time.deltaTime);
+
+                if (Quaternion.Angle(transform.rotation, rotObj) < 1.0f)
+                {
+                    transform.rotation = rotObj;
+                    mirandoVentana = true;
+                    Debug.Log($"{gameObject.name} terminó de girar hacia la ventana.");
+                }
             }
+            else mirandoVentana = true;
         }
-        else mirandoVentana = true;
+        else
+        {
+            // Si el NavMeshAgent está activo y actualizando la rotación,
+            // podemos considerar que ya está mirando en la dirección correcta o se ajustará.
+            mirandoVentana = true;
+        }
     }
 
+    // --- MODIFICADO COMPLETAMENTE: MoverHaciaDestino ahora usa el NavMeshAgent ---
     void MoverHaciaDestino()
     {
-        Vector3 dir = destinoActual - transform.position;
-        Vector3 dirHoriz = new Vector3(dir.x, 0, dir.z);
-        if (dirHoriz.sqrMagnitude > 0.001f)
+        // Si no hay agente, o no está habilitado, o el estado no es de movimiento, no hacemos nada aquí.
+        if (navMeshAgent == null || !navMeshAgent.enabled || (estadoActual != EstadoNPC.MoviendoAVentana && estadoActual != EstadoNPC.MoviendoASalida))
         {
-            Quaternion rotObj = Quaternion.LookRotation(dirHoriz);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, rotObj, velocidadRotacion * Time.deltaTime);
+            animator?.SetBool("Caminata", false); // Asegura que la animación de caminar se detenga si no hay movimiento activo
+            animator?.SetBool("Idle", true);
+            return;
         }
-        float paso = velocidadMovimiento * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, destinoActual, paso);
 
-        if (Vector3.Distance(transform.position, destinoActual) < 0.05f)
+        // --- Control de animaciones basado en la velocidad del NavMeshAgent ---
+        if (navMeshAgent.velocity.magnitude > 0.1f) // Si el agente se está moviendo realmente
         {
-            transform.position = destinoActual;
-            if (estadoActual == EstadoNPC.MoviendoAVentana)
+            animator?.SetBool("Caminata", true);
+            animator?.SetBool("Idle", false);
+        }
+        else
+        {
+            animator?.SetBool("Caminata", false);
+            animator?.SetBool("Idle", true);
+        }
+
+        // Comprobamos si el agente ha llegado al destino.
+        // pathPending: true si está calculando el camino.
+        // remainingDistance: distancia al destino final.
+        // stoppingDistance: distancia a la que el agente se detendrá.
+        // hasPath / velocity.sqrMagnitude: para asegurarnos de que realmente ha terminado de moverse.
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance + 0.1f) // Pequeño margen
+        {
+            if (!navMeshAgent.hasPath || navMeshAgent.velocity.sqrMagnitude == 0f)
             {
-                Debug.Log($"{gameObject.name} llegó a la ventana.");
-                estadoActual = EstadoNPC.EsperandoAtencion;
-                mirandoVentana = false;
-                MostrarBocadillo("[E]", false);
-                if (GestorAudio.Instancia != null && gestor != null && gestor.sonidoNuevoPedido != null)
-                    SolicitarPocion();
-            }
-            else if (estadoActual == EstadoNPC.MoviendoASalida)
-            {
-                Debug.Log($"{gameObject.name} llegó a la salida. Destruyendo...");
-                estadoActual = EstadoNPC.Inactivo;
-                Destroy(gameObject);
+                navMeshAgent.isStopped = true;   // Asegurarse de que el agente se detenga
+                navMeshAgent.enabled = false;    // Deshabilitar el agente para que no controle más la posición/rotación
+                // Opcional: ajustar la posición final para mayor precisión
+                // transform.position = navMeshAgent.destination;
+
+                animator?.SetBool("Caminata", false);
+                animator?.SetBool("Idle", true);
+
+                if (estadoActual == EstadoNPC.MoviendoAVentana)
+                {
+                    Debug.Log($"{gameObject.name} llegó a la ventana (NavMesh).");
+                    estadoActual = EstadoNPC.EsperandoAtencion; // Cambiar a estado de espera de atención
+                    mirandoVentana = false; // Para que gire hacia la ventana manualmente si NavMesh no rota
+                    tiempoRestanteEsperaAtencion = tiempoMaximoEsperaAtencion;
+                    MostrarBocadillo("[E]", false); // Muestra el bocadillo de espera de atención
+                    if (textoTemporizadorActual != null) textoTemporizadorActual.gameObject.SetActive(false);
+                    // Aquí NO llamas a SolicitarPocion, eso ocurre cuando el jugador interactúa.
+                }
+                else if (estadoActual == EstadoNPC.MoviendoASalida)
+                {
+                    Debug.Log($"{gameObject.name} llegó a la salida (NavMesh). Destruyendo...");
+                    estadoActual = EstadoNPC.Inactivo;
+                    Destroy(gameObject);
+                }
             }
         }
     }
 
     public void IrAVentana(Vector3 posVentana)
     {
-        if (estadoActual != EstadoNPC.Inactivo) return;
-        destinoActual = posVentana;
+        Debug.Log($"[{gameObject.name}] IrAVentana llamado. Estado ACTUAL al inicio: {estadoActual}");
+        if (estadoActual != EstadoNPC.Inactivo)
+        {
+            Debug.LogWarning($"[{gameObject.name}] IrAVentana ignorado. El NPC ya está en estado: {estadoActual}");
+            return;
+        }
+        destinoActual = posVentana; // Se mantiene para referencia y debug
+
+        // --- MODIFICADO: Usar NavMeshAgent para establecer el destino ---
+        if (navMeshAgent != null)
+        {
+            navMeshAgent.enabled = true; // Habilitar el NavMeshAgent
+            navMeshAgent.isStopped = false; // Asegurarse de que no esté detenido
+            navMeshAgent.SetDestination(posVentana); // ¡Establecer el destino!
+            Debug.Log($"[{gameObject.name}] NavMeshAgent habilitado y destino establecido a: {posVentana}");
+        }
+        else
+        {
+            Debug.LogError($"NavMeshAgent es NULL en {gameObject.name}. No se puede mover.");
+            // Si el NavMeshAgent es NULL, el NPC no se moverá. Considera un fallback o error.
+        }
+
         estadoActual = EstadoNPC.MoviendoAVentana;
         gameObject.SetActive(true);
-        Debug.Log($"{gameObject.name} yendo a la ventana (movimiento simple)...");
+        Debug.Log($"[{gameObject.name}] IrAVentana: Estado cambiado a: {estadoActual}. Destino: {destinoActual}. Iniciando movimiento (NavMesh).");
     }
 
     void SolicitarPocion()
@@ -173,12 +321,19 @@ public class NPCComprador : MonoBehaviour
 
         pedidoActual = listaAUsar[Random.Range(0, listaAUsar.Count)];
         MostrarBocadillo(ObtenerTextoOriginalPedido(), false);
-
-        // Se ha eliminado toda la lógica del temporizador para evitar el error.
-        if (instanciaBocadilloActual == null)
+        if (instanciaBocadilloActual != null)
         {
-            Debug.LogError("instanciaBocadilloActual es NULL al intentar buscar el temporizador.");
+            var timerTransform = instanciaBocadilloActual.transform.Find("CanvasBocadillo/FondoBocadillo/TextoTemporizador");
+            if (timerTransform != null)
+            {
+                textoTemporizadorActual = timerTransform.GetComponent<TextMeshProUGUI>();
+                if (textoTemporizadorActual != null) textoTemporizadorActual.gameObject.SetActive(true);
+                else Debug.LogError($"Objeto '{timerTransform.name}' encontrado, pero NO tiene componente TextMeshProUGUI!", timerTransform.gameObject);
+            }
+            else Debug.LogError("No se encontró la ruta 'CanvasBocadillo/FondoBocadillo/TextoTemporizador'.");
         }
+        else Debug.LogError("instanciaBocadilloActual es NULL al intentar buscar el temporizador.");
+        if (textoTemporizadorActual != null) textoTemporizadorActual.gameObject.SetActive(true);
     }
 
     public void IntentarEntregarPocion(List<DatosIngrediente> pocionEntregada)
@@ -216,7 +371,7 @@ public class NPCComprador : MonoBehaviour
         }
     }
 
-    void Irse()
+    public void Irse()
     {
         if (estadoActual == EstadoNPC.MoviendoASalida || estadoActual == EstadoNPC.Inactivo || coroutineRetrasarSalida != null || estadoActual == EstadoNPC.EsperandoParaSalir)
             return;
@@ -258,9 +413,26 @@ public class NPCComprador : MonoBehaviour
         OcultarBocadillo();
         if (gestor != null && gestor.puntoSalidaNPC != null)
         {
-            destinoActual = gestor.puntoSalidaNPC.position;
+            destinoActual = gestor.puntoSalidaNPC.position; // Se mantiene para referencia y debug
+
+            // --- MODIFICADO: Usar NavMeshAgent para establecer el destino ---
+            if (navMeshAgent != null)
+            {
+                navMeshAgent.enabled = true; // Habilitar el NavMeshAgent
+                navMeshAgent.isStopped = false; // Asegurarse de que no esté detenido
+                navMeshAgent.SetDestination(destinoActual); // ¡Establecer el destino!
+                Debug.Log($"[{gameObject.name}] NavMeshAgent habilitado y destino de salida establecido a: {destinoActual}");
+            }
+            else
+            {
+                Debug.LogError($"NavMeshAgent es NULL en {gameObject.name}. No se puede mover a la salida.");
+                estadoActual = EstadoNPC.Inactivo;
+                Destroy(gameObject); // Destruir si no se puede mover.
+                return;
+            }
+
             estadoActual = EstadoNPC.MoviendoASalida;
-            Debug.Log($"{gameObject.name} se va hacia {destinoActual} (movimiento simple)... Estado: {estadoActual}");
+            Debug.Log($"{gameObject.name} se va hacia {destinoActual} (NavMesh)... Estado: {estadoActual}");
         }
         else
         {
@@ -323,6 +495,7 @@ public class NPCComprador : MonoBehaviour
     void OcultarBocadillo()
     {
         if (coroutineOcultarBocadillo != null) { StopCoroutine(coroutineOcultarBocadillo); coroutineOcultarBocadillo = null; }
+        if (textoTemporizadorActual != null) textoTemporizadorActual.gameObject.SetActive(false);
         if (instanciaBocadilloActual != null) instanciaBocadilloActual.SetActive(false);
     }
 
@@ -350,6 +523,12 @@ public class NPCComprador : MonoBehaviour
         if (instanciaBocadilloActual != null) Destroy(instanciaBocadilloActual);
         if (coroutineOcultarBocadillo != null) StopCoroutine(coroutineOcultarBocadillo);
         if (coroutineRetrasarSalida != null) StopCoroutine(coroutineRetrasarSalida);
+        // --- AÑADIDO: Asegurarse de que el NavMeshAgent se desactive al destruir el objeto ---
+        if (navMeshAgent != null && navMeshAgent.enabled)
+        {
+            navMeshAgent.isStopped = true;
+            navMeshAgent.enabled = false;
+        }
     }
 
     private string ObtenerTextoOriginalPedido()
@@ -370,6 +549,10 @@ public class NPCComprador : MonoBehaviour
         if (estadoActual == EstadoNPC.EnVentanaEsperando && pedidoActual != null)
         {
             MostrarBocadillo(ObtenerTextoOriginalPedido(), false);
+            if (textoTemporizadorActual != null)
+            {
+                textoTemporizadorActual.gameObject.SetActive(true);
+            }
         }
     }
 
@@ -380,9 +563,11 @@ public class NPCComprador : MonoBehaviour
             Debug.LogWarning($"Se intentó iniciar pedido para {gameObject.name} pero su estado era {estadoActual}");
             return;
         }
-        Debug.Log($"Iniciando pedido para {gameObject.name} (sin temporizador).");
+        Debug.Log($"Iniciando pedido y timer principal para {gameObject.name}");
         estadoActual = EstadoNPC.EnVentanaEsperando;
         SolicitarPocion();
+        tiempoRestanteEspera = tiempoMaximoEspera;
+        if (textoTemporizadorActual != null) textoTemporizadorActual.gameObject.SetActive(true);
         if (mostrarBocadilloAlIniciar)
         {
             MostrarBocadillo(ObtenerTextoOriginalPedido(), false);

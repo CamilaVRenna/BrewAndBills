@@ -1,109 +1,162 @@
 using UnityEngine;
-using UnityEngine.UI; // Para Image
-using TMPro;         // Para TextMeshProUGUI
-using System.Collections; // Para Corutinas
+using UnityEngine.UI;
+using TMPro;
+using System.Collections;
 
-// Nombre de clase cambiado
 public class GestorUI : MonoBehaviour
 {
-    [Header("UI Persistente")] // Encabezados traducidos
+    [Header("UI Persistente")]
     public TextMeshProUGUI textoDinero;
     public Image iconoMonedaDinero;
     public Sprite spriteMoneda;
-    private int dineroActual = 50; // Dinero actual del jugador
-public int DineroActual => dineroActual; // Propiedad para consultar desde otros scripts
-public TextMeshProUGUI textoMielesRecolectadas; // Texto para mieles recolectadas
+    private int dineroActual = 50;
+    public int DineroActual => dineroActual;
+    public TextMeshProUGUI textoMielesRecolectadas;
 
-    [Header("UI Feedback Dï¿½a y Dinero")]
-    public TextMeshProUGUI textoDia;
-    [Tooltip("CanvasGroup del texto del dï¿½a para controlar su alfa (fade).")] // Tooltips opcionales
-    public CanvasGroup grupoCanvasTextoDia; // Nombre de variable cambiado
+    [Header("UI Feedback Día y Dinero")]
+    [Tooltip("El texto del día que aparece al inicio de cada ciclo.")]
+    public TextMeshProUGUI textoAnuncioDia;
+
+    [Tooltip("CanvasGroup del texto del día para controlar su alfa (fade).")]
+    public CanvasGroup grupoCanvasTextoDia;
     public float duracionFadeDia = 1.0f;
     public float tiempoVisibleDia = 2.0f;
 
     public TextMeshProUGUI textoCambioDinero;
     public Image iconoMonedaCambio;
     [Tooltip("CanvasGroup del texto de cambio de dinero para controlar su alfa.")]
-    public CanvasGroup grupoCanvasCambioDinero; // Nombre de variable cambiado
+    public CanvasGroup grupoCanvasCambioDinero;
     public float duracionFadeCambioDinero = 0.5f;
     public float tiempoVisibleCambioDinero = 1.5f;
 
-    [Header("UI Fundido Transiciï¿½n")] // Encabezado traducido
+    [Header("UI Fundido Transición")]
     [Tooltip("Una Imagen UI de color negro que cubra toda la pantalla.")]
-    public Image panelFundidoNegro; // Nombre de variable cambiado
-    public float duracionFundidoNegro = 0.75f; // Nombre de variable cambiado
+    public Image panelFundidoNegro;
+    public float duracionFundidoNegro = 0.75f;
+
+    // --- NUEVAS VARIABLES: UI DE PEDIDOS DINÁMICOS ---
+    [Header("UI de Pedidos")]
+    [Tooltip("El GameObject que es la burbuja del pedido (desactívalo por defecto).")]
+    public GameObject uiPedidoGameObject;
+    public TextMeshProUGUI textoNombrePedido;
+    public Image iconoPedido;
+
+    private Transform npcConPedidoTransform;
+    // ---------------------------------------------------
 
     void Start()
     {
-        
-        // Asegurar estado inicial oculto/transparente
         if (grupoCanvasTextoDia != null) grupoCanvasTextoDia.alpha = 0;
         if (grupoCanvasCambioDinero != null) grupoCanvasCambioDinero.alpha = 0;
+
+        // Desactivar la burbuja de pedido al inicio
+        if (uiPedidoGameObject != null) uiPedidoGameObject.SetActive(false);
+
         if (panelFundidoNegro != null)
         {
-            panelFundidoNegro.color = new Color(0, 0, 0, 0); // Transparente
-            panelFundidoNegro.gameObject.SetActive(false); // Inactivo
+            panelFundidoNegro.color = new Color(0, 0, 0, 0);
+            panelFundidoNegro.gameObject.SetActive(false);
         }
 
-        // Asignar sprite moneda (sin cambios lï¿½gicos)
         if (iconoMonedaDinero != null && spriteMoneda != null) iconoMonedaDinero.sprite = spriteMoneda;
         if (iconoMonedaCambio != null && spriteMoneda != null) iconoMonedaCambio.sprite = spriteMoneda;
     }
 
-    // --- Actualizaciï¿½n UI ---
+    // --- NUEVO MÉTODO UPDATE ---
+    void Update()
+    {
+        // Si hay un NPC con pedido activo, mueve la UI a su posición
+        if (npcConPedidoTransform != null && uiPedidoGameObject != null)
+        {
+            // Convierte la posición 3D del NPC a una posición 2D en la pantalla.
+            // Se suma una pequeña altura (ej. 2.5f) para que la burbuja esté por encima de la cabeza del NPC.
+            Vector3 posicionMundo = npcConPedidoTransform.position + new Vector3(0, 2.5f, 0);
+            Vector3 posicionPantalla = Camera.main.WorldToScreenPoint(posicionMundo);
 
-    // Nombre de mï¿½todo cambiado
+            // Asigna la posición de la burbuja en el Canvas
+            uiPedidoGameObject.transform.position = posicionPantalla;
+        }
+    }
+    // -------------------------------------
+
     public void ActualizarUIDinero(int cantidad)
-{
-    dineroActual = cantidad;
-
-    if (textoDinero != null)
     {
-        textoDinero.text = cantidad.ToString();
+        dineroActual = cantidad;
+
+        if (textoDinero != null)
+        {
+            textoDinero.text = cantidad.ToString();
+        }
+        if (iconoMonedaDinero != null && textoDinero != null)
+        {
+            iconoMonedaDinero.enabled = true;
+        }
     }
-    if (iconoMonedaDinero != null && textoDinero != null)
+
+    public bool IntentarGastarDinero(int cantidad)
     {
-        iconoMonedaDinero.enabled = true;
-    }
-}
+        if (dineroActual >= cantidad)
+        {
+            dineroActual -= cantidad;
+            if (GestorJuego.Instance != null)
+            {
+                GestorJuego.Instance.dineroActual = dineroActual;
+            }
 
-public bool IntentarGastarDinero(int cantidad)
-{
-    if (dineroActual >= cantidad)
+            ActualizarUIDinero(dineroActual);
+            MostrarCambioDinero(-cantidad);
+            return true;
+        }
+        else
+        {
+            Debug.Log("No hay suficiente dinero.");
+            return false;
+        }
+    }
+
+    // --- MÉTODOS DE PEDIDO NPC (MODIFICADOS) ---
+
+    // El método ahora recibe el Transform del NPC
+    public void MostrarPedido(string nombre, Sprite icono, Transform npcTransform)
     {
-        dineroActual -= cantidad;
-        // --- SINCRONIZAR CON GESTORJUEGO ---
-        if (GestorJuego.Instance != null)
-            GestorJuego.Instance.dineroActual = dineroActual;
+        if (uiPedidoGameObject == null || textoNombrePedido == null || iconoPedido == null)
+        {
+            Debug.LogError("Faltan referencias de UI para el pedido en GestorUI.");
+            return;
+        }
 
-        ActualizarUIDinero(dineroActual);
-        MostrarCambioDinero(-cantidad); // Efecto visual
-        return true;
+        // Guardamos la referencia al NPC para seguirlo en el Update
+        npcConPedidoTransform = npcTransform;
+
+        uiPedidoGameObject.SetActive(true);
+        textoNombrePedido.text = nombre;
+        iconoPedido.sprite = icono;
     }
-    else
+
+    public void OcultarPedido()
     {
-        Debug.Log("No hay suficiente dinero.");
-        // Opcional: mostrar feedback visual o sonido de error
-        return false;
+        if (uiPedidoGameObject != null)
+        {
+            uiPedidoGameObject.SetActive(false);
+        }
+        // Reseteamos la referencia del NPC para dejar de seguirlo
+        npcConPedidoTransform = null;
     }
-}
 
-    // --- Efectos Visuales ---
+    // --- MÉTODOS DE EFECTOS ---
 
-    // Nombre de mï¿½todo cambiado
     public void MostrarInicioDia(int dia)
     {
-        if (textoDia != null && grupoCanvasTextoDia != null)
+        if (textoAnuncioDia != null && grupoCanvasTextoDia != null)
         {
-            textoDia.text = $"DÃA {dia}"; // Mantenemos Dï¿½A en mayï¿½sculas por estilo
+            textoAnuncioDia.text = $"DÍA {dia}";
             grupoCanvasTextoDia.gameObject.SetActive(true);
-            // Llamar a la corutina con nombre traducido
             StartCoroutine(FundidoEntradaSalidaElemento(grupoCanvasTextoDia, duracionFadeDia, tiempoVisibleDia));
         }
-        else 
+        else
         {
-            Debug.LogError("Falta TextoDia o GrupoCanvasTextoDia en GestorUI"); 
-        } // Log de error
+            Debug.LogError("Falta TextoAnuncioDia o GrupoCanvasTextoDia en GestorUI");
+        }
     }
 
     public void ActualizarTextoMieles(string texto)
@@ -111,10 +164,9 @@ public bool IntentarGastarDinero(int cantidad)
         if (textoMielesRecolectadas != null)
             textoMielesRecolectadas.text = texto;
         else
-            Debug.LogWarning("No se asignÃ³ textoMielesRecolectadas en GestorUI.");
+            Debug.LogWarning("No se asignó textoMielesRecolectadas en GestorUI.");
     }
 
-    // Nombre de mï¿½todo cambiado
     public void MostrarCambioDinero(int cantidad)
     {
         if (textoCambioDinero != null && grupoCanvasCambioDinero != null && iconoMonedaCambio != null)
@@ -123,43 +175,33 @@ public bool IntentarGastarDinero(int cantidad)
             textoCambioDinero.text = $"{signo}{cantidad}";
             textoCambioDinero.color = (cantidad > 0) ? Color.green : Color.red;
             iconoMonedaCambio.color = textoCambioDinero.color;
-            // Llamar a la corutina con nombre traducido
             StartCoroutine(FundidoEntradaSalidaElemento(grupoCanvasCambioDinero, duracionFadeCambioDinero, tiempoVisibleCambioDinero));
         }
     }
 
-    // Nombre de mï¿½todo cambiado
-    public IEnumerator FundidoANegro() // Corutina pï¿½blica para ser llamada desde GestorJuego
+    public IEnumerator FundidoANegro()
     {
-        Debug.Log("Iniciando Fundido a Negro..."); // Mensaje traducido
+        Debug.Log("Iniciando Fundido a Negro...");
         if (panelFundidoNegro == null) yield break;
 
-        panelFundidoNegro.gameObject.SetActive(true); // Activar el panel
-        // Llamar a la corutina auxiliar con nombre traducido
+        panelFundidoNegro.gameObject.SetActive(true);
         yield return FundidoAlfaElemento(panelFundidoNegro, 0f, 1f, duracionFundidoNegro);
-        Debug.Log("Fundido a Negro Completo."); // Mensaje traducido
+        Debug.Log("Fundido a Negro Completo.");
     }
 
-    // Nombre de mï¿½todo cambiado
-    public IEnumerator FundidoDesdeNegro() // Corutina pï¿½blica
+    public IEnumerator FundidoDesdeNegro()
     {
-        Debug.Log("Iniciando Fundido desde Negro..."); // Mensaje traducido
+        Debug.Log("Iniciando Fundido desde Negro...");
         if (panelFundidoNegro == null) yield break;
 
-        // Llamar a la corutina auxiliar con nombre traducido
         yield return FundidoAlfaElemento(panelFundidoNegro, 1f, 0f, duracionFundidoNegro);
-        panelFundidoNegro.gameObject.SetActive(false); // Desactivar al final
-        Debug.Log("Fundido desde Negro Completo."); // Mensaje traducido
+        panelFundidoNegro.gameObject.SetActive(false);
+        Debug.Log("Fundido desde Negro Completo.");
     }
 
-
-    // --- Corutinas Auxiliares ---
-
-    // Nombre de mï¿½todo y parï¿½metros cambiados
     private IEnumerator FundidoEntradaSalidaElemento(CanvasGroup gc, float durFade, float durVisible)
     {
-        // Fade In
-        float temporizador = 0f; // Variable renombrada
+        float temporizador = 0f;
         while (temporizador < durFade)
         {
             temporizador += Time.deltaTime;
@@ -168,10 +210,8 @@ public bool IntentarGastarDinero(int cantidad)
         }
         gc.alpha = 1f;
 
-        // Esperar tiempo visible
         yield return new WaitForSeconds(durVisible);
 
-        // Fade Out
         temporizador = 0f;
         while (temporizador < durFade)
         {
@@ -180,17 +220,43 @@ public bool IntentarGastarDinero(int cantidad)
             yield return null;
         }
         gc.alpha = 0f;
+        gc.gameObject.SetActive(false);
     }
 
-    // Nombre de mï¿½todo y parï¿½metros cambiados
-    private IEnumerator FundidoAlfaElemento(Image imagen, float alfaInicio, float alfaFinal, float duracion)
+    private IEnumerator FundidoEntradaElemento(CanvasGroup gc, float duracion)
     {
-        float temporizador = 0f; // Variable renombrada
-        Color colorActual = imagen.color; // Variable renombrada
+        gc.gameObject.SetActive(true);
+        float temporizador = 0f;
         while (temporizador < duracion)
         {
             temporizador += Time.deltaTime;
-            float alfa = Mathf.Lerp(alfaInicio, alfaFinal, temporizador / duracion); // Variable renombrada
+            gc.alpha = Mathf.Lerp(0f, 1f, temporizador / duracion);
+            yield return null;
+        }
+        gc.alpha = 1f;
+    }
+
+    private IEnumerator FundidoSalidaElemento(CanvasGroup gc, float duracion)
+    {
+        float temporizador = 0f;
+        while (temporizador < duracion)
+        {
+            temporizador += Time.deltaTime;
+            gc.alpha = Mathf.Lerp(1f, 0f, temporizador / duracion);
+            yield return null;
+        }
+        gc.alpha = 0f;
+        gc.gameObject.SetActive(false);
+    }
+
+    private IEnumerator FundidoAlfaElemento(Image imagen, float alfaInicio, float alfaFinal, float duracion)
+    {
+        float temporizador = 0f;
+        Color colorActual = imagen.color;
+        while (temporizador < duracion)
+        {
+            temporizador += Time.deltaTime;
+            float alfa = Mathf.Lerp(alfaInicio, alfaFinal, temporizador / duracion);
             imagen.color = new Color(colorActual.r, colorActual.g, colorActual.b, alfa);
             yield return null;
         }

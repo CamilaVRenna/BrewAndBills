@@ -1168,7 +1168,7 @@ RectTransform:
   m_GameObject: {fileID: 439454880}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1.414, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 819893433}
@@ -2282,7 +2282,7 @@ RectTransform:
   m_GameObject: {fileID: 819893432}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 19.46293, y: 19.46293, z: 19.46293}
+  m_LocalScale: {x: 19.46293, y: 19.959236, z: 19.46293}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 439454881}
@@ -2748,14 +2748,14 @@ RectTransform:
   m_GameObject: {fileID: 927130225}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0.71439, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 439454881}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 968, y: 410}
+  m_AnchoredPosition: {x: 195, y: 202}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &927130227
@@ -3003,11 +3003,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89aa7a5b7eeaee64a965a3416a6786ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nombreEscenaJuego: TiendaDeMagia
+  nombreEscenaJuego: EscenarioPrueba
   panelAyuda: {fileID: 113001517}
-  botonContinuar: {fileID: 0}
-  botonNuevaPartida: {fileID: 0}
-  panelConfirmacionNuevaPartida: {fileID: 0}
+  botonContinuar: {fileID: 1374829640}
+  botonNuevaPartida: {fileID: 1981410009}
+  panelConfirmacionNuevaPartida: {fileID: 589116008}
 --- !u!1 &1124236019
 GameObject:
   m_ObjectHideFlags: 0
@@ -3626,7 +3626,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 344.99994, y: -725}
+  m_AnchoredPosition: {x: 344.99994, y: -583}
   m_SizeDelta: {x: 300, y: 60}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1280954907
@@ -5126,7 +5126,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 344.99994, y: -515}
+  m_AnchoredPosition: {x: 344.99994, y: -332}
   m_SizeDelta: {x: 300, y: 60}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1981410009
@@ -5511,7 +5511,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 344.99994, y: -630}
+  m_AnchoredPosition: {x: 344.99994, y: -452}
   m_SizeDelta: {x: 300, y: 60}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2049847000

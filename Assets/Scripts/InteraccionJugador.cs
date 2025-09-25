@@ -325,31 +325,39 @@ void InteractuarConFuenteIngredientes()
 
     void InteractuarConCaldero()
     {
-        // Ahora usa el objeto seleccionado del inventario
+        // Si el caldero est\u00e1 listo para revolver, inicia el minijuego
+        if (calderoMiradoActual != null && calderoMiradoActual.estadoActual == Caldero.EstadoCaldero.ListoParaRemover)
+        {
+            calderoMiradoActual.IntentarIniciarRemovido();
+            return; // Salimos para no intentar agregar un ingrediente
+        }
+
+        // L\u00f3gica para agregar ingredientes desde el inventario
         if (InventoryManager.Instance != null)
         {
             int selIdx = InventoryManager.Instance.GetSelectedIndex();
             if (selIdx >= 0 && selIdx < InventoryManager.Instance.items.Count)
             {
                 var stack = InventoryManager.Instance.items[selIdx];
-                // Buscar el ScriptableObject correspondiente
-                DatosIngrediente ing = InventoryManager.Instance.todosLosIngredientes.Find(i => i.nombreIngrediente == stack.nombre);
-                if (ing != null)
+                if (stack != null && !string.IsNullOrEmpty(stack.nombre) && stack.cantidad > 0)
                 {
-                    // Agrega el ingrediente seleccionado al caldero
-                    calderoMiradoActual.AgregarIngrediente(ing);
-                    InventoryManager.Instance.RemoveItem(ing.nombreIngrediente, 1);
-                    // Actualiza itemSostenido y tipoItemSostenido
-                    itemSostenido = null;
-                    tipoItemSostenido = TipoItem.Nada;
-                    return;
+                    DatosIngrediente ing = InventoryManager.Instance.todosLosIngredientes.Find(i => i.nombreIngrediente == stack.nombre);
+                    if (ing != null)
+                    {
+                        calderoMiradoActual.AnadirIngrediente(ing);
+                        InventoryManager.Instance.RemoveItem(ing.nombreIngrediente, 1);
+                        return; // Salimos para evitar cualquier otra acci\u00f3n
+                    }
                 }
-                // Si es frasco, lógica similar...
             }
         }
-        // ...si no hay seleccionado, puedes mostrar mensaje de error...
-    }
 
+        // Si el jugador no est\u00e1 sosteniendo nada, muestra un mensaje
+        if (calderoMiradoActual != null && calderoMiradoActual.estadoActual == Caldero.EstadoCaldero.Ocioso)
+        {
+            MostrarNotificacion("El caldero est\u00e1 vac\u00edo. Agrega ingredientes primero.", 2f, true);
+        }
+    }
     void InteractuarConNPC()
     {
         if (npcMiradoActual.TryGetComponent<NPCComprador>(out NPCComprador clienteTienda))

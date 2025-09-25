@@ -47,6 +47,6 @@ private void OnTriggerEnter(Collider other)
                 GestorJuego.Instance.GuardarDatos();
 
             yield return new WaitForSeconds(8f); 
-            SceneManager.LoadScene("TiendaDeMagia");
+            SceneManager.LoadScene("EscenarioPrueba");
     }
 }

@@ -6,7 +6,7 @@ public class ControladorMenuPrincipal : MonoBehaviour
 {
     [Header("Configuraci�n Escenas")]
     [Tooltip("Nombre EXACTO de la escena principal del juego.")]
-    public string nombreEscenaJuego = "TiendaDeMagia"; // <-- CAMBIA ESTO si tu escena se llama diferente
+    public string nombreEscenaJuego = "EscenarioPrueba"; // <-- CAMBIA ESTO si tu escena se llama diferente
 
     [Header("Referencias UI")]
     [Tooltip("Arrastra aqu� el GameObject del Panel de Ayuda.")]
