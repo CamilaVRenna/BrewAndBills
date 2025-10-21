@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: CatalogoPrincipal
   m_EditorClassIdentifier: 
   todasLasRecetas:
+  - {fileID: 11400000, guid: 9552513e5f0d50b43afc3b91fdff7a32, type: 2}
   - {fileID: 11400000, guid: f2aeebf3d5f251e43b798ece2d9e06a5, type: 2}
+  - {fileID: 11400000, guid: 7e27fb3d3842c224695758dfc0c8c979, type: 2}
   - {fileID: 11400000, guid: 8cdab2b05f433ce43b74fe57603d6fe7, type: 2}
   - {fileID: 11400000, guid: 697ce57497cbae341b5a00165177cc6e, type: 2}
   - {fileID: 11400000, guid: d236212c116765a478961ffc2780b65d, type: 2}
-  - {fileID: 11400000, guid: 7e27fb3d3842c224695758dfc0c8c979, type: 2}
-  - {fileID: 11400000, guid: 9552513e5f0d50b43afc3b91fdff7a32, type: 2}

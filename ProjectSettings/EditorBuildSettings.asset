@@ -15,9 +15,15 @@ EditorBuildSettings:
     path: Assets/Scenes/MenuPrincipal.unity
     guid: 87fea69e8d6a74342b9e54e95c21f02b
   - enabled: 1
+    path: Assets/Scenes/EscenarioPrueba.unity
+    guid: 65baa82e16368d64ba6da6da46ace2ef
+  - enabled: 0
     path: Assets/Scenes/TiendaDeMagia.unity
     guid: 6f37f017915adbd4d8c453e1e9035b71
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Bosque.unity
     guid: c7452247a08949b498c16122a4989d9d
+  - enabled: 0
+    path: Assets/Scenes/Cueva.unity
+    guid: bf0320152052d9946be5025949935d79
   m_configObjects: {}

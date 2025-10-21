@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2747810985366601528}
   m_Layer: 7
   m_Name: RecolectableMariposa
-  m_TagString: Untagged
+  m_TagString: Recolectable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,13 +28,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7612283972276496141}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.47730476, y: 0.5217089, z: 0.52170885, w: 0.47730485}
-  m_LocalPosition: {x: 0.4477406, y: 0.91766745, z: 14.814452}
-  m_LocalScale: {x: 6.0485578, y: 6.0485573, z: 6.0485573}
+  m_LocalRotation: {x: 0.06153977, y: 0.33283558, z: 0.07735447, w: 0.93778974}
+  m_LocalPosition: {x: 0.47901, y: 0.93779, z: 14.809}
+  m_LocalScale: {x: 9.091058, y: 9.091056, z: 9.091056}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -183.665, y: -140.574, z: 190.745}
 --- !u!33 &338812317415154517
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -118,7 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e57698cf74d29d24aa5366d8eb3825ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  datosIngrediente: {fileID: 11400000, guid: b8bf0155fe3dd1b4383d3368e0821b24, type: 2}
+  claveIngrediente: Mariposas
   textoIndicador: Recolectar Mariposa
   prefabCanvasInfo: {fileID: 338789030519252024, guid: 1f725666586f02c4a86b9596f77dd0c0, type: 3}
   puntoOrigen: {fileID: 0}
+  mensajeTemporalUI: {fileID: 0}

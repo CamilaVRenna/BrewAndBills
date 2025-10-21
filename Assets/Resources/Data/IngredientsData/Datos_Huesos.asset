@@ -17,3 +17,4 @@ MonoBehaviour:
   prefabModelo3D: {fileID: 6648015209869508235, guid: 1a2f95d221e58ab4f8515e923c07b804, type: 3}
   prefabRecolectable: {fileID: 469901582374220952, guid: 75bef0213acf0784a9d8bc557036b23f, type: 3}
   rotacionEnMano: {x: 20, y: 20, z: 25}
+  imagenInventario: {fileID: 794748980657230799, guid: bddd5c6352bb0f74c9ffe9d7110056e2, type: 3}

@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cb7ff78c989c724288b9d9f12347830, type: 3}
+  m_Name: ItemCatalog
+  m_EditorClassIdentifier: 
+  allItems:
+  - tipoDeItem: 0
+    nombreItem: Mariposas
+    prefabModelo3D: {fileID: 533020922383877473, guid: f06fc2b14c53fa246ab8daa38b7d0ce4, type: 3}
+    rotacionEnMano: {x: 0, y: 0, z: 0}
+    prefabRecolectable: {fileID: 7612283972276496141, guid: 9a4653fd58919c54fb70cd26bcce0790, type: 3}
+  - tipoDeItem: 0
+    nombreItem: Flores
+    prefabModelo3D: {fileID: 4112955051234162344, guid: 9186cc6dd9d9fd745b48d6b85fab607a, type: 3}
+    rotacionEnMano: {x: 0, y: 0, z: 0}
+    prefabRecolectable: {fileID: 8451001201190359090, guid: c2bf7b78c8b1acf4db2d26b9276b8eb7, type: 3}
+  - tipoDeItem: 0
+    nombreItem: Plumas
+    prefabModelo3D: {fileID: 2349428912088942542, guid: d9cb5d5f7a1dd214c95edeae9bfaca2e, type: 3}
+    rotacionEnMano: {x: 0, y: 0, z: 0}
+    prefabRecolectable: {fileID: 983028436734943655, guid: 7f32996aa477a23418420aa445be77ed, type: 3}
+  - tipoDeItem: 0
+    nombreItem: Hongos
+    prefabModelo3D: {fileID: 967169137211902822, guid: 9cc7922b09740344d80d78de5d9f3c68, type: 3}
+    rotacionEnMano: {x: 0, y: 0, z: 0}
+    prefabRecolectable: {fileID: 8059241282763327235, guid: ef85c45af897f1a48bf9fb5e6bfc2619, type: 3}
+  - tipoDeItem: 0
+    nombreItem: Huesos
+    prefabModelo3D: {fileID: 6648015209869508235, guid: 1a2f95d221e58ab4f8515e923c07b804, type: 3}
+    rotacionEnMano: {x: 0, y: 0, z: 0}
+    prefabRecolectable: {fileID: 469901582374220952, guid: 75bef0213acf0784a9d8bc557036b23f, type: 3}
+  - tipoDeItem: 0
+    nombreItem: Miel
+    prefabModelo3D: {fileID: 2911228721679755313, guid: 44d9363c35b5c0745b30f41b0c1fcb9c, type: 3}
+    rotacionEnMano: {x: 0, y: 0, z: 0}
+    prefabRecolectable: {fileID: 4910432167675470365, guid: 0ae1974dd57f4674fbfeea99e26dd7ff, type: 3}
+  - tipoDeItem: 2
+    nombreItem: "Frasco Vac\xEDo"
+    prefabModelo3D: {fileID: 5187483242758058930, guid: 6caf946d0db6698469e44ef6df58bf49, type: 3}
+    rotacionEnMano: {x: 0, y: 0, z: 0}
+    prefabRecolectable: {fileID: 2691153616783319517, guid: f7a7ec48e7e452e468baa05ec633e466, type: 3}
+  - tipoDeItem: 3
+    nombreItem: Pocion de Amor
+    prefabModelo3D: {fileID: 1430042311489665174, guid: f2c884e3b0fff6c4faf8b538145059a1, type: 3}
+    rotacionEnMano: {x: 0, y: 0, z: 0}
+    prefabRecolectable: {fileID: 2691153616783319517, guid: f7a7ec48e7e452e468baa05ec633e466, type: 3}
+  - tipoDeItem: 3
+    nombreItem: Pocion de Salto
+    prefabModelo3D: {fileID: 1430042311489665174, guid: 957444ca6f25cc845903f0c3cb17a3b1, type: 3}
+    rotacionEnMano: {x: 0, y: 0, z: 0}
+    prefabRecolectable: {fileID: 2691153616783319517, guid: f7a7ec48e7e452e468baa05ec633e466, type: 3}
+  - tipoDeItem: 3
+    nombreItem: Pocion de Debilidad
+    prefabModelo3D: {fileID: 1430042311489665174, guid: 5343e7abd4ccaab44830e903637ceb12, type: 3}
+    rotacionEnMano: {x: 0, y: 0, z: 0}
+    prefabRecolectable: {fileID: 2691153616783319517, guid: f7a7ec48e7e452e468baa05ec633e466, type: 3}
+  - tipoDeItem: 3
+    nombreItem: Pocion de Fuerza
+    prefabModelo3D: {fileID: 1430042311489665174, guid: 9baa54e71d85e484da87f191734b7f0d, type: 3}
+    rotacionEnMano: {x: 0, y: 0, z: 0}
+    prefabRecolectable: {fileID: 2691153616783319517, guid: f7a7ec48e7e452e468baa05ec633e466, type: 3}
+  - tipoDeItem: 3
+    nombreItem: Pocion de Curacion
+    prefabModelo3D: {fileID: 1430042311489665174, guid: 5f37ade67319ed24fb0571f5959a8c0e, type: 3}
+    rotacionEnMano: {x: 0, y: 0, z: 0}
+    prefabRecolectable: {fileID: 2691153616783319517, guid: f7a7ec48e7e452e468baa05ec633e466, type: 3}
+  - tipoDeItem: 3
+    nombreItem: Pocion de Invisibilidad
+    prefabModelo3D: {fileID: 1430042311489665174, guid: ff01967f632a5ad4bb45737fc2b8b75c, type: 3}
+    rotacionEnMano: {x: 0, y: 0, z: 0}
+    prefabRecolectable: {fileID: 2691153616783319517, guid: f7a7ec48e7e452e468baa05ec633e466, type: 3}
+  - tipoDeItem: 0
+    nombreItem: Rama
+    prefabModelo3D: {fileID: 5813418347093800637, guid: d65de94180bb0ac449a2cc01fc7678b8, type: 3}
+    rotacionEnMano: {x: 0, y: 0, z: 0}
+    prefabRecolectable: {fileID: 8231476722794487307, guid: 37ef684490a6abd4eb067420e6bdf071, type: 3}
+  - tipoDeItem: 0
+    nombreItem: Tronco
+    prefabModelo3D: {fileID: 6625866196985943140, guid: b85e127b46b38d441a8afcea016dec39, type: 3}
+    rotacionEnMano: {x: 0, y: 0, z: 0}
+    prefabRecolectable: {fileID: 6625866196985943140, guid: b85e127b46b38d441a8afcea016dec39, type: 3}
+  - tipoDeItem: 0
+    nombreItem: Copa
+    prefabModelo3D: {fileID: 3079346058389598372, guid: 9eb4a3d509448cc45a3771113a020578, type: 3}
+    rotacionEnMano: {x: 0, y: 0, z: 0}
+    prefabRecolectable: {fileID: 3079346058389598372, guid: 9eb4a3d509448cc45a3771113a020578, type: 3}
+  - tipoDeItem: 0
+    nombreItem: Arbol
+    prefabModelo3D: {fileID: 1435526041062361115, guid: b8577e0d788504c46bd24e851ded97e5, type: 3}
+    rotacionEnMano: {x: 0, y: 0, z: 0}
+    prefabRecolectable: {fileID: 1435526041062361115, guid: b8577e0d788504c46bd24e851ded97e5, type: 3}
+  - tipoDeItem: 4
+    nombreItem: Hacha
+    prefabModelo3D: {fileID: 2728171091397104710, guid: 3aef32f34d64c5d4b99c2971d45e3eb5, type: 3}
+    rotacionEnMano: {x: 0, y: 0, z: 0}
+    prefabRecolectable: {fileID: 2728171091397104710, guid: 3aef32f34d64c5d4b99c2971d45e3eb5, type: 3}
+  - tipoDeItem: 3
+    nombreItem: Pocion Fallida
+    prefabModelo3D: {fileID: 1430042311489665174, guid: 957444ca6f25cc845903f0c3cb17a3b1, type: 3}
+    rotacionEnMano: {x: 0, y: 0, z: 0}
+    prefabRecolectable: {fileID: 2728171091397104710, guid: 3aef32f34d64c5d4b99c2971d45e3eb5, type: 3}

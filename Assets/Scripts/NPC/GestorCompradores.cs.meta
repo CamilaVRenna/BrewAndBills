@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 06560cc7f11976b4dab39ff3ef753b52
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - puntoAparicion: {instanceID: 0}
+  - posicionVentana: {instanceID: 0}
+  - puntoMiradaVentana: {instanceID: 0}
+  - puntoSalidaNPC: {instanceID: 0}
+  - catalogoRecetas: {fileID: 11400000, guid: 6278bc027e9bf0f4f8f0490472cc6e6f, type: 2}
+  - sonidoNuevoPedido: {instanceID: 0}
+  - uiGestor: {instanceID: 0}
+  - audioSource: {instanceID: 0}
+  - prefabNPCTienda: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

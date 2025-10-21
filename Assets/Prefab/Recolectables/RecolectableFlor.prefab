@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5326400315412073709}
   m_Layer: 7
   m_Name: RecolectableFlor
-  m_TagString: Untagged
+  m_TagString: Recolectable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 8451001201190359090}
   serializedVersion: 2
   m_LocalRotation: {x: 0.13435738, y: -0.7495433, z: 0.026643995, w: 0.6476288}
-  m_LocalPosition: {x: 16.969559, y: 0.9176712, z: 23.875673}
-  m_LocalScale: {x: 67.36224, y: 56.763695, z: 52.39516}
+  m_LocalPosition: {x: 17.032, y: 0.95605, z: 23.91}
+  m_LocalScale: {x: 109.03927, y: 91.88339, z: 84.81205}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -121,7 +121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e57698cf74d29d24aa5366d8eb3825ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  datosIngrediente: {fileID: 11400000, guid: e3e8cf6babe0f074aae6146464a28efa, type: 2}
+  claveIngrediente: Flor
   textoIndicador: Recolectar Flor
   prefabCanvasInfo: {fileID: 338789030519252024, guid: 1f725666586f02c4a86b9596f77dd0c0, type: 3}
   puntoOrigen: {fileID: 0}
+  mensajeTemporalUI: {fileID: 0}

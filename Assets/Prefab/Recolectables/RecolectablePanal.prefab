@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1704410961565184163}
   m_Layer: 7
   m_Name: RecolectablePanal
-  m_TagString: Untagged
+  m_TagString: Recolectable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,10 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e57698cf74d29d24aa5366d8eb3825ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  datosIngrediente: {fileID: 11400000, guid: 99ba73d0bfc819143a0bc1a9de2ae209, type: 2}
+  claveIngrediente: Miel
   textoIndicador: Recolectar Miel
   prefabCanvasInfo: {fileID: 338789030519252024, guid: 1f725666586f02c4a86b9596f77dd0c0, type: 3}
   puntoOrigen: {fileID: 0}
-  prefabAbeja: {fileID: 8831559193809020700, guid: 511a197b32598344f93888e880195348, type: 3}
-  puntoSalidaAbejas: {fileID: 0}
   mensajeTemporalUI: {fileID: 7999337285250084231, guid: eb95f2aefec4bc6408944c9d6578e7a4, type: 3}

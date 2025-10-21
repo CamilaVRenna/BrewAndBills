@@ -4,10 +4,13 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Collection
   - Contenedor
   - Caldero
   - Puerta
   - ingrediente
+  - Recolectable
+  - Limite
   layers:
   - Default
   - TransparentFX

@@ -3,9 +3,39 @@ guid: ebdeb96c4f7231d45b0f3d02b13979e5
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 1 - Default.002
+    second: {fileID: 2100000, guid: 83455644d35b76f4da5c8fd756719d1d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.015
+    second: {fileID: 2100000, guid: 49cfadbafb039b1499e0f1a593d990e7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: house wood dark.001
+    second: {fileID: 2100000, guid: 6fddb15bbb14b094582f66a4da0f20b7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: jar.glass
+    second: {fileID: 2100000, guid: 7a0afb740df9d724784704aab1e67143, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: feather0
+    second: {fileID: 2800000, guid: fc10da0c1a126e343a1607a857200ae9, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: featherd
+    second: {fileID: 2800000, guid: ea2ffcf97b03b3146aa8cd7c633cfe2e, type: 3}
   materials:
-    materialImportMode: 2
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1

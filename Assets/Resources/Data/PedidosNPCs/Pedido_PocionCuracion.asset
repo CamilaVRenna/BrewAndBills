@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombreIdentificador: PocionCuracion
   ingredientesRequeridos:
-  - {fileID: 11400000, guid: 99ba73d0bfc819143a0bc1a9de2ae209, type: 2}
-  - {fileID: 11400000, guid: ebd58f5de6a2345409db26ca12d0b729, type: 2}
-  - {fileID: 11400000, guid: 27b67ec95a0a7584f8fe6405433c86e0, type: 2}
+  - {fileID: 11400000, guid: 0019e0ee2b097664ab6a1977ce469b09, type: 2}
+  - {fileID: 11400000, guid: 0019e0ee2b097664ab6a1977ce469b09, type: 2}
+  - {fileID: 11400000, guid: 290b97b2a82c5b74a9f1a953ef81590f, type: 2}
   dialogosPedidoGenericos:
   - "Estoy m\xE1s roto que una espada oxidada. \xBFTen\xE9s algo me restaure?"
   - Necesito una de esas que reparan cuerpo y alma.

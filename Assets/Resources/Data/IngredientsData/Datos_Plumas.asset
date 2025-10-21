@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombreIngrediente: Plumas
   icono: {fileID: 21300000, guid: 0880abce0c48df84db10e15dd3c75ee5, type: 3}
-  prefabModelo3D: {fileID: 3059733341588343237, guid: f109decf2979c6a4493a1b912f13280e, type: 3}
-  prefabRecolectable: {fileID: 6609933557215643368, guid: c8cca97b321b1d24b851c370eefb6565, type: 3}
+  prefabModelo3D: {fileID: 2349428912088942542, guid: d9cb5d5f7a1dd214c95edeae9bfaca2e, type: 3}
+  prefabRecolectable: {fileID: 2349428912088942542, guid: d9cb5d5f7a1dd214c95edeae9bfaca2e, type: 3}
   rotacionEnMano: {x: 0, y: 0, z: 0}
+  imagenInventario: {fileID: 5635401135524691424, guid: ec16d2866e7176c45a70260662eee3e9, type: 3}
