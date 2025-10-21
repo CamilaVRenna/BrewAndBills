@@ -118,10 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e57698cf74d29d24aa5366d8eb3825ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  datosIngrediente: {fileID: 11400000, guid: ebd58f5de6a2345409db26ca12d0b729, type: 2}
+  claveIngrediente: Hongo
   textoIndicador: Recolectar Hongo
   prefabCanvasInfo: {fileID: 338789030519252024, guid: 1f725666586f02c4a86b9596f77dd0c0, type: 3}
   puntoOrigen: {fileID: 0}
-  prefabAbeja: {fileID: 0}
-  puntoSalidaAbejas: {fileID: 0}
   mensajeTemporalUI: {fileID: 0}

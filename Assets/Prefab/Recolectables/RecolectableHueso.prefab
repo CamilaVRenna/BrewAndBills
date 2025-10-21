@@ -70,12 +70,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e57698cf74d29d24aa5366d8eb3825ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  datosIngrediente: {fileID: 11400000, guid: 27b67ec95a0a7584f8fe6405433c86e0, type: 2}
+  claveIngrediente: Huesos
   textoIndicador: Recolectar Huesos
   prefabCanvasInfo: {fileID: 338789030519252024, guid: 1f725666586f02c4a86b9596f77dd0c0, type: 3}
   puntoOrigen: {fileID: 0}
-  prefabAbeja: {fileID: 0}
-  puntoSalidaAbejas: {fileID: 0}
   mensajeTemporalUI: {fileID: 0}
 --- !u!1 &4806822189098077238
 GameObject:

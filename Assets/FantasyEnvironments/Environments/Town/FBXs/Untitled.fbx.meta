@@ -12,8 +12,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Food.001
+    second: {fileID: 2100000, guid: 0bb2dbd15104da94381b3f2733930b46, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Material.001
     second: {fileID: 2100000, guid: 37eeeabe745c9ad4c83f0f62a28f255c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.002
+    second: {fileID: 2100000, guid: 0346ab84f04919b43b22ae2f1eab2046, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombreIdentificador: PocionSalto
   ingredientesRequeridos:
-  - {fileID: 11400000, guid: b8bf0155fe3dd1b4383d3368e0821b24, type: 2}
-  - {fileID: 11400000, guid: daa59ae1a9c762445af2845d1cd8cac4, type: 2}
+  - {fileID: 11400000, guid: e8fba1c0dd53f3445b40f5ddcf4cc7d5, type: 2}
+  - {fileID: 11400000, guid: 440c9d66f4724bf49a1edcb380c56bac, type: 2}
   dialogosPedidoGenericos:
   - "Voy a necesitar piernas m\xE1s poderosas de lo normal."
   - Para llegar alto, dame una que me eleve.

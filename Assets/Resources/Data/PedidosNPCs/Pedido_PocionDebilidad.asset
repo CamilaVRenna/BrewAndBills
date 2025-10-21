@@ -14,13 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombreIdentificador: PocionDebilidad
   ingredientesRequeridos:
-  - {fileID: 11400000, guid: 27b67ec95a0a7584f8fe6405433c86e0, type: 2}
-  - {fileID: 11400000, guid: 27b67ec95a0a7584f8fe6405433c86e0, type: 2}
-  - {fileID: 11400000, guid: ebd58f5de6a2345409db26ca12d0b729, type: 2}
-  - {fileID: 11400000, guid: ebd58f5de6a2345409db26ca12d0b729, type: 2}
-  - {fileID: 11400000, guid: b8bf0155fe3dd1b4383d3368e0821b24, type: 2}
-  dialogoPedido: "Estoy por enfrentarme a una gran Bestia \xA1pero es muy fuerte!
-    \xBFPodrias ayudarme?"
+  - {fileID: 11400000, guid: f9d53ee2ff2a4924b9dae1a52cfff653, type: 2}
+  - {fileID: 11400000, guid: 9b20f35bd2e012f438007744ee881d21, type: 2}
+  dialogosPedidoGenericos: []
+  clavePocion: 
   nombreResultadoPocion: Pocion de Debilidad
   materialResultado: {fileID: 2100000, guid: 8cf58e115109c3e4abf25f29cbcd3adc, type: 2}
   imagenPocion: {fileID: 21300000, guid: 89e35a2fce28d1d46831102ac1e6d52e, type: 3}

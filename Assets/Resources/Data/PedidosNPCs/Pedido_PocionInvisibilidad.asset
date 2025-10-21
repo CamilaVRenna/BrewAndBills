@@ -14,10 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombreIdentificador: PocionInvisibilidad
   ingredientesRequeridos:
-  - {fileID: 11400000, guid: ebd58f5de6a2345409db26ca12d0b729, type: 2}
-  - {fileID: 11400000, guid: 27b67ec95a0a7584f8fe6405433c86e0, type: 2}
-  - {fileID: 11400000, guid: e3e8cf6babe0f074aae6146464a28efa, type: 2}
-  - {fileID: 11400000, guid: daa59ae1a9c762445af2845d1cd8cac4, type: 2}
+  - {fileID: 11400000, guid: 290b97b2a82c5b74a9f1a953ef81590f, type: 2}
+  - {fileID: 11400000, guid: 9b20f35bd2e012f438007744ee881d21, type: 2}
   dialogosPedidoGenericos:
   - "Necesito desaparecer\u2026 pero sin huir. \xBFTienes algo que me ayude?"
   - "Para espiar sin ser visto, \xBFqu\xE9 poci\xF3n me recomendar\xEDas?"

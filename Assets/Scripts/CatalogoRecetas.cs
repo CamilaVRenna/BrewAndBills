@@ -5,42 +5,73 @@ using System.Linq;
 [CreateAssetMenu(fileName = "CatalogoDeRecetas", menuName = "Pociones/Catalogo de Recetas")]
 public class CatalogoRecetas : ScriptableObject
 {
-    [Tooltip("Arrastra aqu� TODOS los assets de RecetaResultado (PedidoPocionData modificados) que definen pociones crafteables.")]
-    public List<PedidoPocionData> todasLasRecetas; // Usamos PedidoPocionData aqu�
+    [Tooltip("Arrastra aquí TODOS los assets de RecetaResultado (PedidoPocionData modificados) que definen pociones crafteables.")]
+    public List<PedidoPocionData> todasLasRecetas; // Usamos PedidoPocionData aquí
 
-    public PedidoPocionData BuscarRecetaPorIngredientes(List<DatosIngrediente> ingredientesPocion)
+    // ********************************************************************************
+    // CRÍTICO: Este método ahora acepta una lista de NOMBRES (strings) desde Caldero.cs,
+    // forzando la comparación por el nombre único del ingrediente.
+    // ********************************************************************************
+    /// <summary>
+    /// Busca una receta que coincida exactamente con la lista de nombres de ingredientes proporcionada.
+    /// La coincidencia ignora el orden y considera la cantidad de cada tipo de ingrediente.
+    /// </summary>
+    /// <param name="nombresIngredientes">La lista de nombres de ingredientes a buscar (lo que el jugador ha usado).</param>
+    /// <returns>El PedidoPocionData de la receta coincidente, o null si no se encuentra ninguna.</returns>
+    public PedidoPocionData BuscarRecetaPorNombres(List<string> nombresIngredientes)
     {
-        if (todasLasRecetas == null || ingredientesPocion == null) return null;
+        if (todasLasRecetas == null || nombresIngredientes == null) return null;
 
         foreach (PedidoPocionData receta in todasLasRecetas)
         {
-            if (CompararListasIngredientes(receta.ingredientesRequeridos, ingredientesPocion))
+            // Convertir los ingredientes requeridos (DatosIngrediente SOs) de la receta a una lista de nombres.
+            List<string> nombresRequeridos = receta.ingredientesRequeridos
+                .Select(di => di.nombreIngrediente) // Asumimos que DatosIngrediente tiene la propiedad 'nombreIngrediente'
+                .ToList();
+
+            if (CompararListasDeNombres(nombresRequeridos, nombresIngredientes))
             {
-                return receta; // �Encontrada!
+                return receta; // ¡Receta Encontrada!
             }
         }
         return null; // No encontrada
     }
 
-    private bool CompararListasIngredientes(List<DatosIngrediente> lista1, List<DatosIngrediente> lista2)
+    /// <summary>
+    /// Compara dos listas de nombres (strings) para verificar si contienen los mismos nombres 
+    /// en la misma cantidad, ignorando el orden (comparación de multiconjunto usando LINQ).
+    /// </summary>
+    private bool CompararListasDeNombres(List<string> lista1, List<string> lista2)
     {
+        // 1. Validación básica: si el número de ingredientes es diferente, no pueden coincidir.
         if (lista1 == null || lista2 == null || lista1.Count != lista2.Count) return false;
-        var tempLista1 = new List<DatosIngrediente>(lista1);
-        var tempLista2 = new List<DatosIngrediente>(lista2);
-        foreach (var item1 in tempLista1)
+
+        // 2. Agrupar y contar la frecuencia de cada nombre en ambas listas.
+        var conteo1 = lista1
+            .GroupBy(name => name)
+            .ToDictionary(g => g.Key, g => g.Count());
+
+        var conteo2 = lista2
+            .GroupBy(name => name)
+            .ToDictionary(g => g.Key, g => g.Count());
+
+        // 3. Comprobar que ambas listas tienen el mismo número de tipos únicos.
+        if (conteo1.Count != conteo2.Count) return false;
+
+        // 4. Comparar la cantidad de cada nombre único.
+        foreach (var par in conteo1)
         {
-            bool encontrado = false;
-            for (int i = 0; i < tempLista2.Count; i++)
+            string nombre = par.Key;
+            int cantidadRequerida = par.Value;
+
+            if (!conteo2.TryGetValue(nombre, out int cantidadEncontrada) || cantidadRequerida != cantidadEncontrada)
             {
-                if (item1 == tempLista2[i])
-                {
-                    tempLista2.RemoveAt(i);
-                    encontrado = true;
-                    break;
-                }
+                // Falla si el ingrediente no está o si las cantidades no coinciden.
+                return false;
             }
-            if (!encontrado) return false;
         }
-        return tempLista2.Count == 0;
+
+        // Si todos los tipos y cantidades coinciden, las listas son iguales.
+        return true;
     }
 }

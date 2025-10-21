@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombreItem: "Frasco Vac\xEDo"
   icono: {fileID: 21300000, guid: 218fae68d8c154244b1f3099ea1ef22a, type: 3}
-  prefabModelo3D: {fileID: 5653174031220002000, guid: 3e6a396daa9186741a6e0b9b1d124928, type: 3}
+  prefabModelo3D: {fileID: 2691153616783319517, guid: f7a7ec48e7e452e468baa05ec633e466, type: 3}
   materialVacio: {fileID: 2100000, guid: 55c2ee566bc5b7d4bb09a6bf8faff3fe, type: 2}
   materialLleno: {fileID: 2100000, guid: 67cb4b1ca2348f645a03bc7a017510a7, type: 2}
   rotacionEnMano: {x: 0, y: 0, z: 0}
