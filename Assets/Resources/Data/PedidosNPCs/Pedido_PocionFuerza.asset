@@ -16,7 +16,6 @@ MonoBehaviour:
   ingredientesRequeridos:
   - {fileID: 11400000, guid: f9d53ee2ff2a4924b9dae1a52cfff653, type: 2}
   - {fileID: 11400000, guid: 0019e0ee2b097664ab6a1977ce469b09, type: 2}
-  - {fileID: 11400000, guid: 290b97b2a82c5b74a9f1a953ef81590f, type: 2}
   dialogosPedidoGenericos:
   - "Hoy tengo que cargar m\xE1s que mis problemas. \xBFMe das algo?"
   - "Necesito romper barreras\u2026 literalmente."

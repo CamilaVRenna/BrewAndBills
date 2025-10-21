@@ -16,7 +16,6 @@ MonoBehaviour:
   ingredientesRequeridos:
   - {fileID: 11400000, guid: 290b97b2a82c5b74a9f1a953ef81590f, type: 2}
   - {fileID: 11400000, guid: 0019e0ee2b097664ab6a1977ce469b09, type: 2}
-  - {fileID: 11400000, guid: e8fba1c0dd53f3445b40f5ddcf4cc7d5, type: 2}
   dialogosPedidoGenericos:
   - "Necesito algo que haga latir m\xE1s r\xE1pido un coraz\xF3n\u2026 y no el m\xEDo."
   - "Una pizca de romance, dos gotas de deseo\u2026 \xBFme das una de esas?"

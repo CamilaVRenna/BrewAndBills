@@ -1302,6 +1302,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 259329033}
   m_CullTransparentMesh: 1
+--- !u!1 &267654306
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 267654307}
+  - component: {fileID: 267654308}
+  m_Layer: 0
+  m_Name: Plumas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &267654307
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 267654306}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 26.584, y: 0.985, z: -18.85}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1164806627}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &267654308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 267654306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Plumas
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
 --- !u!1 &276908146
 GameObject:
   m_ObjectHideFlags: 0
@@ -1739,6 +1787,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1601410537}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &341522794
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 341522795}
+  - component: {fileID: 341522796}
+  m_Layer: 0
+  m_Name: flores (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &341522795
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 341522794}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.18, y: 0.163, z: 54.22}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 879087110}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &341522796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 341522794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Hongos
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
 --- !u!1 &362944120
 GameObject:
   m_ObjectHideFlags: 0
@@ -1947,9 +2043,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f37ae1f3543bbb4a95b17303907dc6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  durmioManualmente: 0
-  dayDurationInSeconds: 165
+  dayDurationInSeconds: 145
   nightDurationInSeconds: 45
+  messageHoldTime: 2
   currentDay: 1
   isDaytime: 1
 --- !u!1 &435424318
@@ -2121,6 +2217,102 @@ Transform:
   - {fileID: 407656828}
   m_Father: {fileID: 1894677332}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &449952758
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 449952759}
+  - component: {fileID: 449952760}
+  m_Layer: 0
+  m_Name: flores (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &449952759
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 449952758}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 8.43, y: 0.155, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 879087110}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &449952760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 449952758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Hongos
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
+--- !u!1 &462864903
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 462864904}
+  - component: {fileID: 462864905}
+  m_Layer: 0
+  m_Name: flores (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &462864904
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 462864903}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 29.8, y: 0.156, z: 21.46}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 879087110}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &462864905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 462864903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Hongos
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
 --- !u!1 &479637202
 GameObject:
   m_ObjectHideFlags: 0
@@ -2169,6 +2361,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1601410537}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &486906048
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 486906049}
+  - component: {fileID: 486906050}
+  m_Layer: 0
+  m_Name: flores (8)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &486906049
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486906048}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -55.23, y: 0.17, z: 60.34}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 879087110}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &486906050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486906048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Hongos
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
 --- !u!1 &492758354 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1887306701152400206, guid: efa88cf69d371a1428c19cb94c7c49c5, type: 3}
@@ -3061,6 +3301,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5187483242758058930, guid: 6caf946d0db6698469e44ef6df58bf49, type: 3}
       insertIndex: -1
       addedObject: {fileID: 635596229}
+    - targetCorrespondingSourceObject: {fileID: 5187483242758058930, guid: 6caf946d0db6698469e44ef6df58bf49, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 635596233}
   m_SourcePrefab: {fileID: 100100000, guid: 6caf946d0db6698469e44ef6df58bf49, type: 3}
 --- !u!4 &635596227 stripped
 Transform:
@@ -3102,6 +3345,27 @@ MonoBehaviour:
   materialVacio: {fileID: 2100000, guid: 55c2ee566bc5b7d4bb09a6bf8faff3fe, type: 2}
   materialLleno: {fileID: 2100000, guid: 67cb4b1ca2348f645a03bc7a017510a7, type: 2}
   colorPocionDefecto: {r: 1, g: 0, b: 1, a: 1}
+--- !u!65 &635596233
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635596228}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.00258255, y: 0.003944435, z: 0.0025824974}
+  m_Center: {x: -0.00000019726576, y: 0.00025631906, z: -0.00000006094343}
 --- !u!1 &651489595
 GameObject:
   m_ObjectHideFlags: 0
@@ -3287,6 +3551,54 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.07154074, y: 0.09133884, z: 0.10933493}
   m_Center: {x: 0.0013225692, y: 0.0030632922, z: -0.029215675}
+--- !u!1 &669756346
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 669756347}
+  - component: {fileID: 669756348}
+  m_Layer: 0
+  m_Name: Huesos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &669756347
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 669756346}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -38.25, y: 0.707, z: 94.859}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1849440021}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &669756348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 669756346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Mariposas
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
 --- !u!1 &685526306
 GameObject:
   m_ObjectHideFlags: 0
@@ -3318,6 +3630,102 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1823935931}
   m_LocalEulerAnglesHint: {x: 0, y: 27.593, z: 0}
+--- !u!1 &693682008
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 693682009}
+  - component: {fileID: 693682010}
+  m_Layer: 0
+  m_Name: Huesos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &693682009
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 693682008}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -62.43, y: 1.072, z: 54.54}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1849440021}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &693682010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 693682008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Mariposas
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
+--- !u!1 &711236627
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 711236628}
+  - component: {fileID: 711236629}
+  m_Layer: 0
+  m_Name: flores (9)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &711236628
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711236627}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 28.37, y: 0.16, z: 90.73}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 879087110}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &711236629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711236627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Hongos
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
 --- !u!1001 &768268521
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3669,6 +4077,54 @@ Transform:
   - {fileID: 1930468045}
   m_Father: {fileID: 761983320859360162}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &812345853
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 812345854}
+  - component: {fileID: 812345855}
+  m_Layer: 0
+  m_Name: flores (6)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &812345854
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812345853}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -39.9, y: 0.142, z: 39.08}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 879087110}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &812345855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812345853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Hongos
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
 --- !u!1 &822253181 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1174959623248814874, guid: 0e25c3df0deb08c448812548d005f185, type: 3}
@@ -3808,6 +4264,137 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nombreIdentificador: SpawnInicialCama
+--- !u!1 &848689992
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 848689993}
+  - component: {fileID: 848689994}
+  m_Layer: 0
+  m_Name: Huesos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &848689993
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848689992}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -38.7, y: 1.37, z: 36.15}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1849440021}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &848689994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848689992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Mariposas
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
+--- !u!1 &858016667
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 858016670}
+  - component: {fileID: 858016669}
+  - component: {fileID: 858016668}
+  m_Layer: 0
+  m_Name: nido (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!23 &858016668
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 858016667}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 1230119fb2ff2c242a8e77f00712d274, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &858016669
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 858016667}
+  m_Mesh: {fileID: -3247716077616002248, guid: 58f2ef0d27c54ff4cb243c4b5152df1b, type: 3}
+--- !u!4 &858016670
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 858016667}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.697651, y: -0.115251996, z: -0.11525188, w: 0.69765115}
+  m_LocalPosition: {x: 3.7118597, y: 0.03425598, z: -6.697153}
+  m_LocalScale: {x: 0.023335168, y: 0.03040452, z: 0.01727463}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1802846782}
+  m_LocalEulerAnglesHint: {x: 71.239, y: -90, z: -90}
 --- !u!1 &861589129 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2159465375712335914, guid: 0e25c3df0deb08c448812548d005f185, type: 3}
@@ -3855,6 +4442,47 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.061424844, y: 1.3761077, z: 1.0089625}
   m_Center: {x: 0.0008106654, y: 0.15040314, z: 0.49393484}
+--- !u!1 &879087109
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 879087110}
+  m_Layer: 0
+  m_Name: Hongo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &879087110
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879087109}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -13.29, y: -10.03, z: -43}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1823107690}
+  - {fileID: 939181138}
+  - {fileID: 449952759}
+  - {fileID: 341522795}
+  - {fileID: 2132055029}
+  - {fileID: 462864904}
+  - {fileID: 711236628}
+  - {fileID: 812345854}
+  - {fileID: 1543969846}
+  - {fileID: 486906049}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &883499260
 GameObject:
   m_ObjectHideFlags: 0
@@ -4226,6 +4854,54 @@ Transform:
   - {fileID: 2089697995}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &939181137
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 939181138}
+  - component: {fileID: 939181139}
+  m_Layer: 0
+  m_Name: flores (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &939181138
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 939181137}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.084, z: 36.61}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 879087110}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &939181139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 939181137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Hongos
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
 --- !u!1 &964182677
 GameObject:
   m_ObjectHideFlags: 0
@@ -4393,6 +5069,54 @@ Transform:
   - {fileID: 1572508297}
   m_Father: {fileID: 41709528}
   m_LocalEulerAnglesHint: {x: 0, y: 190.02, z: 0}
+--- !u!1 &976836622
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 976836623}
+  - component: {fileID: 976836624}
+  m_Layer: 0
+  m_Name: Huesos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &976836623
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 976836622}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -15.35, y: 0.741, z: 38.724}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1849440021}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &976836624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 976836622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Mariposas
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
 --- !u!4 &987720618 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7910183990092018730, guid: f49385d8919c6bd4ea1686e898d2a363, type: 3}
@@ -4488,6 +5212,102 @@ Transform:
   m_Children: []
   m_Father: {fileID: 920207668}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1030476304
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1030476305}
+  - component: {fileID: 1030476306}
+  m_Layer: 0
+  m_Name: Huesos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1030476305
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1030476304}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.972, y: 0.857, z: 57.92}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1849440021}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1030476306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1030476304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Mariposas
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
+--- !u!1 &1033825945
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1033825946}
+  - component: {fileID: 1033825947}
+  m_Layer: 0
+  m_Name: Huesos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1033825946
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033825945}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 18.37, y: 0.96, z: 98.33}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1849440021}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1033825947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033825945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Mariposas
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
 --- !u!1 &1044760499
 GameObject:
   m_ObjectHideFlags: 0
@@ -4707,7 +5527,7 @@ Transform:
   m_GameObject: {fileID: 1093361301}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -19.51, y: 0.09, z: 22.25}
+  m_LocalPosition: {x: -19.51, y: 0.31, z: 22.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4856,6 +5676,54 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &1100547254
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1100547255}
+  - component: {fileID: 1100547256}
+  m_Layer: 0
+  m_Name: Plumas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1100547255
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1100547254}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 17.1567, y: 0.929, z: -0.471}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1164806627}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1100547256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1100547254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Plumas
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
 --- !u!1 &1121650752 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7463409488698408620, guid: 0ae854c5f83c10242a5bbbb0b750c819, type: 3}
@@ -4937,6 +5805,41 @@ Transform:
   - {fileID: 292735820}
   m_Father: {fileID: 294576623}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1164806626
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1164806627}
+  m_Layer: 0
+  m_Name: Plumas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1164806627
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164806626}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -30.85, y: -9.93, z: -12.299999}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1397461512}
+  - {fileID: 2059417125}
+  - {fileID: 1100547255}
+  - {fileID: 267654307}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1179412818
 GameObject:
   m_ObjectHideFlags: 0
@@ -4978,6 +5881,89 @@ Transform:
   - {fileID: 186217233}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1186292941
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1186292944}
+  - component: {fileID: 1186292943}
+  - component: {fileID: 1186292942}
+  m_Layer: 0
+  m_Name: nido (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!23 &1186292942
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1186292941}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 1230119fb2ff2c242a8e77f00712d274, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1186292943
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1186292941}
+  m_Mesh: {fileID: -3247716077616002248, guid: 58f2ef0d27c54ff4cb243c4b5152df1b, type: 3}
+--- !u!4 &1186292944
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1186292941}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.697651, y: -0.115251996, z: -0.11525188, w: 0.69765115}
+  m_LocalPosition: {x: -13.153141, y: 0.03425598, z: 33.491844}
+  m_LocalScale: {x: 0.023335168, y: 0.03040452, z: 0.01727463}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1802846782}
+  m_LocalEulerAnglesHint: {x: 71.239, y: -90, z: -90}
 --- !u!1 &1188503434
 GameObject:
   m_ObjectHideFlags: 0
@@ -5522,13 +6508,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1247259459}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -15.228, y: -9.004, z: -39.608}
-  m_LocalScale: {x: 0.023335166, y: 0.03040452, z: 0.017274631}
+  m_LocalRotation: {x: 0.7853632, y: 0.11956402, z: -0.29111937, w: 0.5330654}
+  m_LocalPosition: {x: 2.2468596, y: -0.013198853, z: -33.44615}
+  m_LocalScale: {x: 0.023335166, y: 0.030404517, z: 0.017274631}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Father: {fileID: 1802846782}
+  m_LocalEulerAnglesHint: {x: 114.918, y: 51.516006, z: 16.912994}
 --- !u!1 &1261504031
 GameObject:
   m_ObjectHideFlags: 0
@@ -5801,6 +6787,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1287819676}
   m_CullTransparentMesh: 1
+--- !u!1 &1298269339
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1298269340}
+  - component: {fileID: 1298269341}
+  m_Layer: 0
+  m_Name: Huesos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1298269340
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1298269339}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 10.85, y: 0.917, z: -0.789}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1849440021}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1298269341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1298269339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Mariposas
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
 --- !u!1001 &1311175867
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6137,6 +7171,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 41709528}
   m_LocalEulerAnglesHint: {x: 0, y: 13.455, z: 0}
+--- !u!1 &1331993805
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1331993806}
+  - component: {fileID: 1331993807}
+  m_Layer: 0
+  m_Name: Huesos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1331993806
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331993805}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -58.98, y: 1.43, z: 12.07}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1849440021}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1331993807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331993805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Mariposas
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
 --- !u!1 &1357894789
 GameObject:
   m_ObjectHideFlags: 0
@@ -6398,6 +7480,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1366235610}
   m_CullTransparentMesh: 1
+--- !u!1 &1372595213
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1372595214}
+  - component: {fileID: 1372595215}
+  m_Layer: 0
+  m_Name: Huesos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1372595214
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1372595213}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 8.84, y: 1.44, z: 30.048}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1849440021}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1372595215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1372595213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Mariposas
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
 --- !u!1001 &1372863244
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6518,6 +7648,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e4ad9c7640f89d4f81c2b94754ca9fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1397461511
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1397461512}
+  - component: {fileID: 1397461513}
+  m_Layer: 0
+  m_Name: Plumas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1397461512
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397461511}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0.20743248, w: 0.9782494}
+  m_LocalPosition: {x: 15.698, y: 0.873, z: -27.162998}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1164806627}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -23.944}
+--- !u!114 &1397461513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397461511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Plumas
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
 --- !u!1 &1411147201
 GameObject:
   m_ObjectHideFlags: 0
@@ -6952,7 +8130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c93ad5db2c915840ae9740e06e41903, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  claveIngrediente: Hongo
+  claveIngrediente: Hongos
   objetoModelo: {fileID: 967169137211902822, guid: 9cc7922b09740344d80d78de5d9f3c68, type: 3}
   prefabCanvasInfo: {fileID: 338789030519252024, guid: 1f725666586f02c4a86b9596f77dd0c0, type: 3}
 --- !u!1 &1484856227
@@ -7261,6 +8439,54 @@ MonoBehaviour:
     diasCooldown: 1
     probabilidadSpawn: 0.722
   todosLosPuntos: []
+--- !u!1 &1543969845
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1543969846}
+  - component: {fileID: 1543969847}
+  m_Layer: 0
+  m_Name: flores (7)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1543969846
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1543969845}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -37.1, y: 0.12, z: -0.43}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 879087110}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1543969847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1543969845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Hongos
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
 --- !u!1 &1559634360
 GameObject:
   m_ObjectHideFlags: 0
@@ -9151,6 +10377,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1793218773}
   m_CullTransparentMesh: 1
+--- !u!1 &1802846781
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1802846782}
+  m_Layer: 0
+  m_Name: Nidos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1802846782
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802846781}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -17.40086, y: -9.033256, z: -6.0358467}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 858016670}
+  - {fileID: 1186292944}
+  - {fileID: 1247259462}
+  - {fileID: 543450651841994552}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1811256886
 GameObject:
   m_ObjectHideFlags: 0
@@ -9196,6 +10457,54 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   claveIngredienteParaSpawnear: Huesos
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
+--- !u!1 &1823107689
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1823107690}
+  - component: {fileID: 1823107691}
+  m_Layer: 0
+  m_Name: flores
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1823107690
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823107689}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 14.38, y: 0.107, z: 30.11}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 879087110}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1823107691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823107689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Hongos
   rotacionAleatoriaY: 1
   diaUltimaRecoleccion: -1
   objetoInstanciadoActual: {fileID: 0}
@@ -9283,6 +10592,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1601410537}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1833661432
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1833661433}
+  - component: {fileID: 1833661434}
+  m_Layer: 0
+  m_Name: Huesos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1833661433
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1833661432}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.015, y: 0.954, z: 90.503}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1849440021}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1833661434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1833661432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Mariposas
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
 --- !u!1 &1838816537
 GameObject:
   m_ObjectHideFlags: 0
@@ -9545,6 +10902,47 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1849440020
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1849440021}
+  m_Layer: 0
+  m_Name: Mariposas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1849440021
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849440020}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -13.29, y: -10.03, z: -43}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1298269340}
+  - {fileID: 1030476305}
+  - {fileID: 1833661433}
+  - {fileID: 669756347}
+  - {fileID: 976836623}
+  - {fileID: 1372595214}
+  - {fileID: 1033825946}
+  - {fileID: 848689993}
+  - {fileID: 1331993806}
+  - {fileID: 693682009}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1860258884
 GameObject:
   m_ObjectHideFlags: 0
@@ -10498,6 +11896,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 91.749, z: 0}
+--- !u!1 &2059417124
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2059417125}
+  - component: {fileID: 2059417126}
+  m_Layer: 0
+  m_Name: Plumas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2059417125
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2059417124}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.286, y: 0.938, z: 39.729}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1164806627}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2059417126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2059417124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Plumas
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
 --- !u!1 &2062838530 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4209636586430935928, guid: f49385d8919c6bd4ea1686e898d2a363, type: 3}
@@ -10986,6 +12432,54 @@ Transform:
   - {fileID: 613617710}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2132055028
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2132055029}
+  - component: {fileID: 2132055030}
+  m_Layer: 0
+  m_Name: flores (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2132055029
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2132055028}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -23.6, y: 0.078, z: 39.08}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 879087110}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2132055030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2132055028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9647eceb2693d91468825ba6c5db5f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngredienteParaSpawnear: Hongos
+  rotacionAleatoriaY: 1
+  diaUltimaRecoleccion: -1
+  objetoInstanciadoActual: {fileID: 0}
 --- !u!4 &2145057649
 Transform:
   m_ObjectHideFlags: 0
@@ -11336,13 +12830,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919132147834373506}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -4.379, y: -8.9, z: -31.156}
-  m_LocalScale: {x: 0.023335166, y: 0.03040452, z: 0.017274631}
+  m_LocalRotation: {x: 0.697651, y: -0.115251996, z: -0.11525188, w: 0.69765115}
+  m_LocalPosition: {x: 13.160578, y: 0.07194424, z: -25.120153}
+  m_LocalScale: {x: 0.023335168, y: 0.03040452, z: 0.01727463}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Father: {fileID: 1802846782}
+  m_LocalEulerAnglesHint: {x: 71.239, y: -90, z: -90}
 --- !u!4 &543450652914187861
 Transform:
   m_ObjectHideFlags: 0
@@ -14601,9 +16095,11 @@ SceneRoots:
   - {fileID: 651489597}
   - {fileID: 224752615}
   - {fileID: 1907225254}
-  - {fileID: 1601410537}
-  - {fileID: 1179412819}
-  - {fileID: 920207668}
   - {fileID: 543450652914187861}
-  - {fileID: 543450651841994552}
-  - {fileID: 1247259462}
+  - {fileID: 1601410537}
+  - {fileID: 879087110}
+  - {fileID: 1179412819}
+  - {fileID: 1849440021}
+  - {fileID: 920207668}
+  - {fileID: 1802846782}
+  - {fileID: 1164806627}

@@ -1,11 +1,22 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 
 public class GestorUI : MonoBehaviour
 {
+    // =========================================================================
+    // SINGLETON
+    // =========================================================================
+    public static GestorUI Instance { get; private set; }
+
+    // =========================================================================
+    // PROPIEDADES (Tus referencias originales + Reloj)
+    // =========================================================================
+
     [Header("UI Persistente")]
+    [Tooltip("El texto de TMPro que muestra la hora actual (HH:MM)")]
+    public TextMeshProUGUI textoReloj; // 👈 ¡REFERENCIA DEL RELOJ AÑADIDA!
     public TextMeshProUGUI textoDinero;
     public Image iconoMonedaDinero;
     public Sprite spriteMoneda;
@@ -13,11 +24,11 @@ public class GestorUI : MonoBehaviour
     public int DineroActual => dineroActual;
     public TextMeshProUGUI textoMielesRecolectadas;
 
-    [Header("UI Feedback D�a y Dinero")]
-    [Tooltip("El texto del d�a que aparece al inicio de cada ciclo.")]
+    [Header("UI Feedback Día y Dinero")]
+    [Tooltip("El texto del día que aparece al inicio de cada ciclo.")]
     public TextMeshProUGUI textoAnuncioDia;
 
-    [Tooltip("CanvasGroup del texto del d�a para controlar su alfa (fade).")]
+    [Tooltip("CanvasGroup del texto del día para controlar su alfa (fade).")]
     public CanvasGroup grupoCanvasTextoDia;
     public float duracionFadeDia = 1.0f;
     public float tiempoVisibleDia = 2.0f;
@@ -29,37 +40,49 @@ public class GestorUI : MonoBehaviour
     public float duracionFadeCambioDinero = 0.5f;
     public float tiempoVisibleCambioDinero = 1.5f;
 
-    [Header("UI Fundido Transici�n")]
+    [Header("UI Fundido Transición")]
     [Tooltip("Una Imagen UI de color negro que cubra toda la pantalla.")]
     public Image panelFundidoNegro;
     public float duracionFundidoNegro = 0.75f;
 
-    // --- NUEVAS VARIABLES: UI DE PEDIDOS DIN�MICOS ---
     [Header("UI de Pedidos")]
-    [Tooltip("El GameObject que es la burbuja del pedido (desact�valo por defecto).")]
     public GameObject uiPedidoGameObject;
     public TextMeshProUGUI textoNombrePedido;
     public Image iconoPedido;
 
     private Transform npcConPedidoTransform;
-    // ---------------------------------------------------
 
-    // --- NUEVAS VARIABLES PARA EL MENSAJE FLOTANTE ---
     [Header("Mensaje Flotante")]
     [Tooltip("El panel o texto para mostrar mensajes temporales.")]
     public GameObject panelMensajeFlotante;
     public TextMeshProUGUI textoMensajeFlotante;
     private Coroutine coMensajeFlotante;
-    // ---------------------------------------------------
+
+    // =========================================================================
+    // CICLO DE VIDA
+    // =========================================================================
+
+    void Awake()
+    {
+        // 1. Singleton Pattern
+        if (Instance == null)
+        {
+            Instance = this;
+            // No usamos DontDestroyOnLoad porque este objeto está en la escena de juego.
+        }
+        else
+        {
+            Debug.LogError("Ya existe una instancia de GestorUI. Destruyendo duplicado.");
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
         if (grupoCanvasTextoDia != null) grupoCanvasTextoDia.alpha = 0;
         if (grupoCanvasCambioDinero != null) grupoCanvasCambioDinero.alpha = 0;
 
-        // Desactivar la burbuja de pedido al inicio
         if (uiPedidoGameObject != null) uiPedidoGameObject.SetActive(false);
-        // Desactivar el panel de mensaje flotante al inicio
         if (panelMensajeFlotante != null) panelMensajeFlotante.SetActive(false);
 
         if (panelFundidoNegro != null)
@@ -70,17 +93,49 @@ public class GestorUI : MonoBehaviour
 
         if (iconoMonedaDinero != null && spriteMoneda != null) iconoMonedaDinero.sprite = spriteMoneda;
         if (iconoMonedaCambio != null && spriteMoneda != null) iconoMonedaCambio.sprite = spriteMoneda;
+
+        // Inicializar el dinero si el GestorJuego ya está presente
+        if (GestorJuego.Instance != null)
+        {
+            ActualizarUIDinero(GestorJuego.Instance.dineroActual);
+        }
+
+        // Inicializar el reloj a un valor por defecto
+        if (textoReloj != null)
+        {
+            textoReloj.text = "06:00";
+        }
     }
 
     void Update()
     {
-        if (npcConPedidoTransform != null && uiPedidoGameObject != null)
+        if (npcConPedidoTransform != null && uiPedidoGameObject != null && Camera.main != null)
         {
-            Vector3 posicionMundo = npcConPedidoTransform.position + new Vector3(0, 2.5f, 0);
+            Vector3 posicionMundo = npcConPedidoTransform.position + new Vector3(0, 2f, 0);
             Vector3 posicionPantalla = Camera.main.WorldToScreenPoint(posicionMundo);
             uiPedidoGameObject.transform.position = posicionPantalla;
         }
     }
+
+    // =========================================================================
+    // UI RELOJ 👈 ¡NUEVO MÉTODO!
+    // =========================================================================
+
+    /// <summary>
+    /// Actualiza el texto del reloj con la hora formateada (HH:MM).
+    /// Llamado por el TimeManager en cada frame.
+    /// </summary>
+    public void ActualizarRelojUI(string horaFormateada)
+    {
+        if (textoReloj != null)
+        {
+            textoReloj.text = horaFormateada;
+        }
+    }
+
+    // =========================================================================
+    // UI DINERO
+    // =========================================================================
 
     public void ActualizarUIDinero(int cantidad)
     {
@@ -112,9 +167,26 @@ public class GestorUI : MonoBehaviour
         else
         {
             Debug.Log("No hay suficiente dinero.");
+            MostrarMensajeTemporal("¡No tienes suficiente dinero!", 2.0f); // Feedback
             return false;
         }
     }
+
+    public void MostrarCambioDinero(int cantidad)
+    {
+        if (textoCambioDinero != null && grupoCanvasCambioDinero != null && iconoMonedaCambio != null)
+        {
+            string signo = (cantidad > 0) ? "+" : "";
+            textoCambioDinero.text = $"{signo}{cantidad}";
+            textoCambioDinero.color = (cantidad > 0) ? Color.green : Color.red;
+            iconoMonedaCambio.color = textoCambioDinero.color;
+            StartCoroutine(FundidoEntradaSalidaElemento(grupoCanvasCambioDinero, duracionFadeCambioDinero, tiempoVisibleCambioDinero));
+        }
+    }
+
+    // =========================================================================
+    // UI PEDIDOS (Burbuja)
+    // =========================================================================
 
     public void MostrarPedido(string nombre, Sprite icono, Transform npcTransform)
     {
@@ -138,8 +210,11 @@ public class GestorUI : MonoBehaviour
         npcConPedidoTransform = null;
     }
 
-    // --- NUEVO M�TODO PARA MOSTRAR MENSAJES FLOTANTES ---
-    public void MostrarMensajeFlotante(string mensaje, float duracion)
+    // =========================================================================
+    // UI MENSAJE TEMPORAL/FLOTANTE
+    // =========================================================================
+
+    public void MostrarMensajeTemporal(string mensaje, float duracion)
     {
         if (panelMensajeFlotante == null || textoMensajeFlotante == null)
         {
@@ -158,69 +233,59 @@ public class GestorUI : MonoBehaviour
         panelMensajeFlotante.SetActive(true);
         textoMensajeFlotante.text = mensaje;
 
-        // Puedes agregar un efecto de desvanecimiento si lo deseas
         CanvasGroup canvasGroup = panelMensajeFlotante.GetComponent<CanvasGroup>();
-        if (canvasGroup != null)
+        if (canvasGroup == null)
         {
-            canvasGroup.alpha = 0f;
-            float tiempoTranscurrido = 0f;
-            while (tiempoTranscurrido < 0.5f)
-            {
-                tiempoTranscurrido += Time.deltaTime;
-                canvasGroup.alpha = Mathf.Lerp(0f, 1f, tiempoTranscurrido / 0.5f);
-                yield return null;
-            }
+            // Intentar añadir CanvasGroup si no existe para el fade
+            canvasGroup = panelMensajeFlotante.AddComponent<CanvasGroup>();
+        }
+
+        // Fade In
+        float tiempoTranscurrido = 0f;
+        while (tiempoTranscurrido < 0.5f)
+        {
+            tiempoTranscurrido += Time.deltaTime;
+            canvasGroup.alpha = Mathf.Lerp(0f, 1f, tiempoTranscurrido / 0.5f);
+            yield return null;
         }
 
         yield return new WaitForSeconds(duracion);
 
-        if (canvasGroup != null)
+        // Fade Out
+        tiempoTranscurrido = 0f;
+        while (tiempoTranscurrido < 0.5f)
         {
-            float tiempoTranscurrido = 0f;
-            while (tiempoTranscurrido < 0.5f)
-            {
-                tiempoTranscurrido += Time.deltaTime;
-                canvasGroup.alpha = Mathf.Lerp(1f, 0f, tiempoTranscurrido / 0.5f);
-                yield return null;
-            }
+            tiempoTranscurrido += Time.deltaTime;
+            canvasGroup.alpha = Mathf.Lerp(1f, 0f, tiempoTranscurrido / 0.5f);
+            yield return null;
         }
 
         panelMensajeFlotante.SetActive(false);
     }
-    // ----------------------------------------------------
 
-    public void MostrarInicioDia(int dia)
-    {
-        if (textoAnuncioDia != null && grupoCanvasTextoDia != null)
-        {
-            textoAnuncioDia.text = $"D�A {dia}";
-            grupoCanvasTextoDia.gameObject.SetActive(true);
-            StartCoroutine(FundidoEntradaSalidaElemento(grupoCanvasTextoDia, duracionFadeDia, tiempoVisibleDia));
-        }
-        else
-        {
-            Debug.LogError("Falta TextoAnuncioDia o GrupoCanvasTextoDia en GestorUI");
-        }
-    }
+    // =========================================================================
+    // UI TRANSICIÓN DE DÍA (Fundido y Mensaje Central)
+    // =========================================================================
 
-    public void ActualizarTextoMieles(string texto)
+    public IEnumerator MostrarMensajeCentral(string mensaje, float tiempoVisible)
     {
-        if (textoMielesRecolectadas != null)
-            textoMielesRecolectadas.text = texto;
-        else
-            Debug.LogWarning("No se asign� textoMielesRecolectadas en GestorUI.");
-    }
-
-    public void MostrarCambioDinero(int cantidad)
-    {
-        if (textoCambioDinero != null && grupoCanvasCambioDinero != null && iconoMonedaCambio != null)
+        if (textoAnuncioDia == null || grupoCanvasTextoDia == null)
         {
-            string signo = (cantidad > 0) ? "+" : "";
-            textoCambioDinero.text = $"{signo}{cantidad}";
-            textoCambioDinero.color = (cantidad > 0) ? Color.green : Color.red;
-            iconoMonedaCambio.color = textoCambioDinero.color;
-            StartCoroutine(FundidoEntradaSalidaElemento(grupoCanvasCambioDinero, duracionFadeCambioDinero, tiempoVisibleCambioDinero));
+            Debug.LogError("Falta TextoAnuncioDia o GrupoCanvasTextoDia para el mensaje central.");
+            yield break;
         }
+
+        textoAnuncioDia.text = mensaje;
+        grupoCanvasTextoDia.gameObject.SetActive(true);
+
+        // FADE IN
+        yield return FundidoEntradaElemento(grupoCanvasTextoDia, duracionFadeDia);
+
+        // ESPERA VISIBLE
+        yield return new WaitForSeconds(tiempoVisible);
+
+        // FADE OUT
+        yield return FundidoSalidaElemento(grupoCanvasTextoDia, duracionFadeDia);
     }
 
     public IEnumerator FundidoANegro()
@@ -228,6 +293,9 @@ public class GestorUI : MonoBehaviour
         Debug.Log("Iniciando Fundido a Negro...");
         if (panelFundidoNegro == null) yield break;
         panelFundidoNegro.gameObject.SetActive(true);
+        // Asegura que el color de inicio sea transparente (alpha 0)
+        Color colorInicial = panelFundidoNegro.color;
+        panelFundidoNegro.color = new Color(colorInicial.r, colorInicial.g, colorInicial.b, 0f);
         yield return FundidoAlfaElemento(panelFundidoNegro, 0f, 1f, duracionFundidoNegro);
         Debug.Log("Fundido a Negro Completo.");
     }
@@ -236,14 +304,22 @@ public class GestorUI : MonoBehaviour
     {
         Debug.Log("Iniciando Fundido desde Negro...");
         if (panelFundidoNegro == null) yield break;
+        // Asegura que el color de inicio sea opaco (alpha 1)
+        Color colorInicial = panelFundidoNegro.color;
+        panelFundidoNegro.color = new Color(colorInicial.r, colorInicial.g, colorInicial.b, 1f);
         yield return FundidoAlfaElemento(panelFundidoNegro, 1f, 0f, duracionFundidoNegro);
         panelFundidoNegro.gameObject.SetActive(false);
         Debug.Log("Fundido desde Negro Completo.");
     }
 
+    // =========================================================================
+    // CORRUTINAS GENÉRICAS
+    // =========================================================================
+
     private IEnumerator FundidoEntradaSalidaElemento(CanvasGroup gc, float durFade, float durVisible)
     {
         float temporizador = 0f;
+        gc.gameObject.SetActive(true); // Asegurar que está activo
         while (temporizador < durFade)
         {
             temporizador += Time.deltaTime;
@@ -301,5 +377,17 @@ public class GestorUI : MonoBehaviour
             yield return null;
         }
         imagen.color = new Color(colorActual.r, colorActual.g, colorActual.b, alfaFinal);
+    }
+
+    // =========================================================================
+    // MÉTODOS MENORES
+    // =========================================================================
+
+    public void ActualizarTextoMieles(string texto)
+    {
+        if (textoMielesRecolectadas != null)
+            textoMielesRecolectadas.text = texto;
+        else
+            Debug.LogWarning("No se asignó textoMielesRecolectadas en GestorUI.");
     }
 }

@@ -3,22 +3,24 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Linq;
+using System; // Necesario para el Action
+
+// Asegúrate de que TimeManager.cs esté presente y contenga OnNewDaySequenceStarted
+// Si TimeManager no está definido, este script no compilará.
 
 public enum HoraDelDia { Manana, Tarde, Noche }
 
 [System.Serializable]
 public class StockInicialIngrediente
 {
-    // AHORA USA UN STRING (la clave) que coincide con el 'nombreItem' de ItemCatalog.
     [Tooltip("La clave del ingrediente (string) del ItemCatalog.")]
-    public string claveIngrediente; // <-- CORREGIDO
+    public string claveIngrediente;
     public int stockInicial = 5;
 }
 
 [System.Serializable]
 public class StockEntry
 {
-    // Usa el nombre del ítem (string) para la serialización del guardado.
     public string ingredienteAssetName;
     public int cantidad;
 }
@@ -38,8 +40,7 @@ public class GestorJuego : MonoBehaviour
     // =========================================================================
 
     [Header("Catálogo de Datos Centralizado")]
-    [Tooltip("Arrastra aquí tu ScriptableObject ItemCatalog para acceder a todos los datos de ítems.")]
-    public ItemCatalog catalogoMaestro; // <-- CAMPO CRUCIAL
+    public ItemCatalog catalogoMaestro;
 
     // =========================================================================
     // ESTADO Y CONFIGURACIÓN DEL JUEGO
@@ -50,14 +51,10 @@ public class GestorJuego : MonoBehaviour
     private int npcsGeneradosHoy = 0;
 
     [Header("Configuración Guardado y Spawn")]
-    [Tooltip("Punto donde aparece el jugador al INICIO DEL DÍA (Empty GO cerca de la cama)")]
     private string nombrePuntoSpawnSiguiente = "SpawnInicialCama";
 
     [Header("Inventario/Stock Ingredientes")]
-    // Usa la nueva estructura StockInicialIngrediente basada en string
     public List<StockInicialIngrediente> configuracionStockInicial;
-
-    // MODIFICADO: Ahora el diccionario usa 'string' (el nombre del ítem) como clave.
     public Dictionary<string, int> stockIngredientesTienda = new Dictionary<string, int>();
 
     [Header("Estado del Juego")]
@@ -66,11 +63,8 @@ public class GestorJuego : MonoBehaviour
     public HoraDelDia horaActual = HoraDelDia.Manana;
 
     [Header("Ciclo Día/Noche")]
-    [Tooltip("Material Skybox para la mañana")]
     public Material skyboxManana;
-    [Tooltip("Material Skybox para la tarde")]
     public Material skyboxTarde;
-    [Tooltip("Material Skybox para la noche")]
     public Material skyboxNoche;
 
     [Header("Economía")]
@@ -81,18 +75,15 @@ public class GestorJuego : MonoBehaviour
     public AudioClip sonidoGanarDinero;
     public AudioClip sonidoPerderDinero;
     public GestorCompradores gestorNPCs;
-    public TMPro.TextMeshProUGUI textoMielesRecolectadas;
+    public TMPro.TextMeshProUGUI textoMielesRecolectadas; // Si no lo usas, puedes eliminarlo
 
     [Header("Audio Ambiente")]
-    [Tooltip("Música o sonido para el MenuPrincipal")]
     public AudioClip musicaMenu;
-    [Tooltip("Música o sonido ambiente para el día (Mañana/Tarde)")]
     public AudioClip audioDia;
-    [Tooltip("Música o sonido ambiente para la noche (grillos?)")]
     public AudioClip audioNoche;
 
     private Light luzDireccionalPrincipal = null;
-    private bool durmiendo = false;
+    // ELIMINADA: La variable 'durmiendo' se gestiona en el TimeManager
 
     // =========================================================================
     // CICLO DE VIDA Y EVENTOS
@@ -100,6 +91,7 @@ public class GestorJuego : MonoBehaviour
 
     void Awake()
     {
+        // ... (Tu código original de Singleton y Awake)
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
@@ -108,7 +100,6 @@ public class GestorJuego : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
-            // 1. Inicializa el Catálogo antes de cargar cualquier dato que dependa de él.
             if (catalogoMaestro != null)
             {
                 catalogoMaestro.Initialize();
@@ -132,11 +123,13 @@ public class GestorJuego : MonoBehaviour
     void OnDisable()
     {
         SceneManager.sceneLoaded -= EscenaCargada;
+        // 🚨 CRUCIAL: Desuscribir de los eventos del TimeManager para evitar errores al destruir.
         if (TimeManager.Instance != null)
         {
             TimeManager.Instance.OnDayStart -= OnNewDayStarted;
             TimeManager.Instance.OnNightStart -= OnNewNightStarted;
-            TimeManager.Instance.OnNightEnd -= OnNightEnded;
+            // ❌ ELIMINADO: OnNightEnd ya no es necesario aquí. Usamos OnNewDaySequenceStarted.
+            TimeManager.Instance.OnNewDaySequenceStarted -= OnNewDaySequenceStarted; // <- AÑADIDO
         }
     }
 
@@ -144,9 +137,10 @@ public class GestorJuego : MonoBehaviour
     {
         if (TimeManager.Instance != null)
         {
+            // Suscripción de eventos para el flujo del juego
             TimeManager.Instance.OnDayStart += OnNewDayStarted;
             TimeManager.Instance.OnNightStart += OnNewNightStarted;
-            TimeManager.Instance.OnNightEnd += OnNightEnded;
+            TimeManager.Instance.OnNewDaySequenceStarted += OnNewDaySequenceStarted; // <- CRUCIAL
         }
         else
         {
@@ -156,6 +150,7 @@ public class GestorJuego : MonoBehaviour
         Debug.Log("GestorJuego iniciado, Skybox inicial aplicado.");
     }
 
+    // ... (Tu código original de CargarEscenaConPantallaDeCarga y EscenaCargada)
     public static void CargarEscenaConPantallaDeCarga(string nombreEscenaACargar)
     {
         if (string.IsNullOrEmpty(nombreEscenaACargar))
@@ -163,8 +158,6 @@ public class GestorJuego : MonoBehaviour
             Debug.LogError("Se intentó cargar una escena con nombre vacío.");
             return;
         }
-        // Asume que ControladorPantallaCarga.escenaACargar está definido en otro lugar
-        // ControladorPantallaCarga.escenaACargar = nombreEscenaACargar;
         if (GestorJuego.Instance != null)
             GestorJuego.Instance.GuardarDatos();
         SceneManager.LoadScene("PantallaCarga");
@@ -268,25 +261,66 @@ public class GestorJuego : MonoBehaviour
             Debug.LogWarning($"GestorNPCs no encontrado en la escena {escena.name}.");
         }
     }
+    // ... (Fin de EscenaCargada)
 
     // --- MÉTODOS para manejar los eventos del TimeManager ---
+
+    /// <summary>
+    /// Se llama al inicio de la TRANSICIÓN (antes del fade a negro).
+    /// Su trabajo es: Bloquear input, guardar datos y mostrar el mensaje de desmayo si aplica.
+    /// </summary>
+    private void OnNewDaySequenceStarted()
+    {
+        Debug.Log("GestorJuego: TimeManager inicia secuencia de fin de ciclo. BLOQUEANDO jugador y GUARDANDO.");
+
+        // 1. Bloquear input del jugador (preparación para el fade)
+        ControladorJugador jugador = FindObjectOfType<ControladorJugador>();
+        if (jugador != null)
+        {
+            jugador.HabilitarMovimiento(false);
+        }
+        else
+        {
+            Debug.LogError("No se encontró jugador para bloquear.");
+        }
+
+        // 2. Guardar el estado del juego
+        GuardarDatos();
+
+        // 3. Manejar desmayo visual si el jugador NO durmió manualmente
+        if (TimeManager.Instance != null && !TimeManager.Instance.durmioManualmente)
+        {
+            // Mostrar mensaje flotante de desmayo (la duración del fade la maneja TimeManager)
+            if (gestorUI != null) gestorUI.MostrarMensajeTemporal("¡Te desmayaste por el cansancio!", 3f);
+        }
+    }
+
+    /// <summary>
+    /// Se llama DESPUÉS de que el fade ha terminado (al comienzo real del nuevo día).
+    /// Su trabajo es: Actualizar estado de NPCs, reposicionar jugador y DESBLOQUEAR.
+    /// </summary>
     private void OnNewDayStarted()
     {
-        Debug.Log("GestorJuego: ¡El TimeManager ha iniciado un nuevo día!");
-        diaActual = TimeManager.Instance.currentDay;
+        Debug.Log("GestorJuego: ¡El TimeManager ha iniciado un nuevo día! Reposicionando jugador.");
+
+        // 1. Actualizar estado del juego
+        if (TimeManager.Instance != null)
+        {
+            diaActual = TimeManager.Instance.currentDay;
+        }
         horaActual = HoraDelDia.Manana;
 
-        GuardarDatos();
         npcsGeneradosHoy = 0;
         if (gestorNPCs != null) gestorNPCs.ReiniciarParaNuevoDia();
 
+        // 2. Actualizar visuales y audio
         ActualizarAparienciaCiclo(true);
         if (GestorAudio.Instancia != null) GestorAudio.Instancia.CambiarMusicaFondo(audioDia);
-        if (gestorUI != null) gestorUI.MostrarInicioDia(diaActual);
+        // El mensaje de inicio de día (DÍA X) se maneja ahora en el TimeManager, NO AQUÍ.
         GameObject cartel = GameObject.Find("cartel");
         if (cartel != null) cartel.SetActive(true);
 
-        // Lógica de spawn del jugador cerca de la cama
+        // 3. Reposicionar y DESBLOQUEAR el jugador
         ControladorJugador jugador = FindObjectOfType<ControladorJugador>();
         if (jugador != null)
         {
@@ -298,14 +332,14 @@ public class GestorJuego : MonoBehaviour
                 jugador.transform.position = puntoCama.transform.position;
                 jugador.transform.rotation = puntoCama.transform.rotation;
                 if (cc != null) cc.enabled = true;
-                jugador.GetComponent<ControladorJugador>()?.ResetearVistaVertical();
+                jugador.ResetearVistaVertical();
             }
             else { Debug.LogError("¡No se encontró 'SpawnInicialCama'!"); }
+
+            // DESBLOQUEAR MOVIMIENTO
+            jugador.HabilitarMovimiento(true);
         }
         else { Debug.LogError("No se encontró jugador para reposicionar."); }
-
-        ControladorJugador jugadorFinal = FindObjectOfType<ControladorJugador>();
-        if (jugadorFinal != null) jugadorFinal.HabilitarMovimiento(true);
     }
 
     private void OnNewNightStarted()
@@ -319,21 +353,10 @@ public class GestorJuego : MonoBehaviour
         if (cartel != null) cartel.SetActive(false);
     }
 
-    private void OnNightEnded()
-    {
-        // Verifica si el jugador durmió manualmente usando el flag del TimeManager
-        if (TimeManager.Instance.durmioManualmente)
-        {
-            Debug.Log("GestorJuego: La noche terminó porque el jugador durmió. Pasando al nuevo día.");
-            // Si el jugador durmió, la secuencia de dormir se encarga de la transición
-            StartCoroutine(SecuenciaDormir());
-        }
-        else
-        {
-            Debug.Log("GestorJuego: ¡El jugador no durmió! Ejecutando secuencia de desmayo.");
-            StartCoroutine(SecuenciaDesmayo());
-        }
-    }
+    // ❌ ELIMINADO: OnNightEnded ya no necesita manejar el StartCoroutine de SecuenciaDormir/Desmayo.
+    // La transición es iniciada por el TimeManager en su corrutina HandleDayEndTransition/TransitionToNewDay
+    // que a su vez llama a OnNewDaySequenceStarted (definido arriba) para la lógica de bloqueo/guardado.
+    // private void OnNightEnded() { ... }
 
     // --- MÉTODOS DE ECONOMÍA Y FLUJO DE JUEGO ---
 
@@ -354,52 +377,23 @@ public class GestorJuego : MonoBehaviour
 
     public void IrADormir()
     {
-        if (durmiendo) return;
+        // ❌ ELIMINADO: if (durmiendo) return; // La variable 'durmiendo' fue eliminada
 
         Debug.Log("Intentando ir a dormir (llamado desde interacción)...");
 
-        TimeManager.Instance.RegistrarDormir();
-    }
-
-    private IEnumerator SecuenciaDormir()
-    {
-        if (durmiendo) yield break;
-        durmiendo = true;
-
-        try
+        // 🚨 CRUCIAL: El GestorJuego solo avisa. El TimeManager maneja TODA la secuencia de transición.
+        if (TimeManager.Instance != null)
         {
-            Debug.Log("Iniciando secuencia de sueño...");
-            ControladorJugador jugador = FindObjectOfType<ControladorJugador>();
-            if (jugador != null) jugador.HabilitarMovimiento(false);
-            if (gestorUI != null) yield return StartCoroutine(gestorUI.FundidoANegro());
-
-            if (gestorUI != null) yield return StartCoroutine(gestorUI.FundidoDesdeNegro());
-            if (jugador != null) jugador.HabilitarMovimiento(true);
-
-            Debug.Log("Secuencia de sueño completada.");
-        }
-        finally
-        {
-            durmiendo = false;
+            TimeManager.Instance.RegistrarDormir();
         }
     }
 
-    private IEnumerator SecuenciaDesmayo()
-    {
-        Debug.Log("¡El jugador se desmayó!");
-
-        if (gestorUI != null)
-        {
-            gestorUI.MostrarMensajeFlotante("Te desmayaste...", 3f);
-        }
-
-        yield return new WaitForSeconds(3f);
-
-        StartCoroutine(SecuenciaDormir());
-    }
+    // ❌ ELIMINADOS: Se elimina toda la lógica de fades y transición del GestorJuego.
+    // private IEnumerator SecuenciaDormir() { ... }
+    // private IEnumerator SecuenciaDesmayo() { ... }
 
     // --- MÉTODOS DE ESTADO ---
-
+    // ... (Tu código original de ObtenerNPCsGeneradosHoy, RegistrarNPCGeneradoHoy, PuedeDormir)
     public int ObtenerNPCsGeneradosHoy()
     {
         return npcsGeneradosHoy;
@@ -472,16 +466,7 @@ public class GestorJuego : MonoBehaviour
         }
     }
 
-    // =========================================================================
-    // CÓDIGO CLAVE: Obtener Prefab desde el Catálogo
-    // =========================================================================
-
-    /// <summary>
-    /// Utiliza el ItemCatalog centralizado para obtener el GameObject Prefab
-    /// de la versión RECOLECTABLE de un ingrediente, dada su clave.
-    /// </summary>
-    /// <param name="claveIngrediente">La clave (string) del ingrediente.</param>
-    /// <returns>El Prefab del GameObject recolectable, o null si no existe o no es un ingrediente.</returns>
+    // ... (Tu código original de ObtenerPrefabRecolectable, ObtenerStockTienda, ConsumirStockTienda, AnadirStockTienda)
     public GameObject ObtenerPrefabRecolectable(string claveIngrediente)
     {
         if (catalogoMaestro == null)
@@ -494,7 +479,6 @@ public class GestorJuego : MonoBehaviour
 
         if (data == null)
         {
-            // Debug.LogWarning($"Catálogo: No se encontró ItemData para la clave: '{claveIngrediente}'."); // Evitar spam si el spawn falla intencionalmente
             return null;
         }
 
@@ -513,10 +497,6 @@ public class GestorJuego : MonoBehaviour
         return data.prefabRecolectable;
     }
 
-
-    // =========================================================================
-    // MÉTODOS DE STOCK (USANDO STRING)
-    // =========================================================================
 
     public int ObtenerStockTienda(string nombreIngrediente)
     {
@@ -566,17 +546,14 @@ public class GestorJuego : MonoBehaviour
         }
         else
         {
-            // Opcional: podrías validar que exista en el ItemCatalog aquí.
             stockIngredientesTienda.Add(nombreIngrediente, cantidadAAnadir);
             Debug.LogWarning($"Ingrediente '{nombreIngrediente}' no estaba en el stock inicial, añadido ahora.");
         }
         Debug.Log($"Añadido +{cantidadAAnadir} de {nombreIngrediente} al stock. Nuevo total: {stockIngredientesTienda[nombreIngrediente]}");
     }
 
-    // =========================================================================
-    // GUARDADO / CARGADO
-    // =========================================================================
-
+    // --- GUARDADO / CARGADO ---
+    // ... (Tu código original de GuardarDatos, CargarDatos, InicializarValoresPorDefecto, SetSiguientePuntoSpawn)
     public void GuardarDatos()
     {
         Debug.LogWarning($"--- GUARDANDO DATOS --- Día: {diaActual}, Hora: {horaActual}, Dinero: {dineroActual}");
@@ -586,7 +563,6 @@ public class GestorJuego : MonoBehaviour
         PlayerPrefs.SetInt("HoraActual", (int)horaActual);
 
         StockDataWrapper stockWrapper = new StockDataWrapper();
-        // Usa el string (nombre del ítem) como clave para guardar
         foreach (var kvp in stockIngredientesTienda)
         {
             stockWrapper.stockList.Add(new StockEntry { ingredienteAssetName = kvp.Key, cantidad = kvp.Value });
@@ -602,7 +578,6 @@ public class GestorJuego : MonoBehaviour
     {
         Debug.LogWarning("--- INICIANDO CARGA DE DATOS ---");
 
-        // 1. Siempre inicializar el stock con la CONFIGURACIÓN INICIAL por defecto.
         InicializarValoresPorDefecto(mantenerDatosDeGuardado: true);
 
         if (!PlayerPrefs.HasKey("ExisteGuardado") || PlayerPrefs.GetInt("ExisteGuardado") == 0)
@@ -611,14 +586,10 @@ public class GestorJuego : MonoBehaviour
             return;
         }
 
-        // Si existe guardado, sobreescribimos los valores por defecto con los guardados
-
-        // Carga de datos simples
         diaActual = PlayerPrefs.GetInt("DiaActual", 1);
         dineroActual = PlayerPrefs.GetInt("DineroActual", 50);
         horaActual = (HoraDelDia)PlayerPrefs.GetInt("HoraActual", (int)HoraDelDia.Manana);
 
-        // 2. Cargar Stock GUARDADO y SOBREESCRIBIR los valores por defecto.
         string stockJson = PlayerPrefs.GetString("StockIngredientes", "{}");
         StockDataWrapper stockWrapper = JsonUtility.FromJson<StockDataWrapper>(stockJson);
 
@@ -634,7 +605,6 @@ public class GestorJuego : MonoBehaviour
                 }
                 else
                 {
-                    // Si es un nuevo ítem que no estaba en la lista inicial, lo añadimos.
                     stockIngredientesTienda.Add(nombreIngrediente, entry.cantidad);
                 }
             }
@@ -653,7 +623,7 @@ public class GestorJuego : MonoBehaviour
 
     private void InicializarValoresPorDefecto(bool mantenerDatosDeGuardado = false)
     {
-        if (!mantenerDatosDeGuardado) // Solo si es una partida totalmente nueva
+        if (!mantenerDatosDeGuardado)
         {
             Debug.Log("Inicializando valores por defecto para Nueva Partida...");
             diaActual = 1;
@@ -663,13 +633,11 @@ public class GestorJuego : MonoBehaviour
             npcsGeneradosHoy = 0;
         }
 
-        // Siempre inicializar el diccionario de stock con la configuración de la lista
         stockIngredientesTienda.Clear();
         if (configuracionStockInicial != null)
         {
             foreach (var config in configuracionStockInicial)
             {
-                // CORRECCIÓN: Usamos directamente la 'claveIngrediente' del string.
                 if (!string.IsNullOrEmpty(config.claveIngrediente))
                 {
                     string nombre = config.claveIngrediente;

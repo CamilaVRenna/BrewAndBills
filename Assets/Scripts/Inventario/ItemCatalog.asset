@@ -29,7 +29,7 @@ MonoBehaviour:
     rotacionEnMano: {x: 0, y: 0, z: 0}
     prefabRecolectable: {fileID: 983028436734943655, guid: 7f32996aa477a23418420aa445be77ed, type: 3}
   - tipoDeItem: 0
-    nombreItem: Hongo
+    nombreItem: Hongos
     prefabModelo3D: {fileID: 967169137211902822, guid: 9cc7922b09740344d80d78de5d9f3c68, type: 3}
     rotacionEnMano: {x: 0, y: 0, z: 0}
     prefabRecolectable: {fileID: 8059241282763327235, guid: ef85c45af897f1a48bf9fb5e6bfc2619, type: 3}
@@ -101,5 +101,10 @@ MonoBehaviour:
   - tipoDeItem: 4
     nombreItem: Hacha
     prefabModelo3D: {fileID: 2728171091397104710, guid: 3aef32f34d64c5d4b99c2971d45e3eb5, type: 3}
+    rotacionEnMano: {x: 0, y: 0, z: 0}
+    prefabRecolectable: {fileID: 2728171091397104710, guid: 3aef32f34d64c5d4b99c2971d45e3eb5, type: 3}
+  - tipoDeItem: 3
+    nombreItem: Pocion Fallida
+    prefabModelo3D: {fileID: 1430042311489665174, guid: 957444ca6f25cc845903f0c3cb17a3b1, type: 3}
     rotacionEnMano: {x: 0, y: 0, z: 0}
     prefabRecolectable: {fileID: 2728171091397104710, guid: 3aef32f34d64c5d4b99c2971d45e3eb5, type: 3}
