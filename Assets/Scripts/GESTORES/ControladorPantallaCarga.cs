@@ -1,90 +1,78 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI; // Para Slider/Image
-using TMPro;         // Para TextMeshProUGUI
+using UnityEngine.UI;
+using TMPro;
 
 public class ControladorPantallaCarga : MonoBehaviour
 {
     [Header("UI Elementos")]
-    // Elige una de las siguientes dos (barra o slider) y comenta/borra la otra
-    // public Slider barraProgresoSlider;
-    public Image barraProgresoImagen; // Asigna la imagen con Fill Method = Horizontal
+    public Image barraProgresoImagen;
     public TextMeshProUGUI textoProgreso;
-    // public TextMeshProUGUI textoTips; // Opcional
 
-    // Variable est·tica para saber quÈ cargar
-    // Otros scripts pondr·n el nombre de la escena aquÌ ANTES de cargar LoadingScreen
-    public static string escenaACargar = "";
-
-    // Lista opcional de tips
-    // public string[] tips = { "Consejo 1...", "Consejo 2...", "Recuerda..." };
+    // ‚ùå ELIMINADA: La variable est√°tica 'escenaACargar' ya no es necesaria.
+    // public static string escenaACargar = "";
 
     void Start()
     {
-        // Asegurarse de que la barra empieza vacÌa
         if (barraProgresoImagen != null) barraProgresoImagen.fillAmount = 0;
-        // if (barraProgresoSlider != null) barraProgresoSlider.value = 0;
 
-        // Mostrar un tip inicial (opcional)
-        // if (textoTips != null && tips.Length > 0) textoTips.text = tips[Random.Range(0, tips.Length)];
+        // üîë CR√çTICO: Obtener el destino del Gestor de Carga persistente (Singleton).
+        if (GestorCarga.Instancia == null)
+        {
+            Debug.LogError("üö® ERROR CR√çTICO: GestorCarga no encontrado. La carga no puede continuar.");
+            return;
+        }
 
-        // Iniciar la carga asÌncrona si se especificÛ una escena
-        if (!string.IsNullOrEmpty(escenaACargar))
-        {
-            StartCoroutine(CargarEscenaAsincrono());
-        }
-        else
-        {
-            Debug.LogError("LoadingScreenController: No se especificÛ ninguna escena para cargar (escenaACargar est· vacÌa).");
-            // Quiz·s cargar men˙ principal por defecto?
-            // StartCoroutine(CargarEscenaAsincrono("MainMenu"));
-        }
+        // Obtener el destino real (que ser√° "MenuPrincipal" o "EscenarioPrueba")
+        string escenaDestino = GestorCarga.Instancia.ObtenerDestino();
+
+        Debug.Log($"[ControladorPantallaCarga] Destino de carga obtenido de Singleton: {escenaDestino}.");
+
+        StartCoroutine(CargarEscenaAsincrono(escenaDestino));
     }
 
-    IEnumerator CargarEscenaAsincrono()
+    IEnumerator CargarEscenaAsincrono(string escenaDestino) // Modificado para aceptar el destino
     {
         yield return null; // Esperar un frame para que la UI inicial se dibuje
 
-        AsyncOperation operacion = SceneManager.LoadSceneAsync(escenaACargar);
+        AsyncOperation operacion = SceneManager.LoadSceneAsync(escenaDestino);
 
-        // Evitar que la escena se active autom·ticamente al llegar al 90%
         operacion.allowSceneActivation = false;
 
-        Debug.Log($"Empezando carga asÌncrona de: {escenaACargar}");
+        Debug.Log($"Empezando carga as√≠ncrona de: {escenaDestino}");
 
-        // Mientras la escena se carga en segundo plano (hasta 0.9)
+        // Bucle de progreso
         while (operacion.progress < 0.9f)
         {
-            // El progreso va de 0.0 a 0.9, lo escalamos a 0.0 - 1.0
             float progreso = Mathf.Clamp01(operacion.progress / 0.9f);
 
-            // Actualizar UI
             if (barraProgresoImagen != null) barraProgresoImagen.fillAmount = progreso;
-            // if (barraProgresoSlider != null) barraProgresoSlider.value = progreso;
             if (textoProgreso != null) textoProgreso.text = $"Cargando... {progreso * 100f:F0}%";
 
-            // Opcional: Cambiar tips de vez en cuando
-            // if (textoTips != null && Random.value < 0.01f) // PequeÒa probabilidad cada frame
-            //     textoTips.text = tips[Random.Range(0, tips.Length)];
-
-            yield return null; // Esperar al siguiente frame
+            yield return null;
         }
 
-        Debug.Log($"Carga asÌncrona completada para: {escenaACargar}. Esperando activaciÛn...");
+        Debug.Log($"Carga as√≠ncrona completada para: {escenaDestino}. FORZANDO ACTIVACI√ìN...");
 
-        // Actualizar UI al 100% (o mostrar mensaje)
+        // Mostrar progreso completo en la UI
         if (barraProgresoImagen != null) barraProgresoImagen.fillAmount = 1f;
-        // if (barraProgresoSlider != null) barraProgresoSlider.value = 1f;
-        if (textoProgreso != null) textoProgreso.text = "°Listo!"; // O "Presiona una tecla..."
+        if (textoProgreso != null) textoProgreso.text = "¬°Listo!";
 
-        // OPCIONAL: Esperar un poco o a que el jugador presione una tecla
-        // yield return new WaitForSeconds(0.5f);
-        // while (!Input.anyKeyDown) { yield return null; }
+        yield return null;
 
-        // Permitir que la escena cargada se active y se muestre
+        // üîë Activaci√≥n de la escena
         operacion.allowSceneActivation = true;
 
-        // El LoadingScreen se destruir· al cargar la nueva escena
+        // Esperar expl√≠citamente a que la operaci√≥n termine por completo
+        while (!operacion.isDone)
+        {
+            yield return null;
+        }
+
+        // ‚ùå ELIMINADA: La limpieza de la variable est√°tica ya no es necesaria.
+        Debug.Log("[ControladorPantallaCarga] Carga finalizada.");
+
+        // El LoadingScreen se destruir√° autom√°ticamente al cargar la nueva escena
     }
 }

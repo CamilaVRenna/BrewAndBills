@@ -76,7 +76,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6921289372138686488}
   - component: {fileID: 997232528204279767}
+  - component: {fileID: 3808270572192589381}
   - component: {fileID: 8109460929309255353}
+  - component: {fileID: 7683050032331588669}
   - component: {fileID: 5016890724982552205}
   - component: {fileID: 7735711982445699621}
   - component: {fileID: 5257061120198382299}
@@ -97,7 +99,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.7, y: 1.7, z: 1.7}
+  m_LocalScale: {x: 5.282793, y: 5.282793, z: 5.282793}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1428007840818112398}
@@ -147,6 +149,21 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3808270572192589381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 109332692260459132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f5d18a7ceffb5a4e964e6006a0b657d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabBocadilloUI: {fileID: 777226578507610065, guid: 5ef76a26305b14142b72f59d1cab5cbc, type: 3}
+  puntoAnclajeBocadillo: {fileID: 1428007840818112398}
+  duracionFeedback: 3
 --- !u!114 &8109460929309255353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,17 +193,26 @@ MonoBehaviour:
   mensajeSegundoFallo: "\xA1Nah! \xA1Me voy de aqu\xED!"
   sonidoPocionCorrecta: {fileID: 8300000, guid: 4d84db29c7205384aa149cb80e15e32d, type: 3}
   sonidoPocionIncorrecta: {fileID: 8300000, guid: 9148d7987c7ce864bbbc44f1785c17a6, type: 3}
-  prefabBocadilloUI: {fileID: 777226578507610065, guid: 5ef76a26305b14142b72f59d1cab5cbc, type: 3}
-  puntoAnclajeBocadillo: {fileID: 1428007840818112398}
-  duracionFeedback: 3
-  tiempoMaximoEsperaAtencion: 30
-  mensajeTiempoEsperaAgotado: "\xA1Por lo que veo no tienen empleados, adi\xF3s!"
-  tiempoMaximoEspera: 60
-  mensajeTiempoAgotado: "\xA1Eres demasiado lento, adi\xF3s!"
   sonidoTiempoAgotado: {fileID: 8300000, guid: f300162968ca0164a8f90c57e3a57fc1, type: 3}
-  textoTemporizadorCanvas: {fileID: 0}
-  recetaInvisibilidad: {fileID: 11400000, guid: 697ce57497cbae341b5a00165177cc6e, type: 2}
+  mensajeTiempoEsperaAgotado: "\xA1Por lo que veo no tienen empleados, adi\xF3s!"
+  mensajeTiempoAgotado: "\xA1Eres demasiado lento, adi\xF3s!"
+  tiempoMaximoEsperaAtencion: 30
+  tiempoMaximoEspera: 60
   mostrarBocadilloAlIniciar: 1
+--- !u!114 &7683050032331588669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 109332692260459132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0d716a883fbfa849a7d888d706e6f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destinoSalida: {x: 0, y: 0, z: 0}
+  puntoMiradaVentana: {fileID: 5639656382058085087, guid: 320bcab608c89534a995c7b02b3c3a2b, type: 3}
 --- !u!95 &5016890724982552205
 Animator:
   serializedVersion: 5
@@ -196,7 +222,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 109332692260459132}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: 7f5bc7a0a72bcc74ba275ff25c69268b, type: 3}
   m_Controller: {fileID: 9100000, guid: fd85572325a4a5e48823ffeea1046d8a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -239,7 +265,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.15
-  m_Speed: 3.5
+  m_Speed: 7
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

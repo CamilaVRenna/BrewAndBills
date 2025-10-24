@@ -101,8 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c93ad5db2c915840ae9740e06e41903, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  datosIngrediente: {fileID: 11400000, guid: e3e8cf6babe0f074aae6146464a28efa, type: 2}
-  cantidad: 20
+  claveIngrediente: Flores
   objetoModelo: {fileID: 4112955051234162344, guid: 9186cc6dd9d9fd745b48d6b85fab607a, type: 3}
   prefabCanvasInfo: {fileID: 338789030519252024, guid: 1f725666586f02c4a86b9596f77dd0c0, type: 3}
 --- !u!65 &1940226613514407876
@@ -124,5 +123,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.013363132, y: 0.0074502598, z: 0.013700134}
-  m_Center: {x: -0.00015875742, y: -0.0013220033, z: 0.00033994784}
+  m_Size: {x: 0.013363136, y: 0.0074502598, z: 0.013700134}
+  m_Center: {x: 0, y: 0, z: 0}

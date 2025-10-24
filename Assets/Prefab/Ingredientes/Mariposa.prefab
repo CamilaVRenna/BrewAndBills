@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1118493476137961528}
   - component: {fileID: 5933954984509883001}
   - component: {fileID: 6234813354748696854}
+  - component: {fileID: 1144796965123937979}
   m_Layer: 0
   m_Name: Mariposa
   m_TagString: Untagged
@@ -26,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 533020922383877473}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.47730476, y: 0.5217089, z: 0.52170885, w: 0.47730485}
+  m_LocalRotation: {x: 0.04473079, y: -0.91272044, z: -0.24768977, w: -0.32185474}
   m_LocalPosition: {x: 0.4477406, y: 0.9176674, z: 14.814447}
   m_LocalScale: {x: 6.0485563, y: 6.048554, z: 6.048556}
   m_ConstrainProportionsScale: 0
@@ -83,3 +84,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1144796965123937979
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 533020922383877473}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.026105078, y: 0.023870084, z: 0.031795386}
+  m_Center: {x: -0.0046590227, y: -0.00054131047, z: 0.0011193751}

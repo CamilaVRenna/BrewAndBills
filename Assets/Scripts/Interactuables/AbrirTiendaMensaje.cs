@@ -1,21 +1,23 @@
-using System.Collections;
 using UnityEngine;
+using System.Collections;
 using TMPro;
 
-public class AbrirTiendaMensaje : MonoBehaviour
+// Este componente debe ser añadido al objeto del cartel.
+public class ControladorCartelTienda : MonoBehaviour
 {
     // Asigna tu GestorCompradores aquí desde el Inspector
     public GestorCompradores gestorCompradores;
 
     [Header("Configuraci\u00f3n")]
-    public string tagJugador = "Player";
-    public string mensajeAbrir = "Presiona E para abrir la tienda";
-    public string mensajeCerrar = "Presiona E para cerrar la tienda";
+    [Tooltip("Tiempo que tarda la rotaci\u00f3n en segundos.")]
+    public float tiempoRotacion = 0.5f;
 
-    [Header("UI")]
-    public TextMeshProUGUI textoMensaje;
+    [Header("UI (Informaci\u00f3n de Raycast)")]
+    public GameObject uiInfoObjeto; // Panel o TextMeshPro a mostrar al mirar.
+    public TextMeshProUGUI textoInteraccion; // Texto dentro del UI (Ej: [E] Abrir)
 
-    private bool jugadorEnArea = false;
+    private bool estaRotando = false;
+    private bool tiendaAbiertaLocal = false; // Estado local para manejar la rotación
 
     void Awake()
     {
@@ -23,64 +25,113 @@ public class AbrirTiendaMensaje : MonoBehaviour
         {
             gestorCompradores = FindObjectOfType<GestorCompradores>();
         }
+
+        // Inicializa el estado local y la rotación inicial
+        if (gestorCompradores != null)
+        {
+            tiendaAbiertaLocal = gestorCompradores.tiendaAbierta;
+            // Asegura que la rotación inicial corresponda al estado actual.
+            float anguloInicial = tiendaAbiertaLocal ? 180f : 0f;
+            transform.rotation = Quaternion.Euler(transform.eulerAngles.x, anguloInicial, transform.eulerAngles.z);
+        }
+
+        // Oculta la UI al inicio si está asignada
+        if (uiInfoObjeto != null)
+        {
+            uiInfoObjeto.SetActive(false);
+        }
     }
 
-    private void Update()
-    {
-        if (jugadorEnArea && Input.GetKeyDown(KeyCode.E))
-        {
-            if (gestorCompradores == null)
-            {
-                Debug.LogError("El GestorCompradores no est\u00e1 asignado ni se pudo encontrar.");
-                return;
-            }
+    // --- Métodos de Interacción por Raycast ---
 
-            // Si la tienda est\u00e1 abierta, la cerramos. Si no, la abrimos.
-            if (gestorCompradores.tiendaAbierta)
+    public void MostrarInformacion()
+    {
+        if (uiInfoObjeto != null)
+        {
+            if (gestorCompradores == null) return;
+
+            // Sincroniza el estado local con el gestor ANTES de mostrar el mensaje.
+            tiendaAbiertaLocal = gestorCompradores.tiendaAbierta;
+
+            if (tiendaAbiertaLocal)
             {
-                gestorCompradores.CerrarTienda();
+                textoInteraccion.text = "[E] Cerrar Tienda";
             }
             else
             {
-                gestorCompradores.AbrirTienda();
+                textoInteraccion.text = "[E] Abrir Tienda";
             }
-
-            // Actualizamos el mensaje inmediatamente
-            ActualizarMensajeUI();
+            uiInfoObjeto.SetActive(true);
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void OcultarInformacion()
     {
-        if (other.CompareTag(tagJugador) && textoMensaje != null)
+        if (uiInfoObjeto != null)
         {
-            jugadorEnArea = true;
-            ActualizarMensajeUI();
-            textoMensaje.gameObject.SetActive(true);
+            uiInfoObjeto.SetActive(false);
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    // --- Método llamado por InteraccionJugador al presionar E ---
+
+    public void Interactuar()
     {
-        if (other.CompareTag(tagJugador) && textoMensaje != null)
+        if (gestorCompradores == null)
         {
-            jugadorEnArea = false;
-            textoMensaje.gameObject.SetActive(false);
+            Debug.LogError("El GestorCompradores no est\u00e1 asignado ni se pudo encontrar.");
+            return;
         }
-    }
 
-    private void ActualizarMensajeUI()
-    {
-        if (gestorCompradores == null || textoMensaje == null) return;
+        if (estaRotando) return; // Ignora si ya está en rotación
 
-        // Comprobamos el estado de la tienda y cambiamos el mensaje
-        if (gestorCompradores.tiendaAbierta)
+        // Invertimos el estado local
+        tiendaAbiertaLocal = !tiendaAbiertaLocal;
+
+        // Llamamos al gestor y comenzamos la animación de rotación
+        if (tiendaAbiertaLocal)
         {
-            textoMensaje.text = mensajeCerrar;
+            gestorCompradores.AbrirTienda();
+            StartCoroutine(RotarObjeto(180f));
         }
         else
         {
-            textoMensaje.text = mensajeAbrir;
+            gestorCompradores.CerrarTienda();
+            StartCoroutine(RotarObjeto(0f));
         }
+
+        // Actualizamos el mensaje inmediatamente
+        MostrarInformacion();
+    }
+
+    private IEnumerator RotarObjeto(float targetAngle)
+    {
+        estaRotando = true; // Bloqueamos la interacci\u00f3n
+        float elapsedTime = 0f;
+
+        Quaternion inicioRotacion = transform.rotation;
+        Quaternion finalRotacion = Quaternion.Euler(
+            transform.eulerAngles.x,
+            targetAngle,
+            transform.eulerAngles.z
+        );
+
+        while (elapsedTime < tiempoRotacion)
+        {
+            transform.rotation = Quaternion.Slerp(
+                inicioRotacion,
+                finalRotacion,
+                elapsedTime / tiempoRotacion
+            );
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.rotation = finalRotacion;
+        estaRotando = false; // Desbloqueamos la interacci\u00f3n
+
+        // Reasegurar la actualización de la UI si el jugador sigue mirando
+        MostrarInformacion();
     }
 }

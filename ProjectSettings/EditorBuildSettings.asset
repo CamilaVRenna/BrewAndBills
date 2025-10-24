@@ -6,9 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Arranque.unity
-    guid: 8c6c6dbb6d9e1144a8b37daf3c772312
-  - enabled: 1
     path: Assets/Scenes/PantallaCarga.unity
     guid: 1a31640998f495848b8299af874e6dd5
   - enabled: 1
@@ -17,13 +14,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/EscenarioPrueba.unity
     guid: 65baa82e16368d64ba6da6da46ace2ef
-  - enabled: 0
-    path: Assets/Scenes/TiendaDeMagia.unity
-    guid: 6f37f017915adbd4d8c453e1e9035b71
-  - enabled: 0
-    path: Assets/Scenes/Bosque.unity
-    guid: c7452247a08949b498c16122a4989d9d
-  - enabled: 0
-    path: Assets/Scenes/Cueva.unity
-    guid: bf0320152052d9946be5025949935d79
   m_configObjects: {}

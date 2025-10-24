@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4690631197048156810}
   - component: {fileID: 5278416957721713010}
   - component: {fileID: 4563218955905248480}
+  - component: {fileID: -8357724302643496962}
   m_Layer: 0
   m_Name: Huesos
   m_TagString: Untagged
@@ -97,7 +98,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c93ad5db2c915840ae9740e06e41903, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  datosIngrediente: {fileID: 11400000, guid: 27b67ec95a0a7584f8fe6405433c86e0, type: 2}
-  cantidad: 10
+  claveIngrediente: Huesos
   objetoModelo: {fileID: 6648015209869508235, guid: 1a2f95d221e58ab4f8515e923c07b804, type: 3}
   prefabCanvasInfo: {fileID: 338789030519252024, guid: 1f725666586f02c4a86b9596f77dd0c0, type: 3}
+--- !u!65 &-8357724302643496962
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8379432234422315057}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.05752578, y: 0.043338954, z: 0.035516325}
+  m_Center: {x: 0, y: 0, z: 0}

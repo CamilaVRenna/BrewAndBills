@@ -1,126 +1,116 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-// Asegúrate de que este archivo tenga todos los 'using' necesarios para tus otros tipos de datos
-// (ej: HoraDelDia, GestorJuego, CatalogoRecetas, PedidoPocionData, GestorUI)
+using System.Linq;
+
+// Asegúrate de que estos tipos existan en tu proyecto (NPCComprador, NPCMovimiento, PedidoPocionData, GestorUI, GestorJuego)
 
 public class GestorCompradores : MonoBehaviour
 {
+    // --- Configuración e Inicialización ---
     [Header("Configuración General")]
     public Transform puntoAparicion;
     public Transform posicionVentana;
     public Transform puntoMiradaVentana;
     public float intervaloAparicion = 10.0f;
-    public Transform puntoSalidaNPC; // CRÍTICO: Asignar en el Inspector
+    [Tooltip("CRÍTICO: Posición final donde el NPC se destruye al irse.")]
+    public Transform puntoSalidaNPC;
 
     [Tooltip("Arrastra aquí TODOS los prefabs de NPC diferentes que pueden aparecer.")]
     public List<GameObject> prefabsNPCsPosibles;
-
-    [Tooltip("Número máximo de NPCs que pueden estar en la cola + en la ventanilla al mismo tiempo.")]
-    public int maximoNPCsActivos = 5;
+    [Tooltip("Máximo de NPCs en escena (en cola + en ventana) al mismo tiempo.")]
+    public int maximoNPCsActivos = 5; // Límite de CONCURRENCIA
 
     [Header("Catálogo de Recetas")]
-    public CatalogoRecetas catalogoRecetas;
+    public List<PedidoPocionData> listaMaestraPedidos; // Lista principal de pedidos
 
-    [Header("Pedidos y Sonidos")]
-    public List<PedidoPocionData> listaMaestraPedidos;
-    public AudioClip sonidoNuevoPedido;
-
-    // --- REFERENCIAS DE UI y Audio ---
     [Header("Referencias de UI y Audio")]
     public GestorUI uiGestor;
-    public AudioSource audioSource;
-    // ---------------------------------
+    public AudioClip sonidoNuevoPedido;
 
+    // --- Estado Interno ---
     private Queue<NPCComprador> colaNPCs = new Queue<NPCComprador>();
     private NPCComprador npcActualEnVentana = null;
-    private float temporizador = 0f;
+    private float temporizadorGeneracion = 0f;
 
-    [HideInInspector]
-    public bool tiendaAbierta = false;
+    [HideInInspector] public bool tiendaAbierta = false;
+    [HideInInspector] public bool compradoresHabilitados = false; // Controla la generación por tiempo
 
-    [HideInInspector]
-    public bool compradoresHabilitados = false;
 
+    void Start()
+    {
+        // Validación inicial de referencias cruciales
+        if (GestorJuego.Instance == null)
+        {
+            Debug.LogError("GestorJuego.Instance no está inicializado. El sistema de NPCs no funcionará correctamente.");
+        }
+
+        if (puntoSalidaNPC == null)
+        {
+            Debug.LogError("CRÍTICO: El puntoSalidaNPC no está asignado. Los NPCs no podrán salir correctamente.");
+        }
+    }
 
     void Update()
     {
+        // La generación solo ocurre si es de día Y está habilitada
         if (!tiendaAbierta || !compradoresHabilitados) return;
 
-        temporizador += Time.deltaTime;
-        if (temporizador >= intervaloAparicion && PuedeGenerarMasNPCs())
-        {
-            temporizador = 0f;
-            GenerarNPC();
-        }
+        // 1. Controlar la Generación de NPCs (por tiempo y límite de concurrencia)
+        ManejarGeneracionNPCs();
 
+        // 2. Controlar la Asignación a la Ventana (la cola avanza)
         if (npcActualEnVentana == null && colaNPCs.Count > 0)
         {
             AsignarSiguienteNPC();
         }
     }
 
-    private bool PuedeGenerarMasNPCs()
+    // ------------------------------------------------------------------
+    // Lógica de Generación
+    // ------------------------------------------------------------------
+
+    void ManejarGeneracionNPCs()
+    {
+        temporizadorGeneracion += Time.deltaTime;
+        if (temporizadorGeneracion >= intervaloAparicion && PuedeGenerarNPC())
+        {
+            temporizadorGeneracion = 0f;
+            GenerarNPC();
+        }
+    }
+
+    private bool PuedeGenerarNPC()
     {
         int totalNPCsActivos = colaNPCs.Count + (npcActualEnVentana != null ? 1 : 0);
+        // Única limitación: el máximo de NPCs en la escena al mismo tiempo (concurrencia)
         bool limiteConcurrenteOk = totalNPCsActivos < maximoNPCsActivos;
 
-        bool limiteDiarioOk = false;
-        // bool esDeNoche = false; // Se omite, se asume que 'compradoresHabilitados' ya maneja esto.
-
-        if (GestorJuego.Instance != null)
-        {
-            // NOTA: Asumiendo que GestorJuego y HoraDelDia existen.
-            limiteDiarioOk = GestorJuego.Instance.ObtenerNPCsGeneradosHoy() < GestorJuego.Instance.limiteNPCsPorDia;
-        }
-        else
-        {
-            Debug.LogError("GestorJuego no encontrado para verificar el límite diario!");
-            return false;
-        }
-
-        bool puedeGenerar = limiteConcurrenteOk && limiteDiarioOk;
-        return puedeGenerar;
+        return limiteConcurrenteOk;
     }
 
     void GenerarNPC()
     {
-        if (prefabsNPCsPosibles == null || prefabsNPCsPosibles.Count == 0)
-        {
-            Debug.LogError("¡La lista 'prefabsNPCsPosibles' está vacía o no asignada en GestorCompradores! No se pueden generar NPCs.");
-            return;
-        }
-        if (puntoAparicion == null)
-        {
-            Debug.LogError("¡Falta asignar Punto Aparicion en GestorCompradores!");
-            return;
-        }
+        if (!ValidarConfiguracion()) return;
 
-        int indicePrefab = Random.Range(0, prefabsNPCsPosibles.Count);
-        GameObject prefabAUsar = prefabsNPCsPosibles[indicePrefab];
-
-        if (prefabAUsar == null)
-        {
-            Debug.LogError($"El elemento {indicePrefab} en la lista 'prefabsNPCsPosibles' está vacío (None).");
-            return;
-        }
+        GameObject prefabAUsar = prefabsNPCsPosibles[Random.Range(0, prefabsNPCsPosibles.Count)];
 
         GameObject objetoNPC = Instantiate(prefabAUsar, puntoAparicion.position, puntoAparicion.rotation);
-
         NPCComprador controladorNPC = objetoNPC.GetComponent<NPCComprador>();
 
         if (controladorNPC != null)
         {
             controladorNPC.gestor = this;
+
+            var npcMovimiento = objetoNPC.GetComponent<NPCMovimiento>();
+            if (npcMovimiento != null && puntoMiradaVentana != null)
+            {
+                npcMovimiento.puntoMiradaVentana = puntoMiradaVentana;
+            }
+
             colaNPCs.Enqueue(controladorNPC);
 
-            if (GestorJuego.Instance != null)
-            {
-                GestorJuego.Instance.RegistrarNPCGeneradoHoy();
-            }
-            else { Debug.LogWarning("GenerarNPC: No se encontró GestorJuego para registrar NPC diario."); }
-
-            Debug.Log($"NPC {objetoNPC.name} (Tipo: {prefabAUsar.name}) generado y añadido a la cola. (Total en cola: {colaNPCs.Count}, Total activos: {colaNPCs.Count + (npcActualEnVentana != null ? 1 : 0)})");
+            // ELIMINADA la llamada a GestorJuego.Instance.RegistrarNPCGeneradoHoy()
         }
         else
         {
@@ -129,111 +119,129 @@ public class GestorCompradores : MonoBehaviour
         }
     }
 
+    private bool ValidarConfiguracion()
+    {
+        if (prefabsNPCsPosibles == null || prefabsNPCsPosibles.Count == 0)
+        {
+            Debug.LogError("La lista 'prefabsNPCsPosibles' está vacía o no asignada.");
+            return false;
+        }
+        if (puntoAparicion == null || posicionVentana == null || puntoSalidaNPC == null)
+        {
+            // Añadido posicionVentana a la verificación
+            Debug.LogError("¡Falta asignar Punto Aparicion, Posicion Ventana o Punto Salida NPC!");
+            return false;
+        }
+        return true;
+    }
+
     void AsignarSiguienteNPC()
     {
-        if (npcActualEnVentana != null) return;
+        if (npcActualEnVentana != null || colaNPCs.Count == 0) return;
+
         npcActualEnVentana = colaNPCs.Dequeue();
-        Debug.Log($"Asignando a {npcActualEnVentana.gameObject.name} a la ventana. ({colaNPCs.Count} restantes en cola)");
+
+        // El NPC en cola debe estar activo para iniciar el movimiento (si se desactiva al entrar a la cola)
         npcActualEnVentana.gameObject.SetActive(true);
 
-        // --- CORRECCIÓN DEL ERROR CS1501 ---
-        // Se llama a IrAVentana con 2 argumentos, lo cual ahora es compatible con la definición en NPCComprador.cs
+        // Inicia el movimiento a la ventana (usa los puntos de control del Gestor)
         npcActualEnVentana.IrAVentana(posicionVentana.position, puntoSalidaNPC.position);
     }
+
+    // ------------------------------------------------------------------
+    // Métodos de Control Público
+    // ------------------------------------------------------------------
 
     public void NPCTermino(NPCComprador npcQueTermino)
     {
         if (npcQueTermino == npcActualEnVentana)
         {
-            Debug.Log($"{npcQueTermino.gameObject.name} ha terminado en la ventana. Liberando puesto.");
             npcActualEnVentana = null;
         }
         else
         {
-            Debug.LogWarning($"Un NPC ({npcQueTermino?.gameObject.name}) que NO estaba en la ventana intentó notificar término.");
-            if (npcActualEnVentana == npcQueTermino) { npcActualEnVentana = null; }
+            Debug.LogWarning($"Un NPC ({npcQueTermino?.gameObject.name}) que NO estaba en la ventana intentó notificar término. Esto es inesperado si la cola funciona bien.");
         }
+
+        // No necesitamos forzar la generación aquí, el Update se encargará
+        // de asignar el siguiente NPC de la cola (si hay) y el temporizador 
+        // se encargará de generar uno nuevo si el límite lo permite.
     }
 
-    public NPCComprador ObtenerNPCActual()
+    public void DespawnComprador(GameObject npcObjeto)
     {
-        return npcActualEnVentana;
-    }
-
-    public void ReiniciarParaNuevoDia()
-    {
-        Debug.Log("GestorCompradores: Reiniciando para nuevo día...");
-
-        if (npcActualEnVentana != null)
-        {
-            // El NPC se va y se autodestruye al llegar a su punto de salida.
-            npcActualEnVentana.Irse();
-            npcActualEnVentana = null;
-        }
-
-        Debug.Log($"Limpiando cola de {colaNPCs.Count} NPCs...");
-        while (colaNPCs.Count > 0)
-        {
-            NPCComprador npcEnCola = colaNPCs.Dequeue();
-            if (npcEnCola != null)
-            {
-                Debug.Log($"- Despachando NPC en cola: {npcEnCola.gameObject.name}");
-                // El NPC se va y se autodestruye al llegar a su punto de salida.
-                npcEnCola.Irse();
-            }
-        }
-        colaNPCs.Clear();
-
-        temporizador = 0f;
-        Debug.Log("GestorCompradores: Reinicio completado. Temporizador a 0.");
-    }
-
-    public void DespawnTodosNPCsPorNoche()
-    {
-        Debug.LogWarning("GestorCompradores: Se hizo de noche. Despachando a todos los NPCs...");
-
-        if (npcActualEnVentana != null)
-        {
-            npcActualEnVentana.Irse(); // Se va y se autodestruye
-            npcActualEnVentana = null;
-        }
-
-        Debug.Log($"- Vaciando cola de {colaNPCs.Count} NPCs...");
-        while (colaNPCs.Count > 0)
-        {
-            NPCComprador npcEnCola = colaNPCs.Dequeue();
-            if (npcEnCola != null)
-            {
-                npcEnCola.Irse(); // Se va y se autodestruye
-            }
-        }
-        colaNPCs.Clear();
-
-        temporizador = 0f;
-        Debug.Log("GestorCompradores: NPCs despachados por noche.");
+        Destroy(npcObjeto);
     }
 
     public void AbrirTienda()
     {
-        // NOTA: Asumiendo que 'HoraDelDia' es un enum que has definido y está accesible.
-        // Para evitar dependencia directa del Enum, asumimos que Noche es el índice 2 como en el log de inicio.
-        if (GestorJuego.Instance != null && (int)(object)GestorJuego.Instance.horaActual != 2) // Asumiendo que 2 es Noche
+        if (GestorJuego.Instance != null && GestorJuego.Instance.EstaDeDia())
         {
             tiendaAbierta = true;
             compradoresHabilitados = true;
-            Debug.Log("La tienda ha sido abierta por el jugador.");
+            Debug.Log("Tienda abierta. Compradores habilitados.");
         }
         else
         {
-            Debug.Log("No se puede abrir la tienda de noche. Debes esperar a que amanezca.");
+            Debug.Log("No se puede abrir la tienda: no es de día.");
         }
     }
 
+    /// <summary>
+    /// Cierra la tienda, deshabilita la generación de compradores y fuerza la salida de todos los NPCs activos.
+    /// Usado al cambiar a la noche.
+    /// </summary>
     public void CerrarTienda()
     {
         tiendaAbierta = false;
         compradoresHabilitados = false;
-        DespawnTodosNPCsPorNoche();
-        Debug.Log("La tienda ha sido cerrada por el jugador.");
+        ForzarDespawnTodosNPCs();
+        Debug.Log("Tienda cerrada. Compradores deshabilitados.");
+    }
+
+    // ------------------------------------------------------------------
+    // Métodos de Limpieza y Reinicio
+    // ------------------------------------------------------------------
+
+    public void ReiniciarParaNuevoDia()
+    {
+        ForzarDespawnTodosNPCs(); // Limpiar la escena de cualquier NPC que haya quedado.
+        temporizadorGeneracion = 0f;
+        // La tienda se abre después de esto mediante la llamada a AbrirTienda() o al evento del GestorJuego
+    }
+
+    /// <summary>
+    /// Un único método para gestionar la salida forzada de todos los NPCs, usado al cerrar la tienda o al reiniciar el día.
+    /// Llama a Irse() en cada NPC, el cual se encargará de su propia destrucción al llegar a puntoSalidaNPC.
+    /// </summary>
+    private void ForzarDespawnTodosNPCs()
+    {
+        // 1. NPC en ventanilla
+        if (npcActualEnVentana != null)
+        {
+            // Llama al método del NPC para que inicie su secuencia de salida y autodestrucción
+            npcActualEnVentana.Irse();
+            npcActualEnVentana = null;
+        }
+
+        // 2. NPCs en cola
+        while (colaNPCs.Count > 0)
+        {
+            NPCComprador npcEnCola = colaNPCs.Dequeue();
+            if (npcEnCola != null)
+            {
+                npcEnCola.Irse();
+            }
+        }
+        colaNPCs.Clear();
+    }
+
+    // ------------------------------------------------------------------
+    // Getters
+    // ------------------------------------------------------------------
+
+    public NPCComprador ObtenerNPCActual()
+    {
+        return npcActualEnVentana;
     }
 }

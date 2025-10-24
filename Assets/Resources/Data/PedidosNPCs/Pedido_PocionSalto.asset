@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: becbb2440c6448d4c8eddd01c6a83334, type: 3}
   m_Name: Pedido_PocionSalto
   m_EditorClassIdentifier: 
-  nombreIdentificador: PocionSalto
+  nombreIdentificador: Pocion de Salto
   ingredientesRequeridos:
-  - {fileID: 11400000, guid: e8fba1c0dd53f3445b40f5ddcf4cc7d5, type: 2}
-  - {fileID: 11400000, guid: 440c9d66f4724bf49a1edcb380c56bac, type: 2}
+  - Plumas
+  - Mariposas
   dialogosPedidoGenericos:
   - "Voy a necesitar piernas m\xE1s poderosas de lo normal."
   - Para llegar alto, dame una que me eleve.
@@ -23,9 +23,9 @@ MonoBehaviour:
   - "\xBFTen\xE9s algo que me haga tocar las nubes?"
   - "Hoy quiero brincar sobre tejados. \xBFPod\xE9s ayudarme?"
   - "Una poci\xF3n que me devuelva el esp\xEDritu de un acr\xF3bata."
-  clavePocion: Salto
+  clavePocion: Pocion de Salto
   nombreResultadoPocion: Pocion de Salto
   materialResultado: {fileID: 2100000, guid: e49b5099628c2224b83bd2dd2d4370cb, type: 2}
-  imagenPocion: {fileID: 21300000, guid: cee1b8c59f758b14ebc5f69e69f95882, type: 3}
+  imagenPocion: {fileID: 21300000, guid: a31e9ffec98b3ff44985cba2d6970414, type: 3}
   descripcionPocion: 'Descripcion: Podras llegar a la torre de la princesa de un
     salto'

@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq; // Necesario para .ToList(), .GroupBy(), y .ToDictionary()
 
+// Hacemos que sea un ScriptableObject, como lo tienes definido en el archivo
 [CreateAssetMenu(fileName = "CatalogoDeRecetas", menuName = "Pociones/Catalogo de Recetas")]
 public class CatalogoRecetas : ScriptableObject
 {
@@ -9,31 +10,38 @@ public class CatalogoRecetas : ScriptableObject
     public List<PedidoPocionData> todasLasRecetas; // Usamos PedidoPocionData aquí
 
     // ********************************************************************************
-    // CRÍTICO: Este método ahora acepta una lista de NOMBRES (strings) desde Caldero.cs,
-    // forzando la comparación por el nombre único del ingrediente.
+    // Se eliminó la conversión de DatosIngrediente, ya que PedidoPocionData ahora usa List<string>.
     // ********************************************************************************
     /// <summary>
     /// Busca una receta que coincida exactamente con la lista de nombres de ingredientes proporcionada.
-    /// La coincidencia ignora el orden y considera la cantidad de cada tipo de ingrediente.
+    /// La coincidencia ignora el orden y considera la cantidad de cada tipo de ingrediente (comparación de multiconjunto).
     /// </summary>
-    /// <param name="nombresIngredientes">La lista de nombres de ingredientes a buscar (lo que el jugador ha usado).</param>
+    /// <param name="nombresIngredientesCaldero">La lista de nombres de ingredientes usados en el caldero.</param>
     /// <returns>El PedidoPocionData de la receta coincidente, o null si no se encuentra ninguna.</returns>
-    public PedidoPocionData BuscarRecetaPorNombres(List<string> nombresIngredientes)
+    public PedidoPocionData BuscarRecetaPorNombres(List<string> nombresIngredientesCaldero)
     {
-        if (todasLasRecetas == null || nombresIngredientes == null) return null;
+        if (todasLasRecetas == null || nombresIngredientesCaldero == null)
+        {
+            Debug.LogWarning("CatalogoRecetas o la lista de ingredientes del caldero es nula.");
+            return null;
+        }
 
         foreach (PedidoPocionData receta in todasLasRecetas)
         {
-            // Convertir los ingredientes requeridos (DatosIngrediente SOs) de la receta a una lista de nombres.
-            List<string> nombresRequeridos = receta.ingredientesRequeridos
-                .Select(di => di.nombreIngrediente) // Asumimos que DatosIngrediente tiene la propiedad 'nombreIngrediente'
-                .ToList();
+            // ASUMIMOS AHORA que receta.ingredientesRequeridos es List<string> (los nombres)
+            List<string> nombresRequeridos = receta.ingredientesRequeridos;
 
-            if (CompararListasDeNombres(nombresRequeridos, nombresIngredientes))
+            if (nombresRequeridos == null) continue;
+
+            // 1. Comparar el multiconjunto (tipos y frecuencias) de ambas listas de nombres.
+            if (CompararListasDeNombres(nombresRequeridos, nombresIngredientesCaldero))
             {
+                Debug.Log($"¡Receta encontrada! Coincidencia con: {receta.nombreIdentificador}");
                 return receta; // ¡Receta Encontrada!
             }
         }
+
+        Debug.Log("No se encontró ninguna receta coincidente en el catálogo.");
         return null; // No encontrada
     }
 
@@ -41,32 +49,42 @@ public class CatalogoRecetas : ScriptableObject
     /// Compara dos listas de nombres (strings) para verificar si contienen los mismos nombres 
     /// en la misma cantidad, ignorando el orden (comparación de multiconjunto usando LINQ).
     /// </summary>
-    private bool CompararListasDeNombres(List<string> lista1, List<string> lista2)
+    private bool CompararListasDeNombres(List<string> listaRequerida, List<string> listaEncontrada)
     {
         // 1. Validación básica: si el número de ingredientes es diferente, no pueden coincidir.
-        if (lista1 == null || lista2 == null || lista1.Count != lista2.Count) return false;
+        if (listaRequerida == null || listaEncontrada == null || listaRequerida.Count != listaEncontrada.Count)
+        {
+            Debug.Log($"Fallo en el conteo. Requerido: {listaRequerida?.Count ?? 0}, Encontrado: {listaEncontrada?.Count ?? 0}.");
+            return false;
+        }
 
         // 2. Agrupar y contar la frecuencia de cada nombre en ambas listas.
-        var conteo1 = lista1
-            .GroupBy(name => name)
+        var conteoRequerido = listaRequerida
+            .GroupBy(name => name.ToLowerInvariant())
             .ToDictionary(g => g.Key, g => g.Count());
 
-        var conteo2 = lista2
-            .GroupBy(name => name)
+        var conteoEncontrado = listaEncontrada
+            .GroupBy(name => name.ToLowerInvariant())
             .ToDictionary(g => g.Key, g => g.Count());
+
+        // La comparación por defecto usa ToLowerInvariant para evitar problemas de mayúsculas/minúsculas.
 
         // 3. Comprobar que ambas listas tienen el mismo número de tipos únicos.
-        if (conteo1.Count != conteo2.Count) return false;
+        if (conteoRequerido.Count != conteoEncontrado.Count)
+        {
+            Debug.Log($"Fallo en tipos únicos. Requeridos: {conteoRequerido.Count}, Encontrados: {conteoEncontrado.Count}.");
+            return false;
+        }
 
         // 4. Comparar la cantidad de cada nombre único.
-        foreach (var par in conteo1)
+        foreach (var par in conteoRequerido)
         {
-            string nombre = par.Key;
+            string nombreNormalizado = par.Key;
             int cantidadRequerida = par.Value;
 
-            if (!conteo2.TryGetValue(nombre, out int cantidadEncontrada) || cantidadRequerida != cantidadEncontrada)
+            if (!conteoEncontrado.TryGetValue(nombreNormalizado, out int cantidadEncontrada) || cantidadRequerida != cantidadEncontrada)
             {
-                // Falla si el ingrediente no está o si las cantidades no coinciden.
+                Debug.Log($"Fallo en cantidad/existencia para el ingrediente: '{nombreNormalizado}'. Requerido: {cantidadRequerida}, Encontrado: {cantidadEncontrada}.");
                 return false;
             }
         }

@@ -1,4 +1,3 @@
-repository "New Unity Project/My project@4673068217986@cloud"
+repository "brew and bills/brewandbills@4673023509819@cloud"
   path "/"
-    br "/main"
-    co "/main"
+    smartbranch "/main/develop"

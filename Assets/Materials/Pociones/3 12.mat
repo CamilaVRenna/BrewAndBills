@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 3 12
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Parent: {fileID: 2100000, guid: 5cc98723ce2999a43b0211b5f4437086, type: 2}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+  m_InvalidKeywords:
+  - _EMISSIVE_SIMPLE
+  - _IS_ANGELRING_OFF
+  - _IS_CLIPPING_OFF
+  - _IS_OUTLINE_CLIPPING_NO
+  - _OUTLINE_NML
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap:
+    IgnoreProjection: False
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _1st2nd_Shades_Feather: 0.576
+    - _2nd_ShadeColor_Feather: 0.576
+    m_Colors:
+    - _1st_ShadeColor: {r: 0.24528301, g: 0.21234721, b: 0.1747063, a: 1}
+    - _2nd_ShadeColor: {r: 0.20754719, g: 0.17768781, b: 0.14782842, a: 1}
+    - _BaseColor: {r: 0.31132078, g: 0.27796498, b: 0.23349059, a: 1}
+    - _Color: {r: 0.31132075, g: 0.27796492, b: 0.23349056, a: 1}
+    - _HighColor: {r: 0.0754717, g: 0.06648274, b: 0.03951584, a: 1}
+  m_BuildTextureStacks: []

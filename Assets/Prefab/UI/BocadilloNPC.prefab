@@ -26,7 +26,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5694798, y: 0.5694798, z: 0.5694798}
+  m_LocalScale: {x: 0.25790325, y: 0.25790325, z: 0.25790325}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5554651036732140786}
@@ -276,7 +276,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -60.890755, y: -12.570627, z: -60.795174, w: -6.69895}
+  m_margin: {x: -33.627243, y: -12.570627, z: -39.688065, w: -6.69895}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

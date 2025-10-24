@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombreIdentificador: PocionFuerza
   ingredientesRequeridos:
-  - {fileID: 11400000, guid: f9d53ee2ff2a4924b9dae1a52cfff653, type: 2}
-  - {fileID: 11400000, guid: 0019e0ee2b097664ab6a1977ce469b09, type: 2}
+  - Huesos
+  - Miel
   dialogosPedidoGenericos:
   - "Hoy tengo que cargar m\xE1s que mis problemas. \xBFMe das algo?"
   - "Necesito romper barreras\u2026 literalmente."
@@ -23,8 +23,8 @@ MonoBehaviour:
   - "\xBFTen\xE9s algo que me haga m\xE1s fuerte, aunque sea por un rato?"
   - "Voy a necesitar m\xFAsculos prestados. \xBFLos ten\xE9s en frasco?"
   - "Quiero que mis pu\xF1os hablen por m\xED. Una de fuerza, por favor."
-  clavePocion: Fuerza
+  clavePocion: Pocion de Fuerza
   nombreResultadoPocion: Pocion de Fuerza
-  materialResultado: {fileID: 2100000, guid: 9a4234eccd305fe4a88ca266e324cdb8, type: 2}
-  imagenPocion: {fileID: 21300000, guid: 31e068acb806c6243ae14787b396c6b9, type: 3}
+  materialResultado: {fileID: 2100000, guid: 3fd4200165867494aa4122865184464a, type: 2}
+  imagenPocion: {fileID: 21300000, guid: 320f6dffa0bc8a64693c9ff85b8f4b54, type: 3}
   descripcionPocion: 'Descripcion: Te permite ir a apalear a los bandidos del pueblo'

@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.707107, y: -0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: 8.0642, y: 0.8568, z: 29.452}
-  m_LocalScale: {x: 4.5550003, y: 4.5550003, z: 4.5550003}
+  m_LocalScale: {x: 6.4876866, y: 6.4876866, z: 6.4876866}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -104,8 +104,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.05439975, y: 0.061257623, z: 0.067758106}
-  m_Center: {x: -0.00013990981, y: -0.0033565736, z: 0.012742503}
+  m_Size: {x: 0.054399744, y: 0.0612576, z: 0.0677581}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &943866625610282288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,8 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e57698cf74d29d24aa5366d8eb3825ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  claveIngrediente: Hongo
-  textoIndicador: Recolectar Hongo
+  claveIngrediente: Hongos
+  textoIndicador: Recolectar Hongos
   prefabCanvasInfo: {fileID: 338789030519252024, guid: 1f725666586f02c4a86b9596f77dd0c0, type: 3}
   puntoOrigen: {fileID: 0}
-  mensajeTemporalUI: {fileID: 0}
+  mensajeTemporalUI: {fileID: 4946660561801754653, guid: 125f8b540b5285c4fb1118db84ed9f33, type: 3}
