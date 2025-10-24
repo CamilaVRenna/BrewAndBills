@@ -29,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 7612283972276496141}
   serializedVersion: 2
   m_LocalRotation: {x: 0.06153977, y: 0.33283558, z: 0.07735447, w: 0.93778974}
-  m_LocalPosition: {x: 0.47901, y: 0.93779, z: 14.809}
-  m_LocalScale: {x: 9.091058, y: 9.091056, z: 9.091056}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 12.948393, y: 12.94839, z: 12.94839}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -105,7 +105,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.026105084, y: 0.023870088, z: 0.031795386}
-  m_Center: {x: -0.0046595004, y: -0.0005412807, z: 0.0011193602}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2747810985366601528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,7 +119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   claveIngrediente: Mariposas
-  textoIndicador: Recolectar Mariposa
+  textoIndicador: Recolectar Mariposas
   prefabCanvasInfo: {fileID: 338789030519252024, guid: 1f725666586f02c4a86b9596f77dd0c0, type: 3}
   puntoOrigen: {fileID: 0}
-  mensajeTemporalUI: {fileID: 0}
+  mensajeTemporalUI: {fileID: 4946660561801754653, guid: 125f8b540b5285c4fb1118db84ed9f33, type: 3}

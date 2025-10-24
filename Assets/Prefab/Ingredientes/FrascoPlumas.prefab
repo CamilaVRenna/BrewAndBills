@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 2128924727967301149}
   - component: {fileID: 4790315702905155707}
   - component: {fileID: 3404859755058186187}
+  - component: {fileID: 7475836078485983385}
+  - component: {fileID: 8638114156766143527}
   m_Layer: 0
   m_Name: FrascoPlumas
   m_TagString: Untagged
@@ -62,7 +64,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 55c2ee566bc5b7d4bb09a6bf8faff3fe, type: 2}
-  - {fileID: 2100000, guid: 66c288e4020a3d545b89bdb41e2796aa, type: 2}
+  - {fileID: 2100000, guid: afabf9c6b7c6714488370caa133f8165, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,3 +86,39 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &7475836078485983385
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350800763533350048}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0693389, y: 0.083888024, z: 0.10973562}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8638114156766143527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350800763533350048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c93ad5db2c915840ae9740e06e41903, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  claveIngrediente: Plumas
+  objetoModelo: {fileID: 2153075711079382110, guid: adac220a8873d414b9b7bd5634b2f112, type: 3}
+  prefabCanvasInfo: {fileID: 338789030519252024, guid: 1f725666586f02c4a86b9596f77dd0c0, type: 3}

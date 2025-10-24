@@ -105,8 +105,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.0693389, y: 0.08388801, z: 0.10905819}
-  m_Center: {x: 0.00075385027, y: 0.00031170095, z: -0.049296778}
+  m_Size: {x: 0.06933888, y: 0.083887994, z: 0.10905816}
+  m_Center: {x: 0.00075385015, y: 0.0003117132, z: -0.049296938}
 --- !u!114 &4733530787413371909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,7 +119,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c93ad5db2c915840ae9740e06e41903, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  datosIngrediente: {fileID: 11400000, guid: b8bf0155fe3dd1b4383d3368e0821b24, type: 2}
-  cantidad: 15
-  objetoModelo: {fileID: 0}
+  claveIngrediente: Mariposas
+  objetoModelo: {fileID: 533020922383877473, guid: f06fc2b14c53fa246ab8daa38b7d0ce4, type: 3}
   prefabCanvasInfo: {fileID: 338789030519252024, guid: 1f725666586f02c4a86b9596f77dd0c0, type: 3}

@@ -1124,7 +1124,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.006601222, y: 0.8205, z: 0.007}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.91985, y: 0.91985, z: 0.91985}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7751216049739627264}
@@ -2188,10 +2188,12 @@ GameObject:
   m_Component:
   - component: {fileID: 7751216049739627264}
   - component: {fileID: 6159067381064656074}
+  - component: {fileID: 1770663460780368078}
   - component: {fileID: 4735006246113557850}
   - component: {fileID: 7062969885992953486}
   - component: {fileID: 6366922202243304510}
   - component: {fileID: 7466545666529890632}
+  - component: {fileID: 249687504466954145}
   m_Layer: 7
   m_Name: PlantillaNegro
   m_TagString: Untagged
@@ -2208,13 +2210,13 @@ Transform:
   m_GameObject: {fileID: 8131918965118563407}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.571, y: -9.143, z: -29.589}
-  m_LocalScale: {x: 1.7, y: 1.7, z: 1.7}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 5.282793, y: 5.282793, z: 5.282793}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4105533023338860757}
-  - {fileID: 3426085539188041600}
   - {fileID: 3149300249684972334}
+  - {fileID: 3426085539188041600}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &6159067381064656074
@@ -2259,6 +2261,21 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1770663460780368078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8131918965118563407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f5d18a7ceffb5a4e964e6006a0b657d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabBocadilloUI: {fileID: 777226578507610065, guid: 5ef76a26305b14142b72f59d1cab5cbc, type: 3}
+  puntoAnclajeBocadillo: {fileID: 3149300249684972334}
+  duracionFeedback: 3
 --- !u!114 &4735006246113557850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2288,16 +2305,11 @@ MonoBehaviour:
   mensajeSegundoFallo: "\xA1Nah! \xA1Me voy de aqu\xED!"
   sonidoPocionCorrecta: {fileID: 8300000, guid: 4d84db29c7205384aa149cb80e15e32d, type: 3}
   sonidoPocionIncorrecta: {fileID: 8300000, guid: 9148d7987c7ce864bbbc44f1785c17a6, type: 3}
-  prefabBocadilloUI: {fileID: 777226578507610065, guid: 5ef76a26305b14142b72f59d1cab5cbc, type: 3}
-  puntoAnclajeBocadillo: {fileID: 3149300249684972334}
-  duracionFeedback: 3
-  tiempoMaximoEsperaAtencion: 30
-  mensajeTiempoEsperaAgotado: "\xA1Por lo que veo no tienen empleados, adi\xF3s!"
-  tiempoMaximoEspera: 60
-  mensajeTiempoAgotado: "\xA1Eres demasiado lento, adi\xF3s!"
   sonidoTiempoAgotado: {fileID: 8300000, guid: f300162968ca0164a8f90c57e3a57fc1, type: 3}
-  textoTemporizadorCanvas: {fileID: 0}
-  recetaInvisibilidad: {fileID: 11400000, guid: 697ce57497cbae341b5a00165177cc6e, type: 2}
+  mensajeTiempoEsperaAgotado: "\xA1Por lo que veo no tienen empleados, adi\xF3s!"
+  mensajeTiempoAgotado: "\xA1Eres demasiado lento, adi\xF3s!"
+  tiempoMaximoEsperaAtencion: 30
+  tiempoMaximoEspera: 60
   mostrarBocadilloAlIniciar: 1
 --- !u!95 &7062969885992953486
 Animator:
@@ -2308,7 +2320,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8131918965118563407}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: 433b013f43c8d364e8d697f6ce8038aa, type: 3}
   m_Controller: {fileID: 9100000, guid: fd85572325a4a5e48823ffeea1046d8a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -2351,7 +2363,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.15
-  m_Speed: 3.5
+  m_Speed: 7
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -2363,6 +2375,20 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 5
   m_ObstacleAvoidanceType: 4
+--- !u!114 &249687504466954145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8131918965118563407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0d716a883fbfa849a7d888d706e6f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destinoSalida: {x: 0, y: 0, z: 0}
+  puntoMiradaVentana: {fileID: 5639656382058085087, guid: 320bcab608c89534a995c7b02b3c3a2b, type: 3}
 --- !u!1 &8325596909423173563
 GameObject:
   m_ObjectHideFlags: 0
@@ -2516,7 +2542,7 @@ Transform:
   m_GameObject: {fileID: 8668047823152470005}
   serializedVersion: 2
   m_LocalRotation: {x: 1, y: 6.661338e-16, z: -3.970467e-23, w: -0.00000004371139}
-  m_LocalPosition: {x: 0.021999918, y: -7.850761e-10, z: 0.000000004037536}
+  m_LocalPosition: {x: 0.021999918, y: 0, z: 0}
   m_LocalScale: {x: 0.000037632555, y: 0.00003763256, z: 0.000037632555}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2542,12 +2568,12 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 25f902236f412954280e975148bf1be1, type: 2}
-  - {fileID: 2100000, guid: 0a2531cec2746174194f253cf6fcd7cb, type: 2}
-  - {fileID: 2100000, guid: 2fe7b087865819c48acf3e3ccd875ab5, type: 2}
-  - {fileID: 2100000, guid: 41fa2b67050a46d4f8dd9ef9204fc88d, type: 2}
-  - {fileID: 2100000, guid: 84a5c5c10a310314092dbca83d35dca4, type: 2}
-  - {fileID: 2100000, guid: 2b4d5b5ab05ed9e4c94bf6851df29c9f, type: 2}
+  - {fileID: 2100000, guid: 3b61ab477a5aaaa44a2ab735eefab274, type: 2}
+  - {fileID: 2100000, guid: 08374a751558f8e41bbeec1fbf3ccfd7, type: 2}
+  - {fileID: 2100000, guid: 6ed75d4a93a66ca4ba74d8e8b1ee385d, type: 2}
+  - {fileID: 2100000, guid: da63fb300783b3d46804bfb25957e463, type: 2}
+  - {fileID: 2100000, guid: 64e1a8ed152449440bd0fc471e627099, type: 2}
+  - {fileID: 2100000, guid: 70be7290602431b4ab07dcfbf4c499a2, type: 2}
   - {fileID: 2100000, guid: d8b9bff45cbf7044d8562e01edffa9cb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0

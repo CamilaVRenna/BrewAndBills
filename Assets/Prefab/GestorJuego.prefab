@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4156731207117622592
+--- !u!1 &8280565770959747802
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,55 +8,68 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3132511644212294460}
-  - component: {fileID: 2634330364577226910}
+  - component: {fileID: 8595149090881389753}
+  - component: {fileID: 8749712851020194}
   m_Layer: 0
-  m_Name: GestorJuego
+  m_Name: Gestorjuego
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3132511644212294460
+--- !u!4 &8595149090881389753
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4156731207117622592}
+  m_GameObject: {fileID: 8280565770959747802}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.5910199, y: 2.5910199, z: 2.5910199}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2634330364577226910
+--- !u!114 &8749712851020194
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4156731207117622592}
+  m_GameObject: {fileID: 8280565770959747802}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d8d91dacfbfb1834b860525935b61e69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  limiteNPCsPorDia: 5
+  catalogoMaestro: {fileID: 11400000, guid: 7ca9f512d4e4b07408ffd98172dc7d79, type: 2}
+  configuracionStockInicial:
+  - claveIngrediente: Flores
+    stockInicial: 5
+  - claveIngrediente: Plumas
+    stockInicial: 5
+  - claveIngrediente: Miel
+    stockInicial: 5
+  - claveIngrediente: Hongos
+    stockInicial: 5
+  - claveIngrediente: Huesos
+    stockInicial: 5
+  - claveIngrediente: Mariposas
+    stockInicial: 5
   diaActual: 1
   dineroActual: 50
   horaActual: 0
-  skyboxManana: {fileID: 2100000, guid: 99a400087584f4263b1a8979d6007ad4, type: 2}
-  skyboxTarde: {fileID: 2100000, guid: 8f2c8ef98c47442d4b0e1896539bf7f1, type: 2}
-  skyboxNoche: {fileID: 2100000, guid: 1065b432639a84123a07ea43fe5ba4c9, type: 2}
+  skyboxManana: {fileID: 2100000, guid: ac7a0e16784dea848b751f1b394ba734, type: 2}
+  skyboxTarde: {fileID: 2100000, guid: 0984c1e4f3fcd4144838cd0463684490, type: 2}
+  skyboxNoche: {fileID: 2100000, guid: 18acb07185d3c9544929d32733d5ed3f, type: 2}
   valorPocionCorrecta: 5
-  costoRentaDiaria: 10
   gestorUI: {fileID: 0}
   sonidoGanarDinero: {fileID: 8300000, guid: df9bd82eddba1cf47b6a917f90dba1ae, type: 3}
   sonidoPerderDinero: {fileID: 8300000, guid: 69e5e5aae6a2f8345884c42078a77fac, type: 3}
   gestorNPCs: {fileID: 0}
+  textoMielesRecolectadas: {fileID: 0}
   musicaMenu: {fileID: 8300000, guid: 5708ca8a8e134d14d942ff0d44c76e7c, type: 3}
   audioDia: {fileID: 8300000, guid: d08657a9e4a542d4f8d4c8acf0a27d44, type: 3}
   audioNoche: {fileID: 8300000, guid: 0e8c0bac143426b4cba1951ea75e000f, type: 3}

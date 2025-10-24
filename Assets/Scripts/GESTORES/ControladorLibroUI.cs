@@ -12,7 +12,7 @@ public class ControladorLibroUI : MonoBehaviour
     [Header("Referencias UI - Página Izquierda")]
     public Image imagenRecetaIzquierda;
     [Header("Referencias UI - Página Derecha")]
-    public TextMeshProUGUI textoNombreDerecha; // Podría ser redundante si lo pones a la izq.
+    public TextMeshProUGUI textoNombreDerecha;
     public TextMeshProUGUI textoDescripcionDerecha;
     public TextMeshProUGUI textoIngredientesDerecha;
 
@@ -27,21 +27,20 @@ public class ControladorLibroUI : MonoBehaviour
     public AudioClip sonidoAbrirLibro;
 
     [Header("Post Procesado")]
-    public PostProcessProfile perfilNormal; // Asignar PP_Normal
-    public PostProcessProfile perfilLibro; // Asignar PP_Desenfocado
+    public PostProcessProfile perfilNormal;
+    public PostProcessProfile perfilLibro;
 
     private PostProcessVolume camaraVolume;
 
-    private int paginaActual = 0; // AHORA representa el ÍNDICE de la RECETA mostrada
+    private int paginaActual = 0;
     private List<PedidoPocionData> recetasMostrables;
 
     private ControladorJugador controladorJugador;
-    private InteraccionJugador interaccionJugador; // Necesitamos esta referencia
-                                                   // NOTA: Debes asegurar que InventoryManager.Instance sea accesible.
+    private InteraccionJugador interaccionJugador;
 
     public static bool LibroAbierto { get; private set; } = false;
 
-    private GameObject canvasPrincipalRef = null; // Canvas principal (HUD, Inventario)
+    private GameObject canvasPrincipalRef = null;
 
     void Start()
     {
@@ -53,7 +52,7 @@ public class ControladorLibroUI : MonoBehaviour
         if (botonSiguiente) botonSiguiente.onClick.AddListener(PaginaSiguiente);
         if (botonCerrar) botonCerrar.onClick.AddListener(CerrarLibro);
 
-        Camera camPrincipal = Camera.main; // Asumiendo que la cámara está etiquetada
+        Camera camPrincipal = Camera.main;
         if (camPrincipal != null)
         {
             camaraVolume = camPrincipal.GetComponent<PostProcessVolume>();
@@ -68,7 +67,7 @@ public class ControladorLibroUI : MonoBehaviour
         {
             Debug.LogError("ControladorLibroUI no encontró PostProcessVolume en la cámara!", gameObject);
         }
-        LibroAbierto = false; // Asegurar estado inicial
+        LibroAbierto = false;
     }
 
     public void AbrirLibro()
@@ -88,7 +87,6 @@ public class ControladorLibroUI : MonoBehaviour
         // Ocultar Canvas Principal (HUD, Inventario)
         if (canvasPrincipalRef == null)
         {
-            // Busca el canvas que contiene el inventario/HUD
             canvasPrincipalRef = GameObject.Find("CanvasPrincipal");
         }
         if (canvasPrincipalRef != null)
@@ -105,11 +103,9 @@ public class ControladorLibroUI : MonoBehaviour
         ControladorJugador jugador = FindObjectOfType<ControladorJugador>();
         if (jugador != null) jugador.HabilitarMovimiento(false);
 
-        // Ocultar HUD de item sostenido (aunque Item3DHolder no debería mostrarlo si el jugador se mueve)
-        if (interaccionJugador == null) interaccionJugador = FindObjectOfType<InteraccionJugador>();
-        if (interaccionJugador != null && interaccionJugador.panelItemSostenido != null)
+        if (interaccionJugador != null && interaccionJugador.uiNombreItemSostenido != null)
         {
-            interaccionJugador.panelItemSostenido.SetActive(false);
+            interaccionJugador.uiNombreItemSostenido.gameObject.SetActive(false);
         }
     }
 
@@ -137,20 +133,6 @@ public class ControladorLibroUI : MonoBehaviour
         ControladorJugador jugador = FindObjectOfType<ControladorJugador>();
         if (jugador != null) jugador.HabilitarMovimiento(true);
 
-        // --- INICIO DE LA CORRECCIÓN CLAVE ---
-        // Chequea si el jugador tiene un ítem seleccionado en el inventario.
-        // Si tiene un ítem seleccionado, activamos el panel de item sostenido de nuevo.
-        if (interaccionJugador == null) interaccionJugador = FindObjectOfType<InteraccionJugador>();
-
-        // CORRECCIÓN: Usamos InventoryManager para chequear el ítem seleccionado.
-        if (interaccionJugador != null &&
-            !string.IsNullOrEmpty(InventoryManager.Instance.GetSelectedItem()) &&
-            interaccionJugador.panelItemSostenido != null)
-        {
-            interaccionJugador.panelItemSostenido.SetActive(true);
-        }
-        // --- FIN DE LA CORRECCIÓN CLAVE ---
-
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -163,7 +145,6 @@ public class ControladorLibroUI : MonoBehaviour
             MostrarPaginaActual();
             if (GestorAudio.Instancia != null && sonidoPasarPagina != null)
             {
-                // Asume GestorAudio.Instancia existe
                 // GestorAudio.Instancia.ReproducirSonido(sonidoPasarPagina);
             }
         }
@@ -177,7 +158,6 @@ public class ControladorLibroUI : MonoBehaviour
             MostrarPaginaActual();
             if (GestorAudio.Instancia != null && sonidoPasarPagina != null)
             {
-                // Asume GestorAudio.Instancia existe
                 // GestorAudio.Instancia.ReproducirSonido(sonidoPasarPagina);
             }
         }
@@ -221,7 +201,8 @@ public class ControladorLibroUI : MonoBehaviour
             {
                 foreach (var ing in recetaActual.ingredientesRequeridos)
                 {
-                    if (ing != null) textoIng += $"- {ing.nombreIngrediente}\n";
+                    // ¡CORRECCIÓN CLAVE AQUÍ! 'ing' ya es un string, no necesita .nombreIngrediente.
+                    if (ing != null) textoIng += $"- {ing}\n";
                     else textoIng += "- ???\n";
                 }
             }

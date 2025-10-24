@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8765797204428603563}
   - component: {fileID: 2446635866695116084}
   - component: {fileID: 7641009591983424847}
+  - component: {fileID: 8686493603266961131}
   m_Layer: 0
   m_Name: Miel 1
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: -2.2768388, y: 0, z: 2.066996}
-  m_LocalScale: {x: 0.77682555, y: 0.77682555, z: 7.2862535}
+  m_LocalScale: {x: 1.615234, y: 1.615234, z: 15.1501255}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -84,3 +85,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &8686493603266961131
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2911228721679755313}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.06530763, y: 0.069319926, z: 0.027723119}
+  m_Center: {x: -0.0017604567, y: -0.0022710483, z: 0.0038615617}

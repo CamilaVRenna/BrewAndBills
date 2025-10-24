@@ -25,9 +25,9 @@ MonoBehaviour:
     prefabRecolectable: {fileID: 8451001201190359090, guid: c2bf7b78c8b1acf4db2d26b9276b8eb7, type: 3}
   - tipoDeItem: 0
     nombreItem: Plumas
-    prefabModelo3D: {fileID: 2349428912088942542, guid: d9cb5d5f7a1dd214c95edeae9bfaca2e, type: 3}
+    prefabModelo3D: {fileID: 2153075711079382110, guid: adac220a8873d414b9b7bd5634b2f112, type: 3}
     rotacionEnMano: {x: 0, y: 0, z: 0}
-    prefabRecolectable: {fileID: 983028436734943655, guid: 7f32996aa477a23418420aa445be77ed, type: 3}
+    prefabRecolectable: {fileID: 7441983681065126972, guid: c8cca97b321b1d24b851c370eefb6565, type: 3}
   - tipoDeItem: 0
     nombreItem: Hongos
     prefabModelo3D: {fileID: 967169137211902822, guid: 9cc7922b09740344d80d78de5d9f3c68, type: 3}
@@ -43,7 +43,7 @@ MonoBehaviour:
     prefabModelo3D: {fileID: 2911228721679755313, guid: 44d9363c35b5c0745b30f41b0c1fcb9c, type: 3}
     rotacionEnMano: {x: 0, y: 0, z: 0}
     prefabRecolectable: {fileID: 4910432167675470365, guid: 0ae1974dd57f4674fbfeea99e26dd7ff, type: 3}
-  - tipoDeItem: 2
+  - tipoDeItem: 0
     nombreItem: "Frasco Vac\xEDo"
     prefabModelo3D: {fileID: 5187483242758058930, guid: 6caf946d0db6698469e44ef6df58bf49, type: 3}
     rotacionEnMano: {x: 0, y: 0, z: 0}

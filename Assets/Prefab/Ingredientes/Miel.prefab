@@ -64,7 +64,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: -8274133419916619345, guid: 5fafecf51a6a7f24695dd8c1fd5d08ad, type: 3}
-  - {fileID: 2100000, guid: ee0fe1e6244ea854e87fb23925141d82, type: 2}
+  - {fileID: 2100000, guid: 55c2ee566bc5b7d4bb09a6bf8faff3fe, type: 2}
   - {fileID: -876546973899608171, guid: 5fafecf51a6a7f24695dd8c1fd5d08ad, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -106,8 +106,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.0693389, y: 0.08388802, z: 0.108164296}
-  m_Center: {x: 0.00021701133, y: -0.00032728806, z: -0.009098181}
+  m_Size: {x: 0.069338895, y: 0.08388802, z: 0.108164296}
+  m_Center: {x: 0.00021689296, y: -0.00032731812, z: -0.009098299}
 --- !u!114 &2321939422164402441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,7 +120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c93ad5db2c915840ae9740e06e41903, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  datosIngrediente: {fileID: 11400000, guid: 99ba73d0bfc819143a0bc1a9de2ae209, type: 2}
-  cantidad: 30
+  claveIngrediente: Miel
   objetoModelo: {fileID: 2911228721679755313, guid: 44d9363c35b5c0745b30f41b0c1fcb9c, type: 3}
   prefabCanvasInfo: {fileID: 338789030519252024, guid: 1f725666586f02c4a86b9596f77dd0c0, type: 3}

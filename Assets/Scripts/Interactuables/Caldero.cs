@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq; // Necesario para .OrderBy()
 using TMPro;
 using UnityEngine.UI;
 
@@ -245,7 +245,11 @@ public class Caldero : MonoBehaviour
 
         if (catalogoRecetas != null)
         {
-            recetaEncontrada = catalogoRecetas.BuscarRecetaPorNombres(nombresIngredientesActuales);
+            // 🛑 CRÍTICO: Ordenar la lista de ingredientes para que el CatalogoRecetas pueda
+            // encontrar la receta sin importar el orden en que se añadieron.
+            List<string> ingredientesOrdenados = nombresIngredientesActuales.OrderBy(n => n).ToList();
+
+            recetaEncontrada = catalogoRecetas.BuscarRecetaPorNombres(ingredientesOrdenados);
         }
 
         if (recetaEncontrada != null)
@@ -488,11 +492,17 @@ public class Caldero : MonoBehaviour
             Material materialAAplicar = materialPocionDesconocida;
             PedidoPocionData recetaEncontrada = null;
 
-            // Solo necesitamos el material visual aquí, NO la transacción de inventario.
+            // 1. OBTENER Y ORDENAR LA LISTA DE INGREDIENTES
+            // 🛑 CRÍTICO: Ordenar la lista de ingredientes para que el CatalogoRecetas pueda
+            // encontrar la receta sin importar el orden en que se añadieron.
+            List<string> ingredientesOrdenados = nombresIngredientesActuales.OrderBy(n => n).ToList();
+
+
+            // 2. BUSCAR LA RECETA
             if (catalogoRecetas != null)
             {
                 // CRÍTICO: Llama al método que busca por NOMBRES (strings).
-                recetaEncontrada = catalogoRecetas.BuscarRecetaPorNombres(nombresIngredientesActuales);
+                recetaEncontrada = catalogoRecetas.BuscarRecetaPorNombres(ingredientesOrdenados);
 
                 if (recetaEncontrada != null && recetaEncontrada.materialResultado != null)
                 {

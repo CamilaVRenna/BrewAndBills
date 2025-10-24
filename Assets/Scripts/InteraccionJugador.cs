@@ -42,10 +42,14 @@ public class InteraccionJugador : MonoBehaviour
     public ControladorLibroUI controladorLibroUI;
 
     private AudioSource audioSourceJugador;
-    private bool tiendaAbierta = false;
+
+    // ************************************************************************************
+    // NUEVO: Referencia al objeto 3D que el jugador está sosteniendo en la mano.
+    private GameObject item3DSostenido;
+    // ************************************************************************************
+
 
     // --- Referencias de Objetos Mirados ---
-    // NOTA: Estas referencias aún requieren que los scripts FuenteIngredientes y FuenteFrascos existan
     private FuenteIngredientes fuenteIngredientesMirada = null;
     private Caldero calderoMiradoActual = null;
     private FuenteFrascos fuenteFrascosMirada = null;
@@ -53,7 +57,9 @@ public class InteraccionJugador : MonoBehaviour
     private LibroRecetasInteractuable libroMiradoActual = null;
     private CamaInteractuable camaMiradaActual = null;
     private IngredienteRecolectable ingredienteRecolectableMirado = null;
-    private GameObject cartelMiradoActual = null;
+
+    // REEMPLAZADO: Referencia para el cartel con Raycast
+    private ControladorCartelTienda cartelTiendaMiradoActual = null;
     private ObjetoRotatorioInteractivo objetoRotatorioActual = null;
 
 
@@ -66,6 +72,7 @@ public class InteraccionJugador : MonoBehaviour
         audioSourceJugador = GetComponent<AudioSource>();
         if (panelItemSostenido != null) panelItemSostenido.SetActive(false);
         if (textoNotificacion != null) textoNotificacion.gameObject.SetActive(false);
+        // Se elimina la suscripción a OnInventoryChange
     }
 
     void Update()
@@ -75,6 +82,8 @@ public class InteraccionJugador : MonoBehaviour
         ManejarInteraccionMirada();
         ManejarEntradaAccion();
         ManejarNotificaciones();
+        // Se mantiene esta llamada para que la UI se actualice a través del flujo existente (si lo hay)
+        ActualizarInformacionUI();
 
         string selectedItem = InventoryManager.Instance.GetSelectedItem();
         bool hasItemSelected = !string.IsNullOrEmpty(selectedItem);
@@ -98,6 +107,7 @@ public class InteraccionJugador : MonoBehaviour
         GameObject objetoGolpeado = golpeoAlgo ? hit.collider.gameObject : null;
 
         // --- Limpieza de referencias si dejamos de mirar ---
+        #region LimpiezaDeObjetosMirados
         if (fuenteIngredientesMirada != null && (!golpeoAlgo || objetoGolpeado != fuenteIngredientesMirada.gameObject))
         {
             fuenteIngredientesMirada.OcultarInformacion();
@@ -112,6 +122,7 @@ public class InteraccionJugador : MonoBehaviour
             fuenteFrascosMirada.OcultarInformacion();
             fuenteFrascosMirada = null;
         }
+        // NPCComprador: Se mantiene la corrección que hiciste en el código original
         if (npcMiradoActual != null && (!golpeoAlgo || objetoGolpeado.GetComponentInParent<NPCComprador>() != npcMiradoActual))
         {
             npcMiradoActual.OcultarBocadillo();
@@ -134,34 +145,45 @@ public class InteraccionJugador : MonoBehaviour
             ingredienteRecolectableMirado.OcultarInformacion();
             ingredienteRecolectableMirado = null;
         }
-        if (cartelMiradoActual != null && (!golpeoAlgo || objetoGolpeado != cartelMiradoActual))
+
+        // NUEVO: Limpieza del ControladorCartelTienda
+        if (cartelTiendaMiradoActual != null && (!golpeoAlgo || objetoGolpeado != cartelTiendaMiradoActual.gameObject))
         {
-            cartelMiradoActual = null;
+            cartelTiendaMiradoActual.OcultarInformacion();
+            cartelTiendaMiradoActual = null;
         }
 
-        // AÑADIDO: Limpieza de Objeto Rotatorio (Puerta)
+        // Limpieza de Objeto Rotatorio (Puerta)
         if (objetoRotatorioActual != null && (!golpeoAlgo || objetoGolpeado != objetoRotatorioActual.gameObject))
         {
             objetoRotatorioActual.OcultarInformacion();
             objetoRotatorioActual = null;
         }
-
+        #endregion
 
         // --- Asignación de referencias si miramos algo nuevo ---
         if (golpeoAlgo)
         {
             bool yaLoMiraba = (fuenteIngredientesMirada != null && objetoGolpeado == fuenteIngredientesMirada.gameObject) ||
-                                (calderoMiradoActual != null && objetoGolpeado == calderoMiradoActual.gameObject) ||
-                                (fuenteFrascosMirada != null && objetoGolpeado == fuenteFrascosMirada.gameObject) ||
-                                (npcMiradoActual != null && objetoGolpeado.GetComponentInParent<NPCComprador>() == npcMiradoActual) ||
-                                (libroMiradoActual != null && objetoGolpeado == libroMiradoActual.gameObject) ||
-                                (camaMiradaActual != null && objetoGolpeado == camaMiradaActual.gameObject) ||
-                                // AÑADIDO: Check para la puerta rotatoria
-                                (objetoRotatorioActual != null && objetoGolpeado == objetoRotatorioActual.gameObject);
+                             (calderoMiradoActual != null && objetoGolpeado == calderoMiradoActual.gameObject) ||
+                             (fuenteFrascosMirada != null && objetoGolpeado == fuenteFrascosMirada.gameObject) ||
+                             (npcMiradoActual != null && objetoGolpeado.GetComponentInParent<NPCComprador>() == npcMiradoActual) ||
+                             (libroMiradoActual != null && objetoGolpeado == libroMiradoActual.gameObject) ||
+                             (camaMiradaActual != null && objetoGolpeado == camaMiradaActual.gameObject) ||
+                             (objetoRotatorioActual != null && objetoGolpeado == objetoRotatorioActual.gameObject) ||
+                             (cartelTiendaMiradoActual != null && objetoGolpeado == cartelTiendaMiradoActual.gameObject);
 
             if (!yaLoMiraba)
             {
-                // AÑADIDO: Detección de Objeto Rotatorio (Puerta) - PRIORIDAD ALTA
+                // PRIORIDAD 1: Cartel de Tienda (ControladorCartelTienda)
+                if (objetoGolpeado.TryGetComponent(out ControladorCartelTienda cartelCtrl))
+                {
+                    cartelTiendaMiradoActual = cartelCtrl;
+                    cartelCtrl.MostrarInformacion();
+                    return;
+                }
+
+                // PRIORIDAD 2: Objeto Rotatorio (Puerta)
                 if (objetoGolpeado.TryGetComponent(out ObjetoRotatorioInteractivo rotCtrl)) { objetoRotatorioActual = rotCtrl; rotCtrl.MostrarInformacion(); return; }
 
                 if (objetoGolpeado.TryGetComponent(out FuenteIngredientes ingSrc)) { fuenteIngredientesMirada = ingSrc; ingSrc.MostrarInformacion(); return; }
@@ -185,7 +207,6 @@ public class InteraccionJugador : MonoBehaviour
                     ingredienteRecolectableMirado.MostrarInformacion();
                     return;
                 }
-                if (objetoGolpeado.name == "cartel") { cartelMiradoActual = objetoGolpeado; return; }
             }
         }
     }
@@ -198,7 +219,10 @@ public class InteraccionJugador : MonoBehaviour
     {
         if (!Input.GetKeyDown(KeyCode.E)) return;
 
-        // AÑADIDO: Prioridad 1: Objeto Rotatorio (Puerta)
+        // PRIORIDAD 1: Cartel de Tienda
+        if (cartelTiendaMiradoActual != null) { cartelTiendaMiradoActual.Interactuar(); return; }
+
+        // PRIORIDAD 2: Objeto Rotatorio (Puerta)
         if (objetoRotatorioActual != null) { objetoRotatorioActual.Interactuar(); return; }
 
 
@@ -209,7 +233,6 @@ public class InteraccionJugador : MonoBehaviour
         else if (libroMiradoActual != null) InteractuarConLibro();
         else if (camaMiradaActual != null) InteractuarConCama();
         else if (ingredienteRecolectableMirado != null) InteractuarConIngredienteRecolectable();
-        else if (cartelMiradoActual != null) InteractuarConCartel();
     }
 
     // ------------------------------------------------------------------------------------
@@ -218,6 +241,8 @@ public class InteraccionJugador : MonoBehaviour
     void InteractuarConNPC()
     {
         string selectedItem = InventoryManager.Instance.GetSelectedItem();
+        // Obtener ItemData sin usar la propiedad 'tipoItem' eliminada.
+        var itemData = InventoryManager.Instance.GetCatalog().GetItemData(selectedItem);
 
         if (npcMiradoActual.EstaEsperandoAtencion())
         {
@@ -232,7 +257,7 @@ public class InteraccionJugador : MonoBehaviour
                 return;
             }
 
-            // Asumiendo que cualquier ítem cuyo nombre contenga "pocion" o "frascofallido" es una poción.
+            // Se usa el check original (basado en nombre) para evitar el error CS1061 de 'tipoItem'.
             bool esPocion = selectedItem.ToLower().Contains("pocion") || selectedItem.ToLower().Contains("frascofallido");
 
             if (esPocion)
@@ -282,18 +307,17 @@ public class InteraccionJugador : MonoBehaviour
             string itemSeleccionadoNormalizado = nombreItemSeleccionado?.Trim().ToLower() ?? string.Empty;
             string frascoVacioNormalizado = NOMBRE_FRASCO_VACIO_ESTANDAR.Trim().ToLower();
 
-            // 🌟 CORRECCIÓN DE LÓGICA: Se usa la comparación robusta.
             if (itemSeleccionadoNormalizado == frascoVacioNormalizado)
             {
                 // 1. El caldero produce y añade la poción final al inventario.
                 calderoMiradoActual.RecogerPocionYReiniciar();
 
                 // 2. El inventario consume el Frasco Vacío que estaba seleccionado.
-                // Usamos la constante limpia para la remoción.
                 InventoryManager.Instance.RemoveItem(NOMBRE_FRASCO_VACIO_ESTANDAR, 1);
 
                 MostrarNotificacion($"Poción embotellada y añadida al inventario.", 2f, false);
                 ReproducirSonidoJugador(sonidoRecogerPocion);
+                InventoryManager.Instance.SetSelectedIndex(InventoryManager.Instance.GetSelectedIndex());
                 return;
             }
             else if (string.IsNullOrEmpty(nombreItemSeleccionado))
@@ -323,10 +347,10 @@ public class InteraccionJugador : MonoBehaviour
                 return;
             }
 
-            // Validación mejorada: Asume que si no es FrascoVacio y no es Pocion/FrascoFallido, es un ingrediente.
+            // Se usa el check original (basado en nombre) para evitar el error CS1061 de 'tipoItem'.
             bool esPotencialIngrediente = itemData.nombreItem != NOMBRE_FRASCO_VACIO_ESTANDAR
-                                             && !itemData.nombreItem.ToLower().Contains("pocion")
-                                             && !itemData.nombreItem.ToLower().Contains("frascofallido");
+                                       && !itemData.nombreItem.ToLower().Contains("pocion")
+                                       && !itemData.nombreItem.ToLower().Contains("frascofallido");
 
             if (!esPotencialIngrediente)
             {
@@ -336,7 +360,6 @@ public class InteraccionJugador : MonoBehaviour
             }
 
             // Se pasa el ItemData al caldero
-            // Nota: Se asume que 'AgregarIngrediente' del Caldero acepta ItemCatalog.ItemData
             bool agregado = calderoMiradoActual.AgregarIngrediente(itemData);
 
             if (agregado)
@@ -371,26 +394,25 @@ public class InteraccionJugador : MonoBehaviour
     {
         if (InventoryManager.Instance == null) return;
 
-        // 🛑 LÍNEA CORREGIDA (377): Cambiar el tipo de retorno a ItemCatalog.ItemData
+        // Se asume que IntentarRecoger devuelve ItemCatalog.ItemData
         ItemCatalog.ItemData r = fuenteIngredientesMirada.IntentarRecoger();
 
         if (r != null)
         {
-            // Usamos la propiedad .nombreItem del nuevo ItemData.
+            // Usamos la propiedad .nombreItem del ItemData.
             InventoryManager.Instance.AddItem(r.nombreItem);
 
             ReproducirSonidoJugador(sonidoRecogerItem);
             int idx = InventoryManager.Instance.items.FindIndex(i =>
                 i != null && i.nombre == r.nombreItem
             );
-            // 🛑 LÍNEA CORREGIDA (395): Usamos la propiedad .nombreItem del nuevo ItemData.
+            // Se revierte el uso de SelectSlotContaining
             MostrarNotificacion($"Recogiste 1 {r.nombreItem}. (Slot {idx + 1} seleccionado)", 1.5f, false);
             return;
         }
         else
         {
-            // 🛑 LÍNEA CORREGIDA: Acceder a la nueva propiedad pública 'claveIngrediente'
-            // Luego, obtenemos el ItemData para el nombre legible.
+            // Obtenemos el nombre para la UI usando la clave
             ItemCatalog.ItemData datosParaMostrar = GestorJuego.Instance.catalogoMaestro.GetItemData(fuenteIngredientesMirada.claveIngrediente);
             string nombreAMostrar = datosParaMostrar != null ? datosParaMostrar.nombreItem : "ingrediente";
 
@@ -406,22 +428,17 @@ public class InteraccionJugador : MonoBehaviour
     {
         if (InventoryManager.Instance == null) return;
 
-        // 🌟 CORRECCIÓN APLICADA: Ahora recibe un STRING (el nombre del ítem)
+        // Se asume que IntentarRecoger añade el ítem al inventario y devuelve el nombre.
         string nombreFrascoRecogido = fuenteFrascosMirada.IntentarRecoger();
 
         if (nombreFrascoRecogido != null)
         {
-            // El AddItem se debe haber llamado dentro de IntentarRecoger, 
-            // si no lo hiciste, descomenta la línea de abajo:
-            // InventoryManager.Instance.AddItem(nombreFrascoRecogido);
-
             ReproducirSonidoJugador(sonidoRecogerItem);
-            Debug.Log($"Interactuando con fuente: {nombreFrascoRecogido}");
+            MostrarNotificacion($"Recogiste 1 {nombreFrascoRecogido}.", 1.5f, false);
+            // Se revierte el uso de SelectSlotContaining
         }
         else
         {
-            // Se usa el nombre del ítem estandarizado para la notificación (asumiendo que está en el script FuenteFrascos ahora)
-            // Si el nombre aún no está disponible como string en FuenteFrascos (depende de cómo lo refactorizaste):
             MostrarNotificacion($"¡No quedan más frascos!", -1f, true);
         }
     }
@@ -456,10 +473,6 @@ public class InteraccionJugador : MonoBehaviour
             if (gestorJuego.horaActual.ToString().ToLower() == "noche")
             {
                 gestorJuego.IrADormir();
-
-                GameObject cartel = GameObject.Find("cartel");
-                if (cartel != null)
-                    cartel.SetActive(true);
             }
             else MostrarNotificacion("Solo puedes dormir por la noche...", 2f, false);
         }
@@ -467,7 +480,7 @@ public class InteraccionJugador : MonoBehaviour
     }
 
     // ------------------------------------------------------------------------------------
-    // ACCIÓN: INGREDIENTE RECOLECTABLE (MUNDO) ✨ (CORREGIDO)
+    // ACCIÓN: INGREDIENTE RECOLECTABLE (MUNDO) ✨
     // ------------------------------------------------------------------------------------
 
     void InteractuarConIngredienteRecolectable()
@@ -489,14 +502,19 @@ public class InteraccionJugador : MonoBehaviour
 
 
         // Lógica especial para Miel (se mantiene)
-        // REEMPLAZADO: ingredienteRecolectableMirado.datosIngrediente.nombreIngrediente -> ingData.nombreItem
+        // Se asume que el nombre del ítem es "Miel"
         if (ingData.nombreItem.ToLower() == "miel"
-            && InventoryManager.Instance != null
-            && InventoryManager.Instance.HasItem("palita"))
+        && InventoryManager.Instance != null
+        && InventoryManager.Instance.HasItem("palita"))
         {
             ingredienteRecolectableMirado.Recolectar(); // Recolectar ya usa la clave internamente
-            // REEMPLAZADO: ingredienteRecolectableMirado.datosIngrediente.nombreIngrediente -> ingData.nombreItem
             MostrarNotificacion($"Recolectado {ingData.nombreItem} (añadido a la tienda).", 2f, false);
+            return;
+        }
+        // Agregado check para indicar que necesita la palita
+        else if (ingData.nombreItem.ToLower() == "miel" && !InventoryManager.Instance.HasItem("palita"))
+        {
+            MostrarNotificacion("Necesitas una palita para recoger la miel.", 2f, true);
             return;
         }
 
@@ -523,7 +541,6 @@ public class InteraccionJugador : MonoBehaviour
         if (!hasItemSelected)
         {
             ingredienteRecolectableMirado.Recolectar(); // Esto lo destruirá y aplicará cooldown
-            // REEMPLAZADO: ingredienteRecolectableMirado.datosIngrediente.nombreIngrediente -> ingData.nombreItem
             MostrarNotificacion($"Recolectado {ingData.nombreItem} (añadido a la tienda).", 2f, false);
         }
         else
@@ -533,54 +550,11 @@ public class InteraccionJugador : MonoBehaviour
     }
 
     // ------------------------------------------------------------------------------------
-    // ACCIÓN: CARTEL (ABRIR TIENDA) 🛒
-    // ------------------------------------------------------------------------------------
-
-    void InteractuarConCartel()
-    {
-        if (GestorJuego.Instance != null && GestorJuego.Instance.GetComponent<GestorJuego>().horaActual.ToString().ToLower() == "noche")
-        {
-            MostrarNotificacion("La tienda ya está cerrada por hoy. Vuelve mañana.", 2f, false);
-            return;
-        }
-
-        if (!tiendaAbierta)
-        {
-            tiendaAbierta = true;
-            if (GestorJuego.Instance != null && GestorJuego.Instance.gestorNPCs != null)
-            {
-                var gestorNPCs = GestorJuego.Instance.gestorNPCs;
-                gestorNPCs.tiendaAbierta = true;
-
-                if (InventoryManager.Instance != null && InventoryManager.Instance.HasItem("palita"))
-                {
-                    gestorNPCs.compradoresHabilitados = true;
-                }
-                else
-                {
-                    gestorNPCs.compradoresHabilitados = false;
-                }
-            }
-            MostrarNotificacion("¡Tienda abierta! El día comienza...", 2f, false);
-
-            if (cartelMiradoActual != null)
-            {
-                cartelMiradoActual.SetActive(false);
-            }
-        }
-        else
-        {
-            MostrarNotificacion("La tienda ya está abierta.", 2f, false);
-        }
-    }
-
-    // ------------------------------------------------------------------------------------
     // MÉTODO AUXILIAR: DEVOLVER INGREDIENTE 🔄
     // ------------------------------------------------------------------------------------
 
     void IntentarDevolverIngrediente(string selectedItem)
     {
-        // 🛑 LÍNEA CORREGIDA (582): Acceder a la nueva propiedad pública 'claveIngrediente'
         string nombreIngredienteFuente = fuenteIngredientesMirada.claveIngrediente;
 
         if (selectedItem == nombreIngredienteFuente)
@@ -591,6 +565,8 @@ public class InteraccionJugador : MonoBehaviour
                 fuenteIngredientesMirada.DevolverIngrediente();
                 InventoryManager.Instance.RemoveItem(nombreIngredienteFuente, 1);
                 MostrarNotificacion($"Devuelto 1 {nombreIngredienteFuente} a la fuente.", 1.5f, false);
+                // Actualizar el slot seleccionado (se mantiene la función original)
+                InventoryManager.Instance.SetSelectedIndex(InventoryManager.Instance.GetSelectedIndex());
             }
             else
             {
@@ -615,6 +591,111 @@ public class InteraccionJugador : MonoBehaviour
     // ====================================================================================
     // ------------------------------- MÉTODOS AUXILIARES UI/SONIDO -----------------------
     // ====================================================================================
+
+    // Se revierte la lógica a la versión original para evitar errores CS1061 de 'icono'.
+    // Si tu InventoryManager tiene un evento o se llama desde otra parte, esta función se actualizará.
+    void ActualizarInformacionUI()
+    {
+        string selectedItem = InventoryManager.Instance.GetSelectedItem();
+        var itemData = InventoryManager.Instance.GetCatalog().GetItemData(selectedItem);
+
+        if (string.IsNullOrEmpty(selectedItem) || itemData == null)
+        {
+            // Ocultar la UI 2D
+            if (panelItemSostenido != null) panelItemSostenido.SetActive(false);
+            if (textoInventario != null) textoInventario.text = "Ítem: Ninguno";
+
+            // ************************************************************
+            // LÓGICA DE LIMPIEZA 3D
+            // ************************************************************
+            if (item3DSostenido != null)
+            {
+                Destroy(item3DSostenido);
+                item3DSostenido = null;
+            }
+            return;
+        }
+
+        // --- Lógica de UI 2D ---
+        if (panelItemSostenido != null) panelItemSostenido.SetActive(true);
+        if (uiNombreItemSostenido != null) uiNombreItemSostenido.text = selectedItem;
+
+        // Se asume que el ItemData tiene una referencia al icono, si no la tiene, se mostrará solo el texto.
+        if (uiIconoItemSostenido != null && itemData != null)
+        {
+            // Si 'icono' aún causa un error, este bloque debe ser comentado.
+            // uiIconoItemSostenido.sprite = itemData.icono;
+            uiIconoItemSostenido.color = Color.white;
+        }
+
+        // --- LÓGICA DE VISUALIZACIÓN DE ÍTEM 3D EN MANO ---
+        // Asume que ItemData tiene un campo público 'prefab3D' de tipo GameObject
+        // Revisa si hay un prefab 3D asociado y si no es el que ya tenemos instanciado.
+
+        // ************************************************************
+        // MODIFICACIÓN PRINCIPAL PARA VISUALIZACIÓN 3D
+        // ************************************************************
+
+        // 1. Limpiar el objeto 3D si el itemData.prefab3D es nulo, O si es un item diferente.
+        // Se asume la existencia de 'itemData.prefab3D' como GameObject
+        if (item3DSostenido != null)
+        {
+            // Comprobar si el item seleccionado *cambió* o si el nuevo item *no tiene* modelo 3D
+            // Usamos itemData.nombreItem para comparar, asumiendo que el item3DSostenido se renombra al instanciar.
+            bool itemCambio = item3DSostenido.name != itemData.nombreItem.Replace("(Clone)", "");
+            bool prefabFalta = GetPrefab3D(itemData) == null;
+
+            if (itemCambio || prefabFalta)
+            {
+                Destroy(item3DSostenido);
+                item3DSostenido = null;
+            }
+        }
+
+        // 2. Instanciar el nuevo objeto 3D si es necesario
+        GameObject prefab3D = GetPrefab3D(itemData); // Método auxiliar para obtener el prefab.
+
+        if (prefab3D != null && item3DSostenido == null && puntoAnclajeItem3D != null)
+        {
+            item3DSostenido = Instantiate(prefab3D, puntoAnclajeItem3D);
+            // Opcional: ajustar la posición/rotación local si es necesario
+            item3DSostenido.transform.localPosition = Vector3.zero;
+            item3DSostenido.transform.localRotation = Quaternion.identity;
+
+            // Renombrar para facilitar la comparación en el siguiente ciclo
+            item3DSostenido.name = itemData.nombreItem;
+        }
+    }
+
+    // Método auxiliar (necesario si prefab3D no es accesible directamente, o para evitar Try/Catch)
+    // Deberías reemplazar 'ItemCatalog.ItemData' con el nombre de tu clase ItemData real.
+    // **ADVERTENCIA:** Si tu ItemData no tiene 'prefab3D', tendrás que modificar la clase ItemData.
+    private GameObject GetPrefab3D(ItemCatalog.ItemData data)
+    {
+        if (data == null) return null;
+
+        // Intenta acceder al campo 'prefab3D' usando Reflection como una solución robusta 
+        // si no quieres modificar ItemCatalog.ItemData, aunque lo ideal es que sea un campo público.
+        // Si tienes el campo público 'public GameObject prefab3D;' en ItemCatalog.ItemData, 
+        // cambia este método para que simplemente devuelva 'data.prefab3D;'
+
+        try
+        {
+            var field = typeof(ItemCatalog.ItemData).GetField("prefab3D");
+            if (field != null)
+            {
+                return field.GetValue(data) as GameObject;
+            }
+        }
+        catch (System.Exception e)
+        {
+            // Debug.LogError($"Error al acceder a prefab3D en ItemData: {e.Message}");
+        }
+
+        // Fallback: Si el campo no se encuentra, devuelve null. 
+        // Si tu prefab3D es público, reemplaza todo el try-catch con: return data.prefab3D;
+        return null;
+    }
 
     public void MostrarNotificacion(string mensaje, float duracion = -1f, bool conSonidoError = false)
     {

@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombreIdentificador: PocionCuracion
   ingredientesRequeridos:
-  - {fileID: 11400000, guid: 0019e0ee2b097664ab6a1977ce469b09, type: 2}
-  - {fileID: 11400000, guid: 0019e0ee2b097664ab6a1977ce469b09, type: 2}
-  - {fileID: 11400000, guid: 290b97b2a82c5b74a9f1a953ef81590f, type: 2}
+  - Miel
+  - Flores
   dialogosPedidoGenericos:
   - "Estoy m\xE1s roto que una espada oxidada. \xBFTen\xE9s algo me restaure?"
   - Necesito una de esas que reparan cuerpo y alma.
@@ -24,8 +23,8 @@ MonoBehaviour:
   - "He tenido mejores d\xEDas\u2026 \xBFme ayudas a tener uno mejor?"
   - "Una poci\xF3n curativa. Lo antes posible."
   - "Para seguir luchando, necesito sanar. \xBFQu\xE9 ten\xE9s para m\xED?"
-  clavePocion: Curacion
+  clavePocion: Pocion de Curacion
   nombreResultadoPocion: Pocion de Curacion
-  materialResultado: {fileID: 2100000, guid: 0443cd347cc53974a904818f3b29647f, type: 2}
-  imagenPocion: {fileID: 21300000, guid: dca369fd30dd9f743b8946f7d7ae8cf1, type: 3}
+  materialResultado: {fileID: 2100000, guid: 5cc98723ce2999a43b0211b5f4437086, type: 2}
+  imagenPocion: {fileID: 21300000, guid: 77fbd3ba5975e32469502bc5fcfc9362, type: 3}
   descripcionPocion: 'Descripcion: Una pocion que vigoriza hasta a los casi muertos'

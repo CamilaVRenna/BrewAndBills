@@ -29,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 8451001201190359090}
   serializedVersion: 2
   m_LocalRotation: {x: 0.13435738, y: -0.7495433, z: 0.026643995, w: 0.6476288}
-  m_LocalPosition: {x: 17.032, y: 0.95605, z: 23.91}
-  m_LocalScale: {x: 109.03927, y: 91.88339, z: 84.81205}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 184.0393, y: 155.08316, z: 143.14796}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -107,8 +107,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.003978674, y: 0.0067085233, z: 0.004510052}
-  m_Center: {x: -0.00045245726, y: -0.0007608105, z: 0.002279038}
+  m_Size: {x: 0.003978673, y: 0.006708522, z: 0.0045100516}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5326400315412073709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,8 +121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e57698cf74d29d24aa5366d8eb3825ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  claveIngrediente: Flor
-  textoIndicador: Recolectar Flor
+  claveIngrediente: Flores
+  textoIndicador: Recolectar Flores
   prefabCanvasInfo: {fileID: 338789030519252024, guid: 1f725666586f02c4a86b9596f77dd0c0, type: 3}
   puntoOrigen: {fileID: 0}
-  mensajeTemporalUI: {fileID: 0}
+  mensajeTemporalUI: {fileID: 4946660561801754653, guid: 125f8b540b5285c4fb1118db84ed9f33, type: 3}

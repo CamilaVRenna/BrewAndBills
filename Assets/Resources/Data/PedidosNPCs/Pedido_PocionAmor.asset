@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: becbb2440c6448d4c8eddd01c6a83334, type: 3}
   m_Name: Pedido_PocionAmor
   m_EditorClassIdentifier: 
-  nombreIdentificador: PocionAmor
+  nombreIdentificador: Pocion de Amor
   ingredientesRequeridos:
-  - {fileID: 11400000, guid: 290b97b2a82c5b74a9f1a953ef81590f, type: 2}
-  - {fileID: 11400000, guid: 0019e0ee2b097664ab6a1977ce469b09, type: 2}
+  - Mariposas
+  - Miel
   dialogosPedidoGenericos:
   - "Necesito algo que haga latir m\xE1s r\xE1pido un coraz\xF3n\u2026 y no el m\xEDo."
   - "Una pizca de romance, dos gotas de deseo\u2026 \xBFme das una de esas?"
@@ -23,9 +23,9 @@ MonoBehaviour:
   - "Dicen que el amor no se compra, pero una poci\xF3n no estar\xEDa mal."
   - Estoy perdidamente enamorado. Me falta solo tu ayuda embotellada.
   - "\xBFPod\xE9s prepararme algo que endulce las palabras y despierte sentimientos?"
-  clavePocion: Amor
+  clavePocion: Pocion de Amor
   nombreResultadoPocion: Pocion de Amor
-  materialResultado: {fileID: 2100000, guid: 6b786ae582c20fe40b7e01cd8f657d6f, type: 2}
-  imagenPocion: {fileID: 21300000, guid: 3a2b4d4f6c891c444ab9258ecbe76a09, type: 3}
+  materialResultado: {fileID: 2100000, guid: 55c40a8772951604da82607e8ca669f8, type: 2}
+  imagenPocion: {fileID: 21300000, guid: aad3da939d8d886408153a9e42582645, type: 3}
   descripcionPocion: "Descripci\xF3n: Con esta poci\xF3n se derrite hasta el coraz\xF3n
     mas helado"

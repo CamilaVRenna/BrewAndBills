@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombreIdentificador: PocionInvisibilidad
   ingredientesRequeridos:
-  - {fileID: 11400000, guid: 290b97b2a82c5b74a9f1a953ef81590f, type: 2}
-  - {fileID: 11400000, guid: 9b20f35bd2e012f438007744ee881d21, type: 2}
+  - Hongos
+  - Flores
   dialogosPedidoGenericos:
   - "Necesito desaparecer\u2026 pero sin huir. \xBFTienes algo que me ayude?"
   - "Para espiar sin ser visto, \xBFqu\xE9 poci\xF3n me recomendar\xEDas?"
@@ -23,8 +23,8 @@ MonoBehaviour:
   - "Necesito fundirme con las sombras. \xBFUna dosis, tal vez?"
   - "Tengo que pasar sin dejar rastro. \xBFTu mejor brebaje ocultador?"
   - Lo que sea que tengas para volverse humo, lo quiero.
-  clavePocion: Invisibilidad
+  clavePocion: Pocion de Invisibilidad
   nombreResultadoPocion: Pocion de Invisibilidad
   materialResultado: {fileID: 2100000, guid: b4e09a043aa4b5c4f8ff2f9456721692, type: 2}
-  imagenPocion: {fileID: 21300000, guid: c2071203046192744a6664e2432fd241, type: 3}
+  imagenPocion: {fileID: 21300000, guid: 7acddc2750b783a45a4f894959c9bb6a, type: 3}
   descripcionPocion: 'Descripcion: Te convertiras en el mejor espia del reino'

@@ -29,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 4910432167675470365}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0337699, y: -0.7063001, z: -0.70629984, w: -0.03377005}
-  m_LocalPosition: {x: -14.369999, y: 4.3799953, z: 53.23007}
-  m_LocalScale: {x: 22.5, y: 32, z: 37.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 33.43725, y: 47.5552, z: 55.72875}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -105,7 +105,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.024995089, y: 0.017522756, z: 0.017677939}
-  m_Center: {x: -0.0000000027870364, y: 0.00026854186, z: -0.00039193744}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1704410961565184163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,4 +122,4 @@ MonoBehaviour:
   textoIndicador: Recolectar Miel
   prefabCanvasInfo: {fileID: 338789030519252024, guid: 1f725666586f02c4a86b9596f77dd0c0, type: 3}
   puntoOrigen: {fileID: 0}
-  mensajeTemporalUI: {fileID: 7999337285250084231, guid: eb95f2aefec4bc6408944c9d6578e7a4, type: 3}
+  mensajeTemporalUI: {fileID: 4946660561801754653, guid: 125f8b540b5285c4fb1118db84ed9f33, type: 3}
